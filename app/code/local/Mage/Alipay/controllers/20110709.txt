@@ -1,0 +1,64 @@
+2011-07-09 04:38:37
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000559',
+    'trade_no' => '2011070927677137',
+    'buyer_email' => 'firefoxh@hotmail.com',
+    'gmt_create' => '2011-07-09 12:38:29',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000559',
+    'body' => '100000559',
+    'notify_time' => '2011-07-09 12:38:37',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-07-09 12:38:37',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002062675374',
+    'notify_id' => '6b18f4180c29d8fdbc96f1dc291d133203',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '69bb21f3e61fbc39e343cb17b86ac9e3',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-07-09 04:51:37
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000560',
+    'trade_no' => '2011070927804937',
+    'buyer_email' => 'firefoxh@hotmail.com',
+    'gmt_create' => '2011-07-09 12:51:31',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000560',
+    'body' => '100000560',
+    'notify_time' => '2011-07-09 12:51:38',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-07-09 12:51:37',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002062675374',
+    'notify_id' => '83345030db4151ad63711ee63f10894003',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'fb3b32bdf4184ab4bc2b30898e97c195',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+

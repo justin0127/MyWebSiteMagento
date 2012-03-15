@@ -1,0 +1,17 @@
+<div class="form-list">
+		<img src="<?php echo $this->getSkinUrl('images/chinabank/logo_chinabanks.gif') ?>" />
+<br/>
+</div>
+
+<fieldset class="form-list">
+	<?php $_code=$this->getMethodCode() ?>
+	
+	<ul id="payment_form_<?php echo $_code ?>" style="display:none">
+
+	<div >
+
+            <?php echo $this->showMessage() ?>
+
+	</div>	<br />
+	</ul>
+</fieldset>

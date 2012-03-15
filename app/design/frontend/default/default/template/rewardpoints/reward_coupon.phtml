@@ -1,0 +1,144 @@
+<?php
+/**
+ * J2T RewardsPoint2
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@j2t-design.com so we can send you a copy immediately.
+ *
+ * @category   Magento extension
+ * @package    RewardsPoint2
+ * @copyright  Copyright (c) 2009 J2T DESIGN. (http://www.j2t-design.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ ?>
+
+<?php
+$customerId = Mage::getModel('customer/session')->getCustomerId();
+$displayOriginal = true;
+$canSubmit = true;
+$points_currently_used = Mage::helper('rewardpoints/event')->getCreditPoints();
+$couponCode = Mage::getSingleton('checkout/cart')->getQuote()->getCouponCode();
+$pts = Mage::helper('rewardpoints/data')->getPointsOnOrder();
+
+$auto_use = Mage::getStoreConfig('rewardpoints/default/auto_use', Mage::app()->getStore()->getId());
+if (!$auto_use):
+    if (!$customerId):
+?>
+    <div class="discount-codes box">
+         <h4><?php echo $this->__('Reward points'); ?></h4>
+        <div class="rewards_point_cart"><?php echo $this->__("This shopping cart worths %s loyalty point(s).", $pts);?></div>
+    </div>
+<?php
+    endif;
+    if ($customerId):
+        $customerPoints = Mage::getModel('rewardpoints/account')->load($customerId);
+        
+        //points required to get 1 €
+        $points_money = Mage::getStoreConfig('rewardpoints/default/points_money', Mage::app()->getStore()->getId());
+        //step to reach to get discount
+        $step = Mage::getStoreConfig('rewardpoints/default/step_value', Mage::app()->getStore()->getId());
+        //check if step needs to apply
+        $step_apply = Mage::getStoreConfig('rewardpoints/default/step_apply', Mage::app()->getStore()->getId());
+        $full_use = Mage::getStoreConfig('rewardpoints/default/full_use', Mage::app()->getStore()->getId());
+
+        $order_details = Mage::getSingleton('checkout/session')->getQuote()->getSubtotal();
+
+        if (Mage::getStoreConfig('rewardpoints/default/math_method', Mage::app()->getStore()->getId()) == 1){
+            $cart_amount = round($order_details);
+        } else {
+            $cart_amount = floor($order_details);
+        }
+        $max_use = min(Mage::helper('rewardpoints/data')->convertMoneyToPoints($cart_amount), $customerPoints->getPointsCurrent());
+
+?>
+
+<?php if (Mage::getStoreConfig('rewardpoints/default/coupon_codes', Mage::app()->getStore()->getId()) == 1 && ($couponCode == "" || $couponCode == null) || Mage::getStoreConfig('rewardpoints/default/coupon_codes', Mage::app()->getStore()->getId()) == 0):?>
+<div class="discount-codes box">
+    <?php if (!$points_currently_used): ?>
+    <form action="<?php echo $this->getUrl('rewardpoints/index/quotation/') ?>" method="post" name="discountFormPoints2">
+        <fieldset>
+            <h4><?php echo $this->__('Reward points'); ?></h4>
+            <div class="rewards_point_cart"><?php echo $this->__("This shopping cart worths %s loyalty point(s).", $pts);?></div>
+            <?php if ($points_money > $customerPoints->getPointsCurrent()):?>
+                <p><?php echo $this->__('You have %d loyalty point(s) available.', $customerPoints->getPointsCurrent()); ?></p>
+                <p><?php echo $this->__('To get a discount you need at least %d loyalty point(s).', $step); ?></p>
+            <?php else:?>
+                <p class="no-display"><?php echo $this->__('Enter quantity of loyalty point(s) you want to use.') ?></p>
+                <p><?php echo $this->__('You have %d loyalty point(s) available.', $customerPoints->getPointsCurrent()); ?></p>
+                <?php if ($step_apply):?>
+                    <select name="points_to_be_used" id="coupon_code_points_qty" class="input-text">
+                        <?php
+                            $creditToBeAdded = 0;
+                            $creditsTotal = $customerPoints->getPointsCurrent();
+                            while ($creditsTotal > 0) :
+                                    //check if credits always lower than total cart amount
+                                    if (ceil(($creditToBeAdded + $step)/$points_money) > $cart_amount):
+                                            break;
+                                    endif;
+
+                                    if (($creditToBeAdded + $step) > $customerPoints->getPointsCurrent()):
+                                            break;
+                                    endif;
+
+                                    $creditToBeAdded += $step;
+                                    $creditsTotal-=$step;
+                            ?>
+                                    <option value="<?php echo $creditToBeAdded;?>"><?php echo $this->__("%d loyalty point(s)",$creditToBeAdded);?></option>
+                            <?php
+                            endwhile;
+                            ?>
+                     </select>
+                <?php else:?>
+                    <input <?php if($full_use):?>type="hidden"<?php else:?>type="text"<?php endif;?> value="<?php if($full_use):?><?php echo $max_use;?><?php endif;?>"  name="points_to_be_used" class="input-text" />
+                <?php endif;?>
+                
+                <button class="form-button-alt" value="<?php echo $this->__('Apply Points') ?>" onclick="discountFormPoints2.submit(false)" type="button">
+                    <span><?php echo $this->__('Apply Points') ?></span>
+                </button>
+            <?php endif;?>
+
+            <?php //echo Mage::helper('rewardpoints/event')->getCreditPoints(); ?>
+
+        </fieldset>
+    </form>
+    <?php else: ?>
+    <form action="<?php echo $this->getUrl('rewardpoints/index/removequotation/') ?>" method="post" name="discountFormPoints2">
+        <fieldset>
+            <h4><?php echo $this->__('Reward points'); ?></h4>
+            <div class="rewards_point_cart"><?php echo $this->__("This shopping cart worths %s loyalty point(s).", $pts);?></div>
+            <p><?php echo $this->__('You are currently using %d point(s) of your %d loyalty point(s) available.', $points_currently_used, $customerPoints->getPointsCurrent()); ?></p>
+            <button class="form-button-alt" type="button" onclick="discountFormPoints2.submit(false)" value="<?php echo $this->__('Remove Points') ?>"><span><?php echo $this->__('Remove Points') ?></span></button>
+        </fieldset>
+    </form>
+    <?php endif;?>
+</div>
+
+<?php endif;?>
+<?php endif;?>
+
+<?php if (Mage::getStoreConfig('rewardpoints/default/coupon_codes', Mage::app()->getStore()->getId()) == 1 && ($points_currently_used < 1 || $points_currently_used == null) || Mage::getStoreConfig('rewardpoints/default/coupon_codes', Mage::app()->getStore()->getId()) == 0):?>
+<?php echo $this->getChildHtml('coupon_original');?>
+<?php endif;?>
+
+<?php else: ?>
+<div class="discount-codes box">
+<?php
+if ($customerId):
+    $customerPoints = Mage::getModel('rewardpoints/account')->load($customerId);
+
+    if ($customerPoints->getPointsCurrent()):
+?>
+<div class="discount-codes box discount">
+
+    <h4><?php echo $this->__('Reward points'); ?></h4>
+    <p><?php echo $this->__('You are currently using %d point(s) of your %d loyalty point(s) available.', $points_currently_used, $customerPoints->getPointsCurrent()); ?></p>
+</div>
+<?php endif;?>
+<?php endif;?>
+<?php endif;?>

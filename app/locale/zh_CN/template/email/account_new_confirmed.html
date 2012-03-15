@@ -1,0 +1,52 @@
+﻿<!--@subject 欢迎您来到希思黎, {{var customer.name}}! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"skin url=\"images/logo_email.gif\" _area='frontend'":"Email Logo Image",
+"htmlescape var=$customer.name":"Customer Name",
+"store url=\"customer/account/\"":"Customer Account Url"}
+@-->
+
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+
+<div style="font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+    <table cellspacing="0" cellpadding="0" border="0" width="98%" style="margin-top:10px; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; margin-bottom:10px;">
+        <tr>
+            <td align="center" valign="top">
+                <!-- [ header starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{skin url="images/logo_email.gif" _area='frontend'}}" alt="{{var store.getFrontendName()}}"  style="margin-bottom:10px;" border="0"/></a></td>
+                    </tr>
+                </table>
+
+                <!-- [ middle starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <p><strong>尊敬的{{htmlescape var=$customer.name}}</strong>,<br/>
+                            欢迎您来到希思黎.登录本站时请点击<a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">登录</a>或者<a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">我的账户</a>,然后输入您的邮箱地址和密码即可.</p>
+
+                            <p>当您登录到帐户时,您可以获得以下服务:</p>
+
+                            <ul>
+                                <li>获得更快的购物体验</li>
+                                <li>查看当前订单状态和历史订单</li>
+                                <li>修改账户信息和账户密码</li>
+                                <li>更多尊荣服务,等你来体验！</li>
+                            </ul>
+
+                            <p>如果您对您的账户以及其他事项有疑问，请随时与我们联系 <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#1E7EC8;">{{config path='trans_email/ident_support/email'}}</a> 或拨打电话{{config path='general/store_information/phone'}}.</p>
+                            <p>再次诚挚感谢您的光临！</p>
+
+
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</div>

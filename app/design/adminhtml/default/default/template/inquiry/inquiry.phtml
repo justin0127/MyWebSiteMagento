@@ -1,0 +1,55 @@
+
+
+<?php $collections = ""; $collections = $this->getAllInquires(); ?>
+
+
+
+
+
+
+
+
+<div class="grid">
+
+    <div class="hor-scroll">
+    <table cellspacing="0" id="cmsPageGrid_table" class="data">
+     <col width="10">
+    <thead>
+    <tr class="headings">
+            <th><span class="nobr"><a class="not-sort" title="asc" name="title">#</a></span></th>
+            <th><span class="nobr"><a class="not-sort" title="asc" name="title">调查ID</a></span></th>
+            <th><span class="nobr"><a class="not-sort" title="desc" name="identifier">Email</a></span></th>
+            <th><span class="nobr"><a class="not-sort" title="asc" name="root_template">创建时间</a></span></th>
+            <th class=" no-link last"><span class="nobr">操作</span></th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php
+	if($collections->count() != "")
+	{
+	?>
+      	<?php 
+			$i = 0;
+			foreach($collections as $item)
+			{
+				 $IsCreated = $this->getIsCreated($item['email']);
+		?>
+      	<tr class="even pointer">
+			<td class="" align="center"><?php echo $item->getId();?></td>
+            <td class="a-left "><?php echo $item['website'];?></td>
+            <td class="a-left "><?php echo $item['desc']; ?></td>
+            <td class="a-left "><?php echo date("F j, Y",strtotime($item['createddt']));?></td>
+            <td class="a-left ">&nbsp;<a href="<?php echo $this->getUrl("inquiry/manage_inquiry/index/ac/del/delid/".$item['dealerid'])?>" onclick="javascript:return confirm('Are sure you want to delete this Inquire?')"><img src="<?php echo $this->getSkinurl()."images/icon_btn_delete.gif";?>" alt="Delete" title="Delete" /></a>&nbsp;&nbsp;<a href="<?php echo $this->getUrl("inquiry/manage_inquiry/view/delid/".$item['dealerid'])?>"><img src="<?php echo $this->getSkinurl()."images/fam_page_white.gif";?>" alt="View" title="View" /></a>
+            <?php if($IsCreated==0 && 0) {?>
+            &nbsp;&nbsp;<a href="<?php echo $this->getUrl("adminhtml/customer/new")?>" target="_blank"><img src="<?php echo $this->getSkinurl()."images/fam_page_white_edit.gif";?>" alt="Create Customer" title="Create Customer" /></a></td>
+            <?php } ?>
+        </tr>
+       	<?php 
+			}
+	}
+?>
+      </tbody>
+	</table>
+   	</div>
+
+</div>

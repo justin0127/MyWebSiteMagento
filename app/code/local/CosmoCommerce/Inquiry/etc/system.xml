@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @copyright  Copyright (c) 2010 Capacity Web Solutions Pvt. Ltd  (http://www.capacitywebsolutions.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <!--<tabs>
+        <inquiry translate="label" module="inquiry">
+            <label>Inquiry</label>
+            <sort_order>301</sort_order>
+        </inquiry>
+    </tabs>
+    <sections>
+        <inquiry translate="label" module="inquiry">
+            <label>Dealer Inquiry</label>
+            <tab>inquiry</tab>
+            <sort_order>130</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+		</inquiry>
+    </sections>-->
+</config>

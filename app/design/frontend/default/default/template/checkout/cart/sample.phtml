@@ -1,0 +1,56 @@
+<div class="crosssell">
+	<h2><?php echo $this->__('购物小样'); ?></h2>
+	<?php
+	$customer  = Mage::getSingleton('customer/session')->isLoggedIn() ? Mage::getSingleton('customer/session')->getCustomer() : null;
+	if($customer){
+	$CustomerRank = $customer->getRank();
+	}
+	?>
+	<?php if ($CustomerRank != NULL) { ?>
+	<h3><?php echo $this->__('您目前的会员等级是 : ').$CustomerRank.$this->__('。您每次购物都可免费获得一件符合或者低于当前会员等级的商品小样。'); ?></h3>
+	<?php }else{ ?>
+	<h3><?php echo $this->__('您还未获得会员身份，无法免费获取小样！'); ?></h3>
+	<?php } ?>
+	
+	<!-- sample product list -->
+	<?php
+	$CatIdArr = array(
+	'vip1' => '298',
+	'vip2' => '299',
+	'vip3' => '300'
+	);
+	$CatId = $CatIdArr[$CustomerRank];
+	$_helper = $this->helper('catalog/output');
+	//var_dump($CatId);
+	if ($CatId != NULL) {
+		$_productCollection = Mage::getModel('catalog/product')->getCollection()
+					->addCategoryFilter(Mage::getModel('catalog/category')->load($CatId),true)
+					->addAttributeToFilter('visibility',2)
+					->addAttributeToSelect('*')
+					->addAttributeToSort('entity_id', 'DESC')
+					->setPageSize(3)
+					->setCurPage(1)
+					->load();
+
+		Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection);
+		Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection);
+	?>
+		<ul>
+			   <?php
+			   foreach ($_productCollection as $_product) {
+			   ?>
+				   <li>
+				   <input type="radio" checked="<?php if($_product->getSku() == 'package1') { echo 'checked'; } ?>" id="<?php echo $_product->getSku();  ?>" value="<?php echo $_product->getId();  ?>" name="package" onclick="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>"/>
+				   <label for="<?php echo $_product->getSku();  ?>" id="opc-lb<?php echo $i ?>"  > <?php echo $_product->getName();  ?></label>
+				   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(50); ?>" width="50" height="50" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" onmouseover="showinfo('1','<?php echo $i;?>');" onmouseout="showinfo('2','<?php echo $i;?>');" />
+				    <?php echo $_product->getPrice(); ?>
+				   </li>
+			   <?php
+			   }
+			   ?>
+							   
+		   </ul>
+	<?php
+	}
+	?>
+</div>

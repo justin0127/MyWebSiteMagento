@@ -1,0 +1,91 @@
+<?php
+/**
+ * J2T RewardsPoint2
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@j2t-design.com so we can send you a copy immediately.
+ *
+ * @category   Magento extension
+ * @package    RewardsPoint2
+ * @copyright  Copyright (c) 2009 J2T DESIGN. (http://www.j2t-design.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ ?>
+<div class="page-head">
+    <h4><?php echo $this->__('分享有礼') ?></h4>
+	<div class="head-page">将本网站推荐给好友，只要好友注册您即可获得1000积分。</div>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getUrl('rewardpoints/index/referral/') ?>" method="post" id="form-validate">
+
+
+    <fieldset class="group-select">
+        <input type="hidden" value="Il1NwrpfsCuSmp03" name="form_key"/>
+      
+        <ul>
+            <li>
+                <div class="input-box">
+                    <label for="telephone"><?php echo $this->__('Friend\'s name') ?> <span class="required"></span></label>
+                    <input type="text" name="name" value="" title="<?php echo $this->__('Friend\' name') ?>" class="required-entry input-text" id="name" />
+                </div>
+                <div class="input-box">
+                    <label for="fax"><?php echo $this->__('Friend\'s email address') ?> <span class="required"></span></label>
+                    <input type="text" name="email" id="email" title="<?php echo $this->__('Friend\'s email address') ?>" value="" class="required-entry input-text" />
+                </div>
+            </li>
+        </ul>
+    </fieldset>
+    <div class="button-set">
+        <!--<p class="required"><?php //echo $this->__('* Required Fields') ?></p>-->
+        <!--<a href="<?php echo $this->getBackUrl() ?>" class="left">&laquo; <?php echo $this->__('Back') ?></a>-->
+        <button class="form-button" type="submit"><span><?php echo $this->__('Send') ?></span></button>
+    </div>
+</form>
+<script type="text/javascript">
+    var dataForm = new VarienForm('form-validate', true);
+</script>
+<br /><br />
+<?php $_referred = $this->getReferred();?>
+<?php if($_referred->getSize()): ?>
+<?php echo $this->getPagerHtml() ?>
+<table cellspacing="0" class="data-table" id="referred-friends-table">
+    <thead>
+        <tr>
+            <?php ?><th><?php echo $this->__('Full Name') ?></th><?php ?>
+			<th><?php echo $this->__('积分原因') ?></th>
+			<th><?php echo $this->__('奖励积分') ?></th>
+			<th><?php echo $this->__('注册状态') ?></th>
+			<th><?php echo $this->__('奖励时间') ?></th>
+            <!--<th><?php //echo $this->__('Email') ?></th>-->
+            <!--<th><?php //echo $this->__('Registered?') ?></th>-->
+            <!--<th><?php //echo $this->__('First order?') ?></th>-->
+			
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($_referred as $_friend): ?>
+            <tr>
+                <?php ?><td><?php echo $_friend->getRewardpoints_referral_name() ?></td><?php ?>
+				<td><?php echo $this->__('注册') ?></td>
+				<td><?php echo $this->__('1000积分') ?></td>
+                <td><?php echo $_friend->getRewardpoints_referral_status() ? $this->__('yes') : $this->__('no') ?></td>
+				<td><?php //echo $this->__('完成') ?></td>
+				<!--<td><?php //echo $this->__('') ?></td>-->
+                <!--<td><?php //echo $_friend->getRewardpoints_referral_email() ?></td>-->
+                <!--<td><?php //echo $_friend->getRewardpoints_referral_child_id() ? $this->__('yes') : $this->__('no') ?></td>-->
+                <!--<td><?php //echo $_friend->getRewardpoints_referral_status() ? $this->__('yes') : $this->__('no') ?></td>-->
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php echo $this->getPagerHtml() ?>
+<?php else: ?>
+    <p><?php echo $this->__('You haven\'t invited any friend.'); ?></p>
+<?php endif ?>

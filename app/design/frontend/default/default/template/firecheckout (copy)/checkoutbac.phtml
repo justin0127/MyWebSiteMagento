@@ -1,0 +1,148 @@
+<div class="page-title">
+    <h1><?php echo Mage::getStoreConfig('firecheckout/general/title') ?></h1>
+    <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+    <script> 
+        window.location="<?php echo $this->getUrl('customer/account/login') ?>";
+    </script>
+    <!--<p class="firecheckout-login-wrapper">
+        <a href="<?php echo $this->getUrl('customer/account/login') ?>" class="firecheckout-login">
+            <?php echo $this->__('Already registered? Login into your account') ?>
+        </a>
+    </p> -->
+    <?php endif; ?>
+</div>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/firecheckout.js') ?>"></script>
+<script type="text/javascript">countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?></script>
+
+<form action="" id="firecheckout-form">
+<div class="col3-set firecheckout-set">
+    <div class="col-1">
+        <?php echo $this->getChildHtml('billing.address') ?>
+        <?php echo $this->getChildHtml('shipping.address') ?>
+    </div>
+
+    <div class="col-2">
+        <?php echo $this->getChildHtml('shipping.method') ?>
+        <?php echo $this->getChildHtml('payment.method') ?>
+        <div id="checkout-coupon-discount-load">
+            <?php echo $this->getChildHtml('coupon') ?>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <?php echo $this->getChildHtml('review') ?>
+	</div>
+	
+
+
+<?php echo $this->getChildHtml('customer.login') ?>
+<?php echo $this->getChildHtml('customer.forgot') ?>
+</div>
+
+</form>
+
+
+
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+    var checkout = new FireCheckout('firecheckout-form', {
+        success : '<?php echo $this->getUrl('firecheckout/index/success', array('_secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on'))) ?>',
+        save    : '<?php echo $this->getUrl('firecheckout/index/saveOrder', array('_secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on'))) ?>',
+        update  : '<?php echo $this->getUrl('firecheckout/index/updateCheckout', array('_secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on'))) ?>',
+        failure : '<?php echo $this->getUrl('checkout/cart') ?>'
+    }, "<?php echo $this->__('Please agree to all the terms and conditions before placing the order.') ?>");
+
+    document.observe("dom:loaded", function() {
+        var triggers = {
+          /*  login: {
+                el: $$('.firecheckout-login'),
+                event: 'click',
+                window: $('firecheckout-login-window')
+            }, */
+            forgot: {
+                el: $$('.firecheckout-forgot'),
+                event: 'click',
+                window: $('firecheckout-forgot-window')
+            }
+        };
+        $$('.checkout-agreements .agree a').each(function(el) {
+            triggers[el.className] = {
+                el: $$('.' + el.className),
+                event: 'click',
+                window: $(el.className + '-window')
+            };
+        });
+        firecheckoutWindow = new FireCheckout.Window({
+            triggers: triggers
+        });
+    });
+    
+    jQuery(window).ready(function() {
+         jQuery('#billing-address-title').click(   function() {
+             if (jQuery("#billing-address-content").is(":hidden")) {
+                     jQuery('#billing-address-content').slideDown();
+                 }else{
+                    jQuery('#billing-address-content').slideUp();                
+                 }
+         
+          } );
+    })
+	
+	
+	 jQuery(window).ready(function() {
+         jQuery('#billing-shipping-title').click(   function() {
+             if (jQuery("#billing-shipping-content").is(":hidden")) {
+                     jQuery('#billing-shipping-content').slideDown();
+                 }else{
+                    jQuery('#billing-shipping-content').slideUp();                
+                 }
+         
+          } );
+    })
+	
+	 jQuery(window).ready(function() {
+         jQuery('#billing-payment-title').click(   function() {
+             if (jQuery("#billing-payment-content").is(":hidden")) {
+                     jQuery('#billing-payment-content').slideDown();
+                 }else{
+                    jQuery('#billing-payment-content').slideUp();                
+                 }
+         
+          } );
+    })
+    
+	
+		 jQuery(window).ready(function() {
+         jQuery('#billing-coupon-title').click(   function() {
+             if (jQuery("#billing-coupon-content").is(":hidden")) {
+                     jQuery('#billing-coupon-content').slideDown();
+                 }else{
+                    jQuery('#billing-coupon-content').slideUp();                
+                 }
+         
+          } );
+    })
+	
+			
+			
+				 jQuery(window).ready(function() {
+         jQuery('#billing-review-title').click(   function() {
+             if (jQuery("#billing-review-content").is(":hidden")) {
+                     jQuery('#billing-review-content').slideDown();
+                 }else{
+                    jQuery('#billing-review-content').slideUp();                
+                 }
+         
+          } );
+    })
+   
+   
+    
+//]]>
+</script>

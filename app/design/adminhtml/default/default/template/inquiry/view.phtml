@@ -1,0 +1,55 @@
+<?php
+ $item = $this->getAllDealer($this->getRequest()->getParam("delid"));
+ $IsCreated = $this->getIsCreated($item['email']);
+?>
+<div class="back">
+	<a href="<?php echo $this->getUrl("inquiry/manage_inquiry/")?>">返回</a>
+	<?php if($IsCreated==0 && 0) {?>
+		<a href="<?php echo $this->getUrl("adminhtml/customer/new") ?>" target="_blank">Create Customer</a>
+	<?php } ?>
+</div>
+    <table cellspacing="0" id="cmsPageGrid_table" class="data">
+
+      	<tr class="even pointer">
+        	<td class=""width="40%">1、请问当您在Sisley网站搜索产品时，是否能够非常便捷地找到相关产品？</td>
+            <td class="a-left "><?php echo $item['firstname'];?></td>
+        </tr>
+        <tr class="even pointer">
+        	<td class=""width="40%">2、您对sisley网站购物流程有什么建议或意见？</td>
+            <td class="a-left "><?php echo $item['lastname'];?></td>
+        </tr>
+        <tr class="even pointer">
+        	<td class=""width="40%">3、您是否关注Sisley网站的最新活动？</td>
+            <td class="a-left "><?php echo $item['company'];?></td>
+        </tr>
+         <tr class="even pointer">
+        	<td class=""width="40%">4、您选择在sisley网上商城订购产品的原因是？</td>
+            <td class="a-left "><?php echo $item['address'];?></td>
+        </tr>
+         <tr class="even pointer">
+        	<td class=""width="40%">5、您目前最关注的肌肤护肤需求是？</td>
+            <td class="a-left "><?php print_r( $item['ciry'] );?></td>
+        </tr>
+         <tr class="even pointer">
+        	<td class=""width="40%">6、您对我们提供的物流和配送服务还满意吗？</td>
+            <td class="a-left "><?php echo $item['state'];?></td>
+        </tr>
+         <tr class="even pointer">
+        	<td class=""width="40%">有什么建议或意见？</td>
+            <td class="a-left "><?php echo $item['zip'];?></td>
+        </tr>
+         <tr class="even pointer">
+        	<td class=""width="40%">7、请问您对我们的外包装、包装礼盒和赠品体验装是否满意？</td>
+            <td class="a-left "><?php echo $item['phone'];?></td>
+        </tr>
+        <tr class="even pointer">
+        	<td class=""width="40%">有什么建议或意见？</td>
+            <td class="a-left "><?php echo $item['email'];?></td>
+        </tr>
+		<?php //echo $item['website'];?>
+		<?php //echo stripslashes($item['desc']);?>
+        <tr class="even pointer">
+        	<td class=""width="40%">创建日期：</td>
+            <td class="a-left "><?php echo date("F j, Y",strtotime($item['createddt']));?></td>
+        </tr>
+	</table>

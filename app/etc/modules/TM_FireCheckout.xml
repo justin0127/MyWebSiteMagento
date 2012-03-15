@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <modules>
+        <TM_FireCheckout>
+            <active>true</active>
+            <codePool>local</codePool>
+        </TM_FireCheckout>
+    </modules>
+</config>

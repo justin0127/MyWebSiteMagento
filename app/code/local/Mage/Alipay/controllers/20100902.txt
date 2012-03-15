@@ -1,0 +1,181 @@
+2010-09-02 03:36:59
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000228',
+    'trade_no' => '2010090286002847',
+    'buyer_email' => 'huang.xiang@gongzhen.net',
+    'notify_type' => 'trade_status_sync',
+    'gmt_create' => '2010-09-02 11:37:33',
+    'quantity' => '1',
+    'out_trade_no' => '100000228',
+    'notify_time' => '2010-09-02 11:37:34',
+    'seller_id' => '2088201373440815',
+    'body' => '100000228',
+    'trade_status' => 'WAIT_BUYER_PAY',
+    'is_total_fee_adjust' => 'Y',
+    'total_fee' => '38.00',
+    'seller_email' => 'huangyuqiao8@126.com',
+    'price' => '38.00',
+    'buyer_id' => '2088202602368478',
+    'notify_id' => 'f0a1592b3be452ed9639e86ab1630ca904',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '9bf1d0a8c9abb18751d53790aa0df754',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2010-09-02 03:38:59
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000229',
+    'trade_no' => '2010090286014547',
+    'buyer_email' => 'huang.xiang@gongzhen.net',
+    'notify_type' => 'trade_status_sync',
+    'gmt_create' => '2010-09-02 11:39:33',
+    'quantity' => '1',
+    'out_trade_no' => '100000229',
+    'notify_time' => '2010-09-02 11:39:34',
+    'seller_id' => '2088201373440815',
+    'body' => '100000229',
+    'trade_status' => 'WAIT_BUYER_PAY',
+    'is_total_fee_adjust' => 'Y',
+    'total_fee' => '43.00',
+    'seller_email' => 'huangyuqiao8@126.com',
+    'price' => '43.00',
+    'buyer_id' => '2088202602368478',
+    'notify_id' => 'e980e1c400b2ade33ee4fbe9bb1784dc04',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '698317e25a99e04958ff4186bf007c66',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2010-09-02 06:55:52
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000233',
+    'trade_no' => '2010090287487747',
+    'buyer_email' => 'huang.xiang@gongzhen.net',
+    'notify_type' => 'trade_status_sync',
+    'gmt_create' => '2010-09-02 14:56:27',
+    'quantity' => '1',
+    'out_trade_no' => '100000233',
+    'notify_time' => '2010-09-02 14:56:27',
+    'seller_id' => '2088201373440815',
+    'body' => '100000233',
+    'trade_status' => 'WAIT_BUYER_PAY',
+    'is_total_fee_adjust' => 'Y',
+    'total_fee' => '0.01',
+    'seller_email' => 'huangyuqiao8@126.com',
+    'price' => '0.01',
+    'buyer_id' => '2088202602368478',
+    'notify_id' => '9133646eaaa3eb8e6518af8c2ce7bf6304',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '27b4d732a1a24456b12034955916af33',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2010-09-02 06:55:57
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'logistics_type' => 'EXPRESS',
+    'receive_zip' => '325014',
+    'payment_type' => '1',
+    'subject' => '100000233',
+    'logistics_fee' => '0.00',
+    'trade_no' => '2010090287487747',
+    'buyer_email' => 'huang.xiang@gongzhen.net',
+    'notify_type' => 'trade_status_sync',
+    'gmt_create' => '2010-09-02 14:56:27',
+    'quantity' => '1',
+    'logistics_payment' => 'BUYER_PAY',
+    'out_trade_no' => '100000233',
+    'notify_time' => '2010-09-02 14:56:32',
+    'seller_id' => '2088201373440815',
+    'body' => '100000233',
+    'trade_status' => 'WAIT_BUYER_PAY',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'seller_email' => 'huangyuqiao8@126.com',
+    'price' => '0.01',
+    'buyer_id' => '2088202602368478',
+    'gmt_logistics_modify' => '2010-09-02 14:56:27',
+    'receive_phone' => '0577-56565656',
+    'notify_id' => 'e60ad2d7d7f424933af35ed0c0a4dc6504',
+    'receive_name' => '共震',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'aec33ec534c313e8167c9794b3708f7b',
+    'receive_address' => '上海 上海市 杭州',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2010-09-02 06:56:07
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2010-09-02 06:56:07
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'logistics_type' => 'EXPRESS',
+    'receive_zip' => '325014',
+    'payment_type' => '1',
+    'subject' => '100000233',
+    'logistics_fee' => '0.00',
+    'trade_no' => '2010090287487747',
+    'buyer_email' => 'huang.xiang@gongzhen.net',
+    'notify_type' => 'trade_status_sync',
+    'gmt_create' => '2010-09-02 14:56:27',
+    'quantity' => '1',
+    'logistics_payment' => 'BUYER_PAY',
+    'out_trade_no' => '100000233',
+    'notify_time' => '2010-09-02 14:56:41',
+    'seller_id' => '2088201373440815',
+    'body' => '100000233',
+    'trade_status' => 'WAIT_SELLER_SEND_GOODS',
+    'is_total_fee_adjust' => 'N',
+    'gmt_payment' => '2010-09-02 14:56:41',
+    'total_fee' => '0.01',
+    'seller_email' => 'huangyuqiao8@126.com',
+    'price' => '0.01',
+    'buyer_id' => '2088202602368478',
+    'gmt_logistics_modify' => '2010-09-02 14:56:31',
+    'receive_phone' => '0577-56565656',
+    'notify_id' => '62e3e383c8a9a2137cfca6fb4430101204',
+    'receive_name' => '共震',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '63ab57c4383506fca519011966526ccd',
+    'receive_address' => '上海 上海市 杭州',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+

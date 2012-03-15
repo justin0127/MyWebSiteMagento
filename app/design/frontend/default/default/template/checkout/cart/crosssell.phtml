@@ -1,0 +1,226 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Cart cross sell items template
+ *
+ * @see Mage_Checkout_Block_Cart_Crosssell
+ */
+?>
+<?php if($this->getItemCount()): ?>
+<div class="crosssell">
+    <h2><?php echo $this->__('您可能还喜欢以下产品') ?></h2>
+    <ul id="crosssell-products-list">
+    <?php foreach ($this->getItems() as $_item): ?>
+        <li class="item">
+		<div class="itemsImg">
+            <a class="product-image" href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(95,100); ?>" width="95" height="100" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
+			</div>
+            <div class="product-details">
+                <h3 class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></h3>
+                <?php //echo $this->getPriceHtml($_item, true) ?>
+                
+                <!-- price info -->
+                <?php
+                $attributeSetModel = Mage::getModel("eav/entity_attribute_set");
+                $productModel = Mage::getModel('catalog/product');
+                
+                $ProductId = $_item->getId();
+                $_product = $productModel->load($ProductId);
+                
+                $attributeSetModel->load($_product->getAttributeSetId());
+                $attributeSetName  = $attributeSetModel->getAttributeSetName();
+	        
+	        if ($_product->getTypeId() == 'simple') { ?>
+	        	
+				<!-- 单产品的价格输出和容量 -->
+				<div class="Cross-Sale-Simp">
+				<?php //if ($_product->getCapacity()) { ?>
+					<!--<div class="Cross-Sale-Simp-Capacity"><?php //echo $_product->getCapacity().'-' ?></div>-->
+				<?php //} ?>
+					<?php echo $this->getPriceHtml($_item, true) ?>
+				
+				</div>
+				<!-- 结束输出 -->
+		<?php }
+	        
+	        if ($_product->getTypeId() == 'configurable') {
+			//for 彩妆系列
+			if ($attributeSetName == '彩妆系列') {
+			$PriceValueArr = array();
+				$_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product);
+				foreach($_attributes as $_attribute) {
+					//echo $_attribute->getAttributeId().'<br>';
+					if($_attribute->getAttributeId() == '80') {
+						$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+						$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+						$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+						$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'color'); //call
+						$allPoints = $attribute->getSource()->getAllOptions(true, true);
+						$link = mysql_connect('localhost', $username, $password);
+						if (!$link) {
+							die('Not connected : ' . mysql_error());
+						}//end if
+						$db_selected = mysql_select_db($dbname, $link);
+						if (!$db_selected) {
+							die ('Can\'t use foo : ' . mysql_error());
+						}else{
+							$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='80'",
+							mysql_real_escape_string($ProductId));
+							$result = mysql_query($query); 
+							if (!$result) {
+								$message = 'Invalid query: ' . mysql_error() . "\n";
+								$message .= 'Whole query: ' . $query;
+								die($message);
+							}//end if 
+							while ($row = mysql_fetch_assoc($result)) {
+								$ProAttId = $row['product_super_attribute_id'];
+							}
+							$product_super_attribute_id = $ProAttId;
+					
+							foreach ($allPoints as $point) {
+								$pointlabel=$point['label'];
+								$pointid=$point['value']; 
+								if($pointlabel != NULL) {
+									$value_index = $point['value'];
+								
+									$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+									mysql_real_escape_string($product_super_attribute_id),
+									mysql_real_escape_string($value_index));
+									$result = mysql_query($query); 
+									if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+									}//end if 
+									while ($row = mysql_fetch_assoc($result)) {
+										$PriceValueArr[] = $row['pricing_value'];
+									}
+								}
+							}
+						}
+						mysql_close($link);
+					}
+				}
+				$PriceValue = max($PriceValueArr);
+				$PriceValue = number_format($PriceValue, 2, '.', '');
+				//echo $PriceValue;
+			?>
+			<div class="crosssell-caizhuang-price"><?php echo '￥'.$PriceValue; ?></div>
+			<?php	
+			}
+			
+			//for 香水系列
+			if ($attributeSetName == '香水系列') {
+			$_PriceValueArr = array();
+				$_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product);
+				foreach($_attributes as $_attribute) {
+					//echo $_attribute->getAttributeId();
+					if($_attribute->getAttributeId() == '145') {
+						$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+						$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+						$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+						$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'rongliang'); //call
+						$allPoints = $attribute->getSource()->getAllOptions(true, true);
+						$link = mysql_connect('localhost', $username, $password);
+						if (!$link) {
+							die('Not connected : ' . mysql_error());
+						}//end if
+						$db_selected = mysql_select_db($dbname, $link);
+						if (!$db_selected) {
+							die ('Can\'t use foo : ' . mysql_error());
+						}else{
+							$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='145'",
+							mysql_real_escape_string($ProductId));
+							$result = mysql_query($query); 
+							if (!$result) {
+								$message = 'Invalid query: ' . mysql_error() . "\n";
+								$message .= 'Whole query: ' . $query;
+								die($message);
+							}//end if 
+							while ($row = mysql_fetch_assoc($result)) {
+								$ProAttId = $row['product_super_attribute_id'];
+							}
+							$product_super_attribute_id = $ProAttId;
+					
+							foreach ($allPoints as $point) {
+								$pointlabel=$point['label'];
+								$pointid=$point['value']; 
+								if($pointlabel != NULL) {
+									$value_index = $point['value'];
+								
+									$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+									mysql_real_escape_string($product_super_attribute_id),
+									mysql_real_escape_string($value_index));
+									$result = mysql_query($query); 
+									if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+									}//end if 
+									while ($row = mysql_fetch_assoc($result)) {
+										$_PriceValueArr[$pointlabel] = $row['pricing_value'];
+									}
+								}
+							}
+						}
+						mysql_close($link);
+					}
+				}
+				$_PriceValue = min($_PriceValueArr);
+				$_PriceValue = number_format($_PriceValue, 2, '.', '');
+				foreach ($_PriceValueArr as $key => $value) {
+					if ($value == $_PriceValue) {
+						$showlabel = $key;
+					}
+				}
+				//echo $_PriceValue;
+				//$showlabel.'- ￥'.$_PriceValue;
+			?>
+			<div class="crosssell-xiangshui-price"><?php echo '￥'.$_PriceValue ?></div>
+			<?php
+			}
+		}
+                ?>
+                <!-- end price info -->
+                
+                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_item) ?>')"><span><span><?php echo $this->__('') ?></span></span></button>
+               <!-- <ul class="add-to-links">
+                    <?php /*if ($this->helper('wishlist')->isAllow()) : ?>
+                        <li><a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                    <?php endif; ?>
+                    <?php if($_compareUrl=$this->getAddToCompareUrl($_item)): ?>
+                        <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                    <?php endif;*/ ?>
+                </ul>-->
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+    <script type="text/javascript">decorateList('crosssell-products-list', 'none-recursive')</script>
+</div>
+<?php endif; ?>

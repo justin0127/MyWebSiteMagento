@@ -1,0 +1,200 @@
+<form id="co-shipping-method-form" action="">
+	<div class="left-shipping-method" >
+    <div id="checkout-shipping-method-load">
+        <?php //echo $this->getChildHtml('available') ?>
+		<div class="left">运费：<input type="radio" name="1" id="1001">￥10元</input></div>
+    </div>
+	<!-- Add Package Class -->
+
+
+	<?php $_helper = $this->helper('catalog/output'); ?>
+	<?php
+	$_productCollection_1 = Mage::getModel('catalog/product')->getCollection()
+				->addCategoryFilter(Mage::getModel('catalog/category')->load(296),true)
+				->addAttributeToSelect('*')
+				->addAttributeToSort('entity_id', 'DESC');
+
+	$_productCollection_1->joinField(
+      'stock_status',
+      'cataloginventory/stock_status',
+      'stock_status',
+      'product_id=entity_id', array(
+        'stock_status' => Mage_CatalogInventory_Model_Stock_Status::STATUS_IN_STOCK,
+        'website_id' => Mage::app()->getWebsite()->getWebsiteId(),
+      )
+    );			
+	
+	
+	
+				$_productCollection_1->setPageSize(2)
+				->setCurPage(1)
+				->load();
+	
+	Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_1);
+	Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_1);
+	
+	$_productCollection_2 = Mage::getModel('catalog/product')->getCollection()
+				->addCategoryFilter(Mage::getModel('catalog/category')->load(304),true)
+				->addAttributeToSelect('*')
+				->addAttributeToSort('entity_id', 'DESC');
+	$_productCollection_2->joinField(
+      'stock_status',
+      'cataloginventory/stock_status',
+      'stock_status',
+      'product_id=entity_id', array(
+        'stock_status' => Mage_CatalogInventory_Model_Stock_Status::STATUS_IN_STOCK,
+        'website_id' => Mage::app()->getWebsite()->getWebsiteId(),
+      )
+    );			
+				
+				$_productCollection_2->setPageSize(2)
+				->setCurPage(1)
+				->load();
+	//var_dump($_productCollection_2);
+	Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_2);
+	Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_2);
+	#var_dump(count($_productCollection_1));    //2
+	?>
+
+	<script type="text/javascript">
+	function showinfo(status,id){
+	var div_id = "opc-img"+id;
+	if(status == '1'){
+		document.getElementById(div_id).style.display = 'block';
+	}else{
+		document.getElementById(div_id).style.display = 'none';
+	}
+}
+</script>
+	
+	<div class="pack-time">
+	   <div><strong>选择包装类型</strong></div>
+		   <ul>
+			   <!--<li><input type="radio" checked="checked" id='package1' value="normal" name="package"/>
+					 <label for="package1">尊享心意礼盒(普通版)</label>
+			   </li>
+			   <li><input type="radio" id='package2' value="luxury" name="package"/>
+					 <label for="package2">尊享心意礼盒(限量版)</label>
+			   </li>-->
+			   <?php
+			   $PackageArr = array();
+			   $i=1;
+			   foreach ($_productCollection_1 as $_product) {
+			   
+			   //var_dump($_product->getName());
+			   $PackageArr[] = $_product->getSku();
+			   
+			   ?>
+			   <li>
+			   <input type="radio" checked="<?php if($_product->getSku() == 'package1') { echo 'checked'; } ?>" id="<?php echo $_product->getSku();  ?>" value="<?php echo $_product->getId();  ?>" name="package"/>
+			   <label for="<?php echo $_product->getSku();  ?>" id="opc-lb<?php echo $i ?>"  > <?php echo $_product->getName();  ?></label>
+			    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(50); ?>" width="50" height="50" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'image'), null, true) ?>" onmouseover="showinfo('1','<?php echo $i;?>');" onmouseout="showinfo('2','<?php echo $i;?>');" />
+			   <div id="opc-img<?php echo $i?>" style="display:none;" class="opc-package-img">
+			    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150); ?>" width="150" height="150" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+			   </div>
+			   </li>
+			   <?php
+			   $i++;
+			   }
+			   $PackageList = implode(',', $PackageArr);
+			   ?>
+							   
+		   </ul>
+		    <div class="packageinfo"><input type="hidden" id='packageinfo' value="<?php echo $PackageList;  ?>" name="packageinfo"/></div>
+	</div>
+	
+	<div class="pack-time">
+	   <div><strong>开业特享礼遇</strong></div>
+		   <ul>
+			   <!--<li><input type="radio" checked="checked" id='package1' value="normal" name="package"/>
+					 <label for="package1">尊享心意礼盒(普通版)</label>
+			   </li>
+			   <li><input type="radio" id='package2' value="luxury" name="package"/>
+					 <label for="package2">尊享心意礼盒(限量版)</label>
+			   </li>-->
+			   <?php
+			   $SampleArr = array();
+			   $i=1;
+			   foreach ($_productCollection_2 as $_product) {
+			   
+			   //var_dump($_product->getName());
+			   $SampleArr[] = $_product->getSku();
+			  // var_dump($SampleArr);
+			   ?>
+			   <li>
+			   <input type="radio" checked="<?php if($_product->getSku() == 'package1') { echo 'checked'; } ?>" id="<?php echo $_product->getSku();  ?>" value="<?php echo $_product->getId();  ?>" name="sample"/>
+			   <label for="<?php echo $_product->getSku();  ?>" id="opc-lb<?php echo $i ?>"  > <?php echo $_product->getName();  ?></label>
+			    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(50); ?>" width="50" height="50" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'image'), null, true) ?>"  />
+				<!--
+			   <div id="opc-img<?php //echo $i?>" style="display:none;" class="opc-package-img">
+			    <img src="<?php //echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150); ?>" width="150" height="150" alt="<?php //echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+			   </div>-->
+			   </li>
+			   <?php
+			   $i++;
+			   }
+			   $SampleList = implode(',', $SampleArr);
+			   ?>
+							   
+		   </ul>
+		    <div class="packageinfo"><input type="hidden" id='sampleinfo' value="<?php echo $SampleList;  ?>" name="sampleinfo"/></div>
+	</div>
+	
+	
+	
+	<!-- End Add -->
+	</div>
+
+	
+<div class="shipping-time">
+       <div><strong>选择送货时间</strong></div>
+       <ul>
+       <li><input type="radio" checked="checked" id='time1' value="all" name="shipping_time"/>
+             <label for="time1">工作日、双休日与假日均可送货</label>
+       </li>
+       <li><input type="radio" id='time2' value="holidays" name="shipping_time"/>
+             <label for="time2">仅双休日、假日送货(工作日不用送货)</label>
+       </li>
+       <li><input type="radio"  id='time3' value="workdays" name="shipping_time"/>
+             <label for="time3">仅工作日送货(双休日、假日不用送货)</label>
+             <div class="shipping-tips" style="padding-left:16px;color:#999;">写字楼/商用地址客户选择</div>
+       </li> 
+       <li><input type="radio"  id='time4' value="nights" name="shipping_time"/>
+	   
+             <label for="time4">学校地址(该地址白天没人，请尽量安排其他时间送货)</label>
+             <div class="shipping-tips" style="padding-left:16px;color:#999;">特别安排可能超出预算送货天数</div>
+       </li>                      
+       </ul>
+</div>
+<div class="clearer"></div>
+    
+    
+    <script type="text/javascript">
+    //<![CDATA[
+        var shippingMethod = new ShippingMethod('co-shipping-method-form', "<?php echo $this->getUrl('checkout/onepage/saveShippingMethod') ?>");
+        jQuery("input[name='shipping_time']").change(
+
+function()
+{
+
+
+if (jQuery("input[name='shipping_time']:checked").val()){
+         $('deliveryTime').value = jQuery("input[name='shipping_time']:checked").val();
+}
+}
+);   
+        
+        
+    //]]>
+    </script>
+    <div id="onepage-checkout-shipping-method-additional-load">
+        <?php echo $this->getChildHtml('additional') ?>
+    </div>
+    <div class="buttons-set" id="shipping-method-buttons-container">
+        <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+        <button type="button" class="button" onclick="shippingMethod.save()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+        <span id="shipping-method-please-wait" class="please-wait" style="display:none;">
+            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
+        </span>
+    </div>
+</form>

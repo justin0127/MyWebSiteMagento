@@ -1,0 +1,46 @@
+<?php if (!empty($items)) : ?>
+<div class="block block-cart">
+
+    <div class="block-title">
+        <strong style="background-image:none;"><span><?php echo $this->__('Recent Reviews') ?></span></strong>
+    </div>
+    
+    <div class="block-content">
+    
+        <ol class="mini-products-list"> 
+    
+        <?php foreach($items as $item): ?>
+        <li class="item">
+        
+        <a href="<?php echo $item->getUrl()?>"><?php echo $this->htmlEscape($item->getName())?></a>
+        
+        <?php if (count($item->getRatingVotes())): ?>
+            <table class="ratings-table" cellspacing="0">
+            <tbody>
+                <?php foreach ($item->getRatingVotes() as $_vote): ?>
+                <tr>
+                    <td>
+                        <div class="rating-box">
+                            <div class="rating" style="width: <?php echo $_vote->getPercent() ?>%;"></div>
+                        </div>                        
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+            </table>
+        <?php else: ?>
+        <br />
+        <?php endif;?>
+        
+        <strong><?php echo $this->htmlEscape($item->getTitle())?></strong>.<br/>
+        <?php echo $this->htmlEscape($item->getDetail())?>
+        <br />
+        <em>(<?php echo $this->__('Review by %s', $this->htmlEscape($item->getNickname()))?>)</em>
+
+        </li>
+        <?php endforeach; ?>
+        
+        </ol>
+    </div>
+</div>
+<?php endif; ?> 

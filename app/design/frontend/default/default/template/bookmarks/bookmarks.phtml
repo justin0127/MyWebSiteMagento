@@ -1,0 +1,11 @@
+<?php
+$bookmarks = $this->getBookmarks();
+?>
+
+<div class="social-bookmarking">
+
+<?php foreach($bookmarks as $bookmark): ?>
+	<a href="<?php echo $bookmark->getBookmarkUrl() ?>" <?php echo $bookmark->getBookmarkTarget() ?> title="<?php echo $bookmark->getName() ?>"><?php echo $bookmark->getBookmarkImage() ?></a> 
+<?php endforeach; ?>
+
+</div>

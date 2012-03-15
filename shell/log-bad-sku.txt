@@ -1,0 +1,74 @@
+(OrderInformation){
+   OnlineOrderID = "100000729"
+   DateOfOrder = "2011-07-28"
+   OrderSource = "10"
+   OnlineCustomerID = "0879700024"
+   RetailAmountOfOrder = "1400"
+   ActualAmountOfOrder = "1400"
+   DiscountAmountOfOrder = "0"
+   Payment = 0
+   PaymentChannel = 99
+   PaymentCost = "0"
+   TotalProductAmount = "1400"
+   InvoiceTitle = "0"
+   ShippingCost = "0"
+   UsedPoints = 0
+   Package = "Normal"
+   PackageCost = "0"
+   PromotionCode = "0"
+   Remark = "0--Yes"
+   UsedItemPoints = 0
+   IsPrint = "0"
+   GiftCardFrom = "0"
+   GiftCardTo = "0"
+   GiftCardContent = "0"
+ } (ArrayOfOrderItemsInformation){
+   OrderItemsInformation[] = 
+      (OrderItemsInformation){
+         OnlineOrderID = "100000729"
+         ProductID = "152102"
+         ProductType = 0
+         Quantity = 2
+         BasePrice = "1400"
+         Price = "700"
+         UsedItemPoints = 0
+      },
+      (OrderItemsInformation){
+         OnlineOrderID = "100000729"
+         ProductID = "150001EM"
+         ProductType = 0
+         Quantity = 1
+         BasePrice = "0"
+         Price = "0"
+         UsedItemPoints = 0
+      },
+      (OrderItemsInformation){
+         OnlineOrderID = "100000729"
+         ProductID = "6B1028"
+         ProductType = 0
+         Quantity = 1
+         BasePrice = "0"
+         Price = "0"
+         UsedItemPoints = 0
+      },
+      (OrderItemsInformation){
+         OnlineOrderID = "100000729"
+         ProductID = "110014MB"
+         ProductType = 0
+         Quantity = 1
+         BasePrice = "0"
+         Price = "0"
+         UsedItemPoints = 0
+      },
+ } (DeliveryInformation){
+   OnlineOrderID = "100000729"
+   DeliveryType = "EMS_COD1"
+   ReceiverName = "治华胡"
+   ReceiverProvince = "上海"
+   ReceiverCity = "上海市徐汇区"
+   ReceiverAddress = "罗秀路162号老大楼4楼"
+   ReceiverZip = "200000"
+   ReceiverAreaCode = "200000"
+   ReceiverTelePhone = ""
+   ReceiverMobile = "13918879955"
+ } 7

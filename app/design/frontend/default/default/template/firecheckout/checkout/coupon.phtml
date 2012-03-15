@@ -1,0 +1,41 @@
+<div id="coupon-discount" class="firecheckout-section">
+    <div class="block-title" id="billing-coupon-title"><span><?php echo $this->__('Discount Codes') ?></span></div>
+	<ul id="billing-coupon-content">
+    <div class="discount-form" id="discount-code">
+        <?php echo $this->getMessagesBlock()->getGroupedHtml(); ?>
+		 <div class="fire-checkout-coupon">
+         <label for="coupon-code"><?php echo $this->__('恭喜，您可以在此交易中使用优惠券！') ?></label>
+		 </div>
+		 <div class="fire-checkout-coupon">
+		 <label for="coupon-code"><?php echo $this->__('请在下面框中填入尊享优惠券代码，每张订单只能使用一张优惠券') ?></label>
+		 </div>
+        <div class="input-box">
+            <input type="hidden" name="coupon[remove]" id="coupon-remove" value="0" />
+            <input class="input-text" id="coupon-code" name="coupon[code]" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" />
+            <?php if(strlen($this->getCouponCode())): ?>
+                &nbsp; <button type="button" title="<?php echo $this->__('Cancel Coupon') ?>" id="coupon-cancel" class="button" value="<?php echo $this->__('Cancel Coupon') ?>"><span><span><?php echo $this->__('Cancel Coupon') ?></span></span></button>
+            <?php endif;?>
+        </div>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+    $('coupon-code').observe('change', function(e) {
+        if (!$(this).value.length) {
+            $('coupon-remove').value = "1";
+        } else {
+            $('coupon-remove').value = "0";
+        }
+        checkout.update({
+            'review': 1
+        });
+    });
+    $('coupon-cancel') && $('coupon-cancel').observe('click', function(e) {
+        $('coupon-remove').value = "1";
+        checkout.update({
+            'review': 1
+        });
+    });
+    //]]>
+    </script>
+	</ul>
+</div>

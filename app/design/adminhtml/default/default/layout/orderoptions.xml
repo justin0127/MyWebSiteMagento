@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <orderoptions_adminhtml_orderoptions_index>
+        <reference name="content">
+            <block type="orderoptions/adminhtml_orderoptions" name="orderoptions" />
+        </reference>
+    </orderoptions_adminhtml_orderoptions_index>
+    
+     <adminhtml_sales_order_view>
+        <reference name="order_info">
+                <action method="setTemplate"><template>orderoptions/info.phtml</template></action>
+        </reference>       
+      </adminhtml_sales_order_view>
+</layout>

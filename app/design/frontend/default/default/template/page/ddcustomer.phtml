@@ -1,0 +1,105 @@
+<h2>Customer Points</h2>
+<?php
+//set Ecard function
+function setECard($customer_id) {
+	$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+	$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+	$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+		
+	Mage::app();
+	$link = mysql_connect('localhost', $username, $password);
+	if (!$link) {
+		die('Not connected : ' . mysql_error());
+	}//end if
+	$db_selected = mysql_select_db($dbname, $link);
+	if (!$db_selected) {
+		die ('Can\'t use foo : ' . mysql_error());
+	}else{
+		mysql_query("INSERT INTO arvato_ecard (customerid) VALUES('$customer_id') ") or die(mysql_error()); 
+	}
+
+	$ECardNum = mysql_insert_id();
+
+	mysql_close($link);
+	return $ECardNum;
+}
+
+
+//send email function
+function sendEmail($customer, $title, $body) {
+			$SoapClient = new SoapClient("http://app.focussend.com/webservice/FocusSendWebService.asmx?WSDL",array('trace' => 1));
+			$FocusUser   = new StdClass;
+			$FocusUser->Email="arvatoservices@bertelsmann.com.cn";
+			$FocusUser->Password=sha1("EDM$%^456"); 
+
+			$FocusEmail=new StdClass;
+			$FocusEmail->Body= $body; 
+			$FocusEmail->IsBodyHtml=true;
+
+			$FocusTask=new StdClass;
+			$FocusTask->TaskName="batch send php";
+			$FocusTask->Subject="first subject";
+			$FocusTask->SenderName="abc";
+			$FocusTask->SenderEmail="abc@focussend.com";
+			$FocusTask->ReplyName="reply";
+			$FocusTask->ReplyEmail="zcz_wn@163.com";
+			$FocusTask->SendDate=date("Y-m-d\TH-m-s");
+			//$FocusTask->SendDate="2010-06-04T00:00:00";    
+			$subject= $title;
+
+			//$FocusReceiver=new StdClass;
+			$FocusReceiver->Email=$customer->getEmail();
+
+			//send one email
+			$result= $SoapClient->SendOne(array("user"=>$FocusUser,"email"=>$FocusEmail,"subject"=>$subject,"receiver"=>$FocusReceiver));
+    }
+
+
+$yesterday = date('Y-m-d',strtotime('-1 days')).' 22:00:00';
+$today = date('Y-m-d').' 22:00:00';
+
+$customers = Mage::getModel('customer/customer')->getCollection()
+			->addAttributeToSelect('*')
+			->addFieldToFilter('updated_at', array("from" =>  $yesterday, "to" =>  $today, "datetime" => true));//获取当天晚上10点至前一天晚上10天更新过的所有用户
+var_dump($customers);			
+foreach($customers as $customer){
+	//var_dump($customer->getId());
+	$PosId = $customer->getPosId();
+	$str = substr($PosId, 0, 5);
+	if(($str == '08797')||($str == '08798')) {   //确定posid开头5位数
+		//var_dump($customer->getPosId());
+		if(!$customer->getECard()) {   //用户没有e card
+			$available_points = $customer->getAvailablePoints();
+			$pending_points = $customer->getPendingPoints();
+			$total_points = intval($available_points) + intval($pending_points);   //save as int
+			if($total_points > 0) {   //总积分大于0
+				//set ecard
+				$_ECardNum = setECard($customer->getId());
+				$_ECardNum = strval($_ECardNum);
+				$ECardNum = 'E'.str_pad($_ECardNum,5, "0",STR_PAD_LEFT);
+				$customer->setECard($ECardNum);
+				$customer->save();
+				//send email
+				
+				/** start Email content **/
+				
+				  $header_txt = file_get_contents("/var/www/app/design/frontend/default/default/template/edm/edm_header.html");
+				  $content_txt = file_get_contents("/var/www/app/design/frontend/default/default/template/edm/edm_ecard.html");
+				  $footer_txt = file_get_contents("/var/www/app/design/frontend/default/default/template/edm/edm_footer.html");
+				  
+				  $content_txt = str_ireplace ('{{$customer.name}}',$customer->getFirstname().$customer->getLastname(),$content_txt);
+				  $content_txt = str_ireplace ('{{$customer.rank}}',$customer->getRank(),$content_txt);
+				  $content_txt = str_ireplace ('{{$customer.ecard}}',$customer->getECard(),$content_txt);
+				  
+				  $content_full = $header_txt.$content_txt.$footer_txt;
+				  
+				/** End **/
+				
+				$newSubject="恭喜您成为【希思黎官方网站暨网上商城】会员";
+				$newBody=$content_full;
+				sendEmail($customer,$newSubject,$newBody);
+			}
+		}
+	}
+}		
+?>

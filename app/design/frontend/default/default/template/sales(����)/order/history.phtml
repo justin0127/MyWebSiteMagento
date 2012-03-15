@@ -1,0 +1,380 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_orders = $this->getOrders(); ?>
+<div class="page-title">
+    <h1><?php echo $this->__('My Orders') ?></h1>
+</div>
+<?php //echo $this->getPagerHtml(); ?>
+
+<form action="" method="get" id="search_form">
+
+        <script type="text/javascript">
+        var Form = new VarienForm('search_form');
+            Form.submit = function(){
+                            this.form.submit();
+            }.bind(Form);
+            
+            function setHidden(date){
+            $('date').value = date;
+            //alert(type);
+            }    
+	    
+	    function Choose(time) {
+	    $('time').value = time;
+	    }
+	    
+	    function go(num) {
+	    $('page').value = num;
+	    //alert($('page').value);
+	    }
+        </script>
+        
+<!-- show order by -->
+<h1><?php echo $this->__('My Orders') ?></h1>
+<ul>
+<?php if(!$_GET) { ?>
+<li style="float:left;"><b><?php echo $this->__('按时间显示订单') ?></b></li>
+<?php }elseif(($_GET['time'] == "all")||($_GET['time'] == NULL)) { ?>
+<li style="float:left;"><b><?php echo $this->__('按时间显示订单') ?></b></li>
+<?php }else{ ?>
+<li id="all" style="float:left; cursor: pointer;" onclick='Choose(this.id);Form.submit()'><?php echo $this->__('按时间显示订单') ?></li>
+<?php } ?>
+<li style="float:left; padding-left:5px;">|</li>
+<?php if($_GET['time'] != "wait") { ?>
+<li id="wait" style="float:left; padding-left:5px; cursor: pointer;" onclick='Choose(this.id);Form.submit()'><?php echo $this->__('未处理或处理中订单') ?></li>
+<?php }else{ ?>
+<li style="float:left; padding-left:5px;"><b><?php echo $this->__('未处理或处理中订单') ?></b></li>
+<?php } ?>
+</ul>
+<br />
+<!-- end show order by -->
+
+<!-- order num -->
+<div>
+<?php echo $this->__('显示订单 : '); ?>
+<select name="search-order" onchange="setHidden(this.value)">
+        <?php if($_GET['date'] == '1') { ?>
+        <option value="0">全部订单</option>
+	<option value="1" selected="selected">最近一个月的订单</option>
+	<option value="6">最近六个月的订单</option>
+	<?php }elseif($_GET['date'] == '6'){ ?>
+	<option value="0">全部订单</option>
+	<option value="1">最近一个月的订单</option>
+	<option value="6" selected="selected">最近六个月的订单</option>
+	<?php  }else{ ?>
+	<option value="0" selected="selected">全部订单</option>
+	<option value="1">最近一个月的订单</option>
+	<option value="6">最近六个月的订单</option
+	<?php } ?>
+</select>
+<?php if($_GET['date'] != '1') { ?>
+<input type="hidden" name="date" value="<?php echo $_GET['date'] ?>" id="date"/>
+<?php }else{ ?>
+<input type="hidden" name="date" value="1" id="date"/>
+<?php } ?>
+
+<?php if($_GET['time'] != '0') { ?>
+<input type="hidden" name="time" value="<?php echo $_GET['time'] ?>" id="time"/>
+<?php }else{ ?>
+<input type="hidden" name="time" value="0" id="time"/>
+<?php } ?>
+
+<button type="button order-histroy-sumbit" title="<?php echo $this->__('查询') ?>" onclick="Form.submit()"><span><?php echo $this->__('查询') ?></span></button>
+<span class="order-desc">刚提交的订单可能无法显示，请耐心等待系统预处理完成</span>
+
+</div>
+<!-- end order num -->
+
+<!-- search funvtion -->
+<?php
+$CurrentDate = date("Y-m-d", Mage::getModel('core/date')->timestamp(time()));
+//echo $CurrentDate;   //2011-05-12
+$CurrentDate = substr($CurrentDate, 2);
+//$CurrentDate = str_replace('-0', '-', $CurrentDate);
+$CurrentDate = str_replace('-', '', $CurrentDate);
+//echo $CurrentDate;
+?>
+<!-- end search function -->
+
+<?php if($_orders->getSize()): ?>
+
+<!-- show search orders -->
+<?php
+if($_GET['time'] != 'wait') {
+if(($_GET['date'] == '1')||($_GET['date'] == '6')) {
+	$searchkey = $_GET['date'];
+	$target = date("Y-m-d", mktime(0,0,0,date("m")-$searchkey,date("d"),date("Y")));
+	//$target = str_replace('-0', '-', $target);
+	$target = substr_replace($target, '', 0, 2);
+	$target = str_replace('-', '', $target);
+	foreach ($_orders as $_order) {
+	$orderdate = $this->formatDate($_order->getCreatedAtStoreDate());
+	//echo $orderdate;
+	//$mf = strpos($orderdate,"-");
+	$ml = strrpos($orderdate,"-");
+	if($ml < 5){
+	$orderdate = substr_replace($orderdate, "-0", 2, 1);
+	}
+	//echo $orderdate;
+	$max = strlen($orderdate);
+	//echo $max;
+	if($max < 8) {
+	$orderdate = substr_replace($orderdate, "-0", 5, 1);
+	}
+	//echo $orderdate;
+	$orderdate = str_replace('-', '', $orderdate);
+		if (($orderdate >= $target)&&($orderdate <= $CurrentDate)){
+		$results[] = $_order;
+		}
+		//echo $target.'<='.$orderdate.'<='.$CurrentDate.'<br>';
+		//echo $_order->getCreatedAtStoreDate(); 
+		//exit;
+	}
+	
+	$_orders = $results;
+}   //end date
+}else{
+foreach ($_orders as $_order) {
+	if($_order->getStatusLabel() != '完成') {
+		$result[] = $_order;
+	}
+	$_orders = $result;
+}
+if(($_GET['date'] == '1')||($_GET['date'] == '6')) {
+	$searchkey = $_GET['date'];
+	$target = date("Y-m-d", mktime(0,0,0,date("m")-$searchkey,date("d"),date("Y")));
+	//$target = str_replace('-0', '-', $target);
+	$target = substr_replace($target, '', 0, 2);
+	$target = str_replace('-', '', $target);
+	foreach ($_orders as $_order) {
+	$orderdate = $this->formatDate($_order->getCreatedAtStoreDate());
+	//echo $orderdate;
+	//$mf = strpos($orderdate,"-");
+	$ml = strrpos($orderdate,"-");
+	if($ml < 5){
+	$orderdate = substr_replace($orderdate, "-0", 2, 1);
+	}
+	//echo $orderdate;
+	$max = strlen($orderdate);
+	//echo $max;
+	if($max < 8) {
+	$orderdate = substr_replace($orderdate, "-0", 5, 1);
+	}
+	//echo $orderdate;
+	$orderdate = str_replace('-', '', $orderdate);
+		if (($orderdate >= $target)&&($orderdate <= $CurrentDate)){
+		$results[] = $_order;
+		}
+		//echo $target.'<='.$orderdate.'<='.$CurrentDate.'<br>';
+		//echo $_order->getCreatedAtStoreDate(); 
+		//exit;
+	}
+	
+	$_orders = $results;
+}   //end date
+}//end time
+?>
+<!-- end search all orders -->
+
+<table class="data-table" id="my-orders-table">
+    <col width="1" />
+    <col width="1" />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Order #') ?></th>
+            <th><?php echo $this->__('Date') ?></th>
+            <th><?php echo $this->__('Ship To') ?></th>
+            <!--<th><?php //echo $this->__('商品数量') ?></th>-->
+            <th><span class="nobr"><?php echo $this->__('Order Total') ?></span></th>
+            <th><span class="nobr"><?php echo $this->__('Order Status') ?></span></th>
+            <th style="text-align: center;"><span><?php echo $this->__('操作') ?></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php $i = 1; ?>
+        <?php foreach ($_orders as $_order): ?>
+        <?php
+        if ($_GET['page']) {
+		$Limit = $_GET['page']*10;
+		}else{
+		$Limit = 10;
+        }
+        $Min = $Limit-9;
+        //echo $Limit;
+        //echo $Min;
+        if(($Min <= $i)&&( $i <= $Limit)) {
+        ?>
+        <tr>
+            <td><?php echo $_order->getRealOrderId() ?></td>
+            <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
+            <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+            <!--<td>
+            <?php
+            //$products = Mage::getResourceModel('sales/order_item_collection')->setOrderFilter($_order->getId());
+            //echo count($products);
+            ?>
+            </td>-->
+            <td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+            <td><em>
+            <?php //echo $_order->getStatusLabel() ?>
+            <?php $paymentmethod=$_order->getPayment()->getMethodInstance()->getCode();?>
+                    <?php //echo $paymentmethod ?>
+					<?php if($_order->getStatus()=='pending'){ ?>
+						<?php if ($paymentmethod == 'cashondelivery') { ?>
+						<?php echo '等待受理' ?>
+						<?php } ?>
+						<?php if ($paymentmethod == 'alipay_payment') { ?>
+						<?php echo '等待支付' ?>
+						<?php } ?>
+						<?php if ($paymentmethod == 'chinapay_payment') { ?>
+						<?php echo '支付失败' ?>
+						<?php } ?>
+					<?php }else{ ?>
+						<?php echo $this->__($_order->getStatus()); ?>
+					<?php } ?>
+            </em></td>
+            
+            
+            <td class="a-center">
+                <!-- view -->
+                <span class="nobr"><a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View Order') ?></a>
+                    <?php /*<span class="separator">|</span><a href="<?php echo $this->getTrackUrl($_order) ?>"><?php echo $this->__('Track Order') ?></a>&nbsp;*/ ?>
+                
+                <!-- payagain -->
+                <?php $paymentmethod=$_order->getPayment()->getMethodInstance()->getCode();?>
+                <?php if($_order->getStatus()=='pending'):?>
+                  <?php if($paymentmethod=='alipay_payment'):?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('alipay/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php elseif($paymentmethod=='tenpay_payment'): ?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('tenpay/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php elseif($paymentmethod=='chinabank_payment'): ?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('chinabank/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php endif; ?> 
+                <?php elseif($_order->getStatus()=='wait_buyer_pay'): ?>
+                  <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="https://www.alipay.com/user/login.htm"><?php echo $this->__('Pay') ?></a>
+                <?php endif; ?>
+                
+                
+                <!-- reorder -->
+                <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
+                <span class="separator">|</span> <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-reorder"><?php echo $this->__('Reorder') ?></a>
+                <?php endif ?>
+                </span>
+            </td>
+        </tr>
+        <?php } ?>
+        <?php $i++; ?>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<div class="order-toolbar">
+<?php //echo count($_orders); ?>
+<input type="hidden" name="page" value="<?php echo $_GET['page'] ?>" id="page"/>
+<?php
+$BaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+$CurrentUrl = $this->helper('core/url')->getCurrentUrl();
+//echo $CurrentUrl;
+$size = count($_orders);  //get the size of orders;
+$PageSize = 10;   //set items pepage;
+$TotalPage = ceil($size/$PageSize);   //pages total
+
+
+
+?>
+<!-- home button -->
+<?php if(($_GET['page'] != 1) && ($_GET['page'] != NULL)){ ?>
+<span id="1" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('首页') ?></span>
+<?php }else{ ?>
+<span class="history-home">首页</span>
+<?php } ?>
+
+<!-- Previous -->
+<?php
+if (($_GET['page'] != 1) && ($_GET['page'] != NULL)) {
+$PageNum1 = $_GET['page']-1;
+}else{
+$PageNum1 = 1;
+}
+if(($_GET['page'] != 1) && ($_GET['page'] != NULL)){
+?>
+<span id="<?php echo $PageNum1 ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 上一页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 上一页</span>
+<?php } ?>
+
+<!-- Next -->
+<?php
+if ($_GET['page']) {
+$PageNum2 = $_GET['page']+1;
+}else{
+$PageNum2 = 2;
+}
+if($_GET['page'] != $TotalPage){
+?>
+<span id="<?php echo $PageNum2 ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 下一页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 下一页</span>
+<?php } ?>
+
+<!-- Last -->
+<?php
+if($_GET['page'] != $TotalPage){
+?>
+<span id="<?php echo $TotalPage ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 尾页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 尾页</span>
+<?php } ?>
+
+<!-- Total Page -->
+<span class="total-page">共<?php echo $TotalPage; ?>页</span>
+
+
+<!-- important -->
+<!--<br />
+magento calls pager limit when gets order history. i have disabled the limit in "code/core/mage/page/block/html/pager.php", if there is something wrong with the other pages, plese change it back in line 41.-->
+
+</div>
+
+<script type="text/javascript">decorateTable('my-orders-table');</script>
+<?php //echo $this->getPagerHtml(); ?>
+<?php else: ?>
+    <p><?php echo $this->__('You have placed no orders.'); ?></p>
+<?php endif ?>
+</form>

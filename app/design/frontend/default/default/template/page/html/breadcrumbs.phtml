@@ -1,0 +1,282 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if($crumbs && is_array($crumbs)): ?>
+<?php //var_dump($crumbs); ?>
+<div class="breadcrumbs">
+    <ul>
+        <?php foreach($crumbs as $_crumbName => $_crumbInfo): ?>
+        <?php
+        //$Title = $_crumbInfo['label'];
+        //echo $_crumbInfo['label'];
+        $Title = str_replace('&lt;', '<',$_crumbInfo['label']);
+        $Title = str_replace('&gt;', '>',$Title);
+        ?>
+            <li class="<?php echo $_crumbName ?>">
+            <?php if($_crumbInfo['link']): ?>
+                <a href="<?php echo $_crumbInfo['link'] ?>" title="<?php echo $this->htmlEscape($_crumbInfo['title']) ?>"><?php echo $Title ?></a>
+            <?php elseif($_crumbInfo['last']): ?>
+                <strong><?php echo $Title ?></strong>
+            <?php else: ?>
+                <?php echo $Title ?>
+            <?php endif; ?>
+            <?php if(!$_crumbInfo['last']): ?>
+                <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>
+            <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
+	
+<?php
+$CurrentUrl = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'sales/order/history/')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>我的订单</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+if(strrpos($CurrentUrl, 'wishlist')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>我的收藏</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+<?php
+
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'customer/address/')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>个人资料</li>
+ <li class="level4">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>收货地址</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'account/pass/')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>个人资料</li>
+ <li class="level4">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>密码修改</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'customer/account/edit')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>个人资料</li>
+ <li class="level4">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>个人信息</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'rewardpoints/index/referral/')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>分享有礼</li>
+ <li class="level4">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>我邀请的好友</li>
+</ul>
+</div>
+<?php
+}
+?>
+
+
+
+<?php
+
+//echo $CurrentUrl;
+if(strrpos($CurrentUrl, 'rewardpoints/index/points/')) {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a></li> 
+<li class="level3">
+
+ <span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>我的积分</li>
+ 
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+
+//echo $CurrentUrl;
+if("http://".$CurrentUrl == Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)."customer/account/") {
+//echo '123123';
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="home"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a>
+</li> 
+</ul>
+</div>
+<?php
+}
+?>
+
+
+<?php
+if(strrpos($CurrentUrl, 'order/view/order_id/')) {
+//echo '123123';
+$PoNum = strrpos($CurrentUrl,'order/view/order_id/')+20;
+//echo $PoNum.'<br>';
+//$OrderId = substr_replace($CurrentUrl, "", 0, 57);  // print '197/'
+$IdInfo = substr_replace($CurrentUrl, "", 0, $PoNum);
+$Num = strlen($IdInfo);   // print '4'
+$OrderId = substr_replace($IdInfo, "", $Num-1);
+//echo $OrderId;
+$order = Mage::getModel('sales/order')->load($OrderId);
+$IncrementId = $order->getIncrementId();
+?>
+<div class="breadcrumbs">
+<ul>
+<li class="<?php echo $_crumbName ?>"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">希思黎网上商城首页</a></li>
+<li class="level2">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/></span>我的账户
+</a>
+</li> 
+<li class="level3">
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>sales/order/history/">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>我的订单
+</a>
+</li>
+<li class="level4">
+<span><img src=" <?php echo $this->getSkinUrl('images/petite_fleche.gif') ?>"/> </span>订单 <?php echo $IncrementId; ?>
+</li>
+</ul>
+</div>
+<?php
+}
+?>
+

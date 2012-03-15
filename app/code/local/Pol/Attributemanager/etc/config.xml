@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<config>
+<!-- met en marche le module et permet le support d'installation -->
+    <modules>
+        <Pol_Attributemanager>
+            <version>0.1.0</version>
+        </Pol_Attributemanager>
+    </modules>
+    
+    <admin>
+        <routers>
+			<attributemanager>
+				<use>admin</use>
+				<args>
+					<module>Pol_Attributemanager</module>
+					<frontName>attributemanager</frontName>
+				</args>
+			</attributemanager>
+        </routers>
+    </admin>
+    
+    <frontend>
+        <routers></routers>
+        <events></events>
+        <translate></translate>
+        <layout></layout>
+    </frontend>
+    
+    <default>
+    	<config_vars></config_vars>
+   	</default>
+    
+    <adminhtml>
+		<menu>
+			<system>
+				<children>
+					<pol> 
+						<title>Manager</title>
+						<sort_order>20</sort_order>           
+						<children>
+							<items module="attributemanager">
+								<title>Manage Attributes for categories and customers</title>
+								<action>attributemanager</action>
+							</items>
+						</children>
+					</pol> 
+				</children>
+			</system>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Pol_Attributemanager>
+							<title>Attributemanager Module</title>
+							<sort_order>10</sort_order>
+						</Pol_Attributemanager>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<attributemanager>
+					<file>attributemanager.xml</file>
+				</attributemanager>
+			</updates>
+		</layout>
+		<!-- <translate>
+		            <modules>
+		                <Pol_Attributemanager>
+		                    <files>
+		                        <default>Pol_Attributemanager.csv</default>
+		                    </files>
+		                </Pol_Attributemanager>
+		            </modules>
+        	</translate>-->
+    </adminhtml> 
+      
+    <global>
+    	<!-- active les modeles du module -->
+        <models>
+            <attributemanager>
+                <class>Pol_Attributemanager_Model</class>
+            </attributemanager>
+            <!-- <categoriesattributes_mysql4>
+                <class>Pol_CategoriesAttributes_Model_Mysql4</class>
+                <entities>
+                    <categoriesattributes>
+                        <table>categoriesattributes</table>
+                    </categoriesattributes>
+                </entities>
+            </categoriesattributes_mysql4>-->
+        </models>
+        <blocks>
+            <attributemanager>
+                <class>Pol_Attributemanager_Block</class>
+            </attributemanager>
+        </blocks>
+        <helpers>
+            <attributemanager>
+                <class>Pol_Attributemanager_Helper</class>
+            </attributemanager>
+        </helpers>
+        <!-- ressource correspond aux connexion à la base -->
+        <resources>
+        <!-- Permet l'intallation des tables dans la base -->
+            <!-- <attributemanager_setup>
+                <setup>
+                    <module>Pol_Attributemanager</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </attributemanager_setup>
+            <attributemanager_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </attributemanager_write>
+            <attributemanager_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </attributemanager_read>-->
+        </resources>
+    </global>
+</config>

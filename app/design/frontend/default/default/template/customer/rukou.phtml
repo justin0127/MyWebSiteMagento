@@ -1,0 +1,49 @@
+<div class="MECRegister">
+	<div class="lefton">
+		<form  id="tworegeister">
+		
+		<div class="lefton-tt">
+		<span>希思黎会员网上激活</span>
+		</div>
+		<div class="lefton-contain">
+		<span>若您已是希思黎会员，请在此激活。</span><br />
+		<span>至臻坊会员尊享，待您开启。</span>
+		</div>
+	<input type="hidden" name="regist_type" value="offline" />
+		<button type="button" title="<?php echo $this->__('Submit') ?>" class="button" onclick="window.location.href='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/verify'"><span><span style="background:#BDBDBD;"><?php echo $this->__('立即激活') ?></span></span></button>
+		
+		<div class="lefton-contain bottom-contain">
+		<span>如果您曾通过希思黎专柜购买过商品，但还没有在希思黎官网</span><br />
+		<span>注册，请点击<B>希思黎会员</B>网上激活入口<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/verify">立即激活</a>，就可以激活</span><br />
+		<span>您在希思黎的网上账户，并可在网上继续使用您的购物积分。</span><br />
+		
+		
+		</div>
+		
+		
+		</form>
+		
+		<div class="lefton-contain">
+		
+		</div>
+		
+		
+	</div>
+	
+	<div class="rightoff">
+		<form  id="tworegeister" action="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/create/" method="post">
+		
+		<div class="rightoff-tt">
+		<span>非希思黎会员注册</span>
+		</div>
+		<div class="rightoff-contain">
+		<span>若您还未成为希思黎会员，请在此注册。</span></br>
+		<span>您将了解到希思黎会员的加入方式，以及丰富</span></br>
+		<span>的特别推广活动。</span>
+		</div>
+		<input type="hidden" name="regist_type" value="online" />
+		<button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span style="background:#BDBDBD;"><?php echo $this->__('进入注册') ?></span></span></button>
+		</form>
+	</div>
+
+</div>

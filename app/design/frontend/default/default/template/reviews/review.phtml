@@ -1,0 +1,51 @@
+<?php if (!empty($items)) : ?>
+<div class="block block-comments">
+
+    <div class="block-title">
+        <strong ><span><?php echo $this->__('Recent Reviews') ?></span></strong>
+    </div>
+    
+    <div class="block-content">
+    
+        <ol class="mini-products-list"> 
+        <?php foreach($items as $item): ?>
+        <li class="item">
+            <a href="<?php echo $item->getUrl()?>"><img src="<?php echo $this->helper('catalog/image')->init($item, 'thumbnail')->resize(50) ?>" alt="<?php echo $this->htmlEscape($item->getName()) ?>" width="50" height="50" class="product-image" /></a>
+        
+        <div class="product-details"> 
+            <a href="<?php echo $item->getUrl()?>"><?php echo $this->htmlEscape($item->getName())?></a>
+            <?php if (count($item->getRatingVotes())): ?>
+            
+                <table class="ratings-table" cellspacing="0">
+                <tbody>
+                    <?php foreach ($item->getRatingVotes() as $_vote): ?>
+                    <tr>
+                        <td>
+                            <div class="rating-box">
+                                <div class="rating" style="width: <?php echo $_vote->getPercent() ?>%;"></div>
+                            </div>                        
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                </table>
+            
+            <?php else: ?>
+            <br />
+            <?php endif;?> 
+            </div>
+            <div style="clear:both;"></div>
+			<div class="comment-content">   
+				<strong><?php echo $this->htmlEscape($item->getTitle())?></strong>.
+				<br />
+				<?php echo $this->htmlEscape($item->getDetail())?>
+				<br />
+				<span>(<?php echo $this->__('Review by %s', $this->htmlEscape($item->getNickname()))?>)</span>
+			</div>
+            </li>
+            <?php endforeach; ?>
+        </ol>
+        
+    </div>
+</div>
+<?php endif; ?> 

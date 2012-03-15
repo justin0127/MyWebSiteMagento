@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<widgets>
+    <socialbookmarking_widget_block type="socialbookmarking/widget_block" translate="name description" module="socialbookmarking">
+        <name>Social Bookmarking</name>
+        <description>Adds social bookmarking links</description>
+        <parameters>
+            <template translate="label">
+                <label>Template</label>
+                <visible>1</visible>
+                <required>1</required>
+                <type>select</type>
+                <values>
+                    <bookmarks translate="label">
+                        <value>bookmarks/bookmarks.phtml</value>
+                        <label>Bookmarks</label>
+                    </bookmarks>
+                </values>
+            </template>
+        </parameters>
+    </socialbookmarking_widget_block>
+</widgets>

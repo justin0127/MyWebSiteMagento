@@ -1,0 +1,37 @@
+<div class="box base-mini blog">
+
+<?php if($this->getCategories()->count() && Mage::getStoreConfig('blog/menu/category')): ?>
+<?php $cats = $this->getCategories(); ?>
+<?php foreach ($cats as $cat): ?>
+                <?php
+                if($cat['cat_id'] == '1') {
+                $cname = $cat['title'];
+                ?>
+                <div class="head">
+                <strong><span><?php echo $cname; ?></span></strong>
+                </div>
+                <div class="content">
+                <ul>
+                <?php
+                $posts = $this->getPosts();
+                $i = 0;
+                foreach ($posts as $post) {
+                $postCats = $post->getCats();
+                $i++;
+                foreach($postCats as $title=>$url): 
+                //if ((key($post['cats']) == $cname)&&($i <= 5)) {
+                if (($title == $cname)&&($i <= 5)) {
+                ?>
+		<li><a href="<?php echo $post->getAddress(); ?>" ><?php echo $post->getTitle();?></a></li>
+		<?php
+		}
+		endforeach;
+		}
+		}
+		?>
+<?php endforeach; ?>
+    	        </ul>
+<?php endif;?>
+	</div>
+</div>
+

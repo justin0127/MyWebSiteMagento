@@ -1,0 +1,43 @@
+<div id="checkout-review" class="firecheckout-section">
+    <div class="block-title" id="billing-review-title"><span><?php echo $this->__('Checkout Review') ?></span></div>
+	<ul id="billing-review-content">
+    <div id="checkout-review-load">
+        <?php echo $this->getChildHtml('info') ?>
+    </div>
+    <div id="checkout-review-submit">
+        <?php if (Mage::getStoreConfig('firecheckout/general/comment')) : ?>
+        <ul class="form-list">
+            <li class="wide">
+                <label for="order-comment"><?php echo $this->helper('sales')->__('Comment') ?></label>
+                <div class="input-box">
+                    <textarea name="order-comment" id="order-comment" rows="5" cols="25"><?php echo trim(Mage::getSingleton('customer/session')->getOrderCustomerComment()) ?></textarea>
+                </div>
+            </li>
+        </ul>
+        <?php endif; ?>
+        <?php echo $this->getChildHtml('agreements') ?>
+        <?php if (Mage::helper('firecheckout')->canShowNewsletter()) : ?>
+            <p class="newsletter">
+                <input type="checkbox" id="newsletter-signup" name="newsletter" value="1" title="<?php echo Mage::helper('newsletter')->__('Sign up for our newsletter') ?>" class="checkbox" />
+                <label for="newsletter-signup">
+                    <strong><?php echo Mage::helper('newsletter')->__('Sign up for our newsletter') ?></strong>
+                </label>
+            </p>
+        <?php endif; ?>
+        <div class="buttons-set" id="review-buttons-container">
+        
+        <?php
+	$products = Mage::getSingleton('checkout/session')->getQuote()->getAllVisibleItems();
+	//foreach($products as $_product) {
+	//echo $_product->getId();
+	//}
+	?>
+        
+            <button type="submit" title="<?php echo $this->__('Place Order') ?>" class="button btn-checkout" onclick="checkout.save(); return false;"><span><span><?php echo $this->__('Place Order') ?></span></span></button>
+            <span class="please-wait" id="review-please-wait" style="display:none;">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Submitting order information...') ?>" title="<?php echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php echo $this->__('Submitting order information...') ?>
+            </span>
+        </div>
+    </div>
+	</ul>
+</div>

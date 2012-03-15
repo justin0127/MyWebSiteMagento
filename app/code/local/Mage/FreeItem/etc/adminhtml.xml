@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <freeitem translate="title" module="review">
+                    <title>Free Item</title>
+                    <sort_order>500</sort_order>
+                </freeitem>
+            </children>
+         </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <freeitem translate="title" module="review">
+                                <title>Free Item</title>
+                            </freeitem>
+                        </children>
+                    </catalog>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

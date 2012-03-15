@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <chinaprovicecity_index_index>
+        <reference name="content">
+            <block type="chinaprovicecity/chinaprovicecity" name="chinaprovicecity" template="chinaprovicecity/chinaprovicecity.phtml" />
+        </reference>
+    </chinaprovicecity_index_index>
+     <checkout_onepage_index translate="label">
+     		<reference name="head">
+			<action method="addItem" ><type>skin_css</type><name>css/ig_lightbox.css</name></action>
+			<action method="addItem" ><type>skin_js</type><name>js/chinacities.js</name></action>
+			<action method="addItem" ><type>skin_js</type><name>js/cityupdater.js</name></action>
+		</reference>
+     
+                     <reference name="checkout.onepage.billing">
+                          <action method="setTemplate"><template>chinaprovicecity/billing.phtml</template></action>
+                     </reference>
+     </checkout_onepage_index>
+    
+</layout> 

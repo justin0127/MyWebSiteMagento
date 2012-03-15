@@ -1,0 +1,287 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($_productCollection as $_product): ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <?php // Product Image ?>
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <?php // Product description ?>
+            <div class="product-shop">
+                <div class="f-fix">
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                    <?php if($_product->isSaleable()): ?>
+                        <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <div class="desc std">
+					
+						
+                        <?php $ProName= $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+						 <?php $mbProName=mb_substr($ProName,"0","10","UTF-8"); ?>
+						  <?php echo $mbProName."..." ?>
+						
+						
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" class="link-more"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                    <ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+	
+		<script type="text/javascript">
+function showinfo(status,id){
+	var div_id = "pro-info-"+id;
+	if(status == '1'){
+		document.getElementById(div_id).style.display = 'block';
+	}else{
+		document.getElementById(div_id).style.display = 'none';
+	}
+}
+</script>
+	<!--onmouseover="showinfo('1','<?php //echo $i;?>');" onmouseout="showinfo('2','<?php //echo $i;?>');-->
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount =2 ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid Listul">
+        <?php endif ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>" >
+			<div class="product-list-img">
+               <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" target="_blank"><img style="float:left"  src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(190,200); ?>" width="190" height="200" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+			   </div>
+			   
+			   
+			   <h2 class="product-function">
+			   
+			   
+			   <?php $ProName= $_product->getFunction(); ?>
+				 <?php $mbProName=mb_substr($ProName,"0","10","UTF-8"); ?>	
+				 <?php echo $mbProName ?>
+				</h2>
+			   
+                <span class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></span>
+                <?php /*if($_product->getRatingSummary()): ?>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; */?>
+				<div class="Listrongliang">
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span>
+				</div>
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>')"><span><span><?php echo $this->__('') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <ul class="add-to-links">
+                    </ul>
+                </div>
+				<div class="ListDetial">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>">
+				<?php echo $this->__('详情 >>') ?> 
+				</a>
+				</div>
+			
+
+			 <div id="pro-info-<?php echo $i;?>" class="product-list-detailbg">
+				<div class="product-list-top">
+					<div class="product-list-img">
+					  <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(190,200); ?>" width="190" height="200" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+					</div>
+					
+					<div class="list-product-contain">
+					<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+					
+					</div>
+					
+				<div class="product-list-right2">
+				
+					
+				
+					<div class="product-list-img2">
+
+					    <?php 
+					        $itsProducts = array();
+					        $ii = 0;
+					        foreach ($_product->getRelatedLinkCollection() as $link) {
+                                $ii++;
+                                if ($ii>2) break;
+                                    
+                                $relatedData[$link->getLinkedProductId()]['position'] = $link->getPosition();
+                                $relatedProduct = Mage::getModel('catalog/product')->load($link->getLinkedProductId());  ?>
+
+					<div class="product-list-Imgall">
+					<div class="product-list-img2">
+					  <a href="<?php echo $relatedProduct->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($relatedProduct, 'small_image'), null, true) ?>" class="product-image2" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($relatedProduct, 'small_image')->resize(100,110); ?>" width="100" height="110" alt="<?php echo $this->stripTags($this->getImageLabel($relatedProduct, 'small_image'), null, true) ?>" /></a>
+					</div>
+					
+					<div class="list-product-contain2">
+					<h2 class="product-name2"><a href="<?php echo $relatedProduct->getProductUrl() ?>" title="<?php echo $this->stripTags($relatedProduct->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($relatedProduct, $relatedProduct->getName(), 'name') ?></a></h2>
+					
+					</div>
+					</div>
+
+
+                         <?php } ?>
+
+
+
+
+
+
+					</div>
+					<div class="list-rec" >
+					搭配使用产品
+					</div>
+					
+				</div>
+					
+					
+					
+				</div>
+
+			
+				
+				<div class="product-list-middle">
+					<div class="list-rongliang">
+					产品容量：
+					<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span>
+					</div>
+					<?php if ($_product->getActiveIngredient()):?>
+					<div class="list-ProductviewDS">
+						<span>活性成分：</span>
+						<div class="list-viewblock">
+						<?php echo $_helper->productAttribute($_product, nl2br($_product->getActiveIngredient()), 'active_ingredient') ?>
+						</div>
+						 <?php echo $this->getPriceHtml($_product, true) ?>
+					</div>
+					<?php endif;?>
+				</div>
+				
+				<div class="product-list-bottom">
+					<div class="list-detail"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>">
+				<span><?php echo $this->__('详情') ?> </span>
+				</a></div>
+					<div class="list-div-button">
+					  <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>')"><span><span><?php echo $this->__('') ?></span></span></button>
+					</div>
+				
+				</div>
+					
+				</div>
+				
+				
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">//decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+<script>
+jQuery('.products-grid li').each(
+function(index){
+      jQuery(this).hover(
+              function(){
+                 
+                  //jQuery('.product-list-detailbg',this).show();
+                  jQuery(this).addClass('zindex100');
+                  jQuery(this).parent().removeClass('zindex0').addClass('zindex100');
+                  jQuery('*',this).addClass('zindex100');                     
+                  jQuery(this).removeClass('zindex0');
+                  jQuery('*',this).removeClass('zindex0');                                
+             },
+             function(){
+                 jQuery(this).removeClass('zindex100');
+                 jQuery(this).parent().removeClass('zindex100').addClass('zindex0');
+                 jQuery('*',this).removeClass('zindex100');
+                 jQuery(this).addClass('zindex0');
+                 jQuery('*',this).addClass('zindex0');                   
+                 jQuery('.product-list-detailbg',this).hide();
+             }
+     );
+     
+    jQuery('.product-list-img',this).hover(function(){ jQuery('.product-list-detailbg',jQuery(this).parents('li')).show();} );  
+});
+
+jQuery(function(){
+    jQuery('.products-grid li, .products-grid').each(
+    function(index){
+          jQuery('.product-list-detailbg',this).hide();
+          jQuery(this).addClass('zindex0').css('zoom','1');
+          jQuery('*',this).addClass('zindex0').css('zoom', '1');
+    });
+})
+
+
+</script>
+

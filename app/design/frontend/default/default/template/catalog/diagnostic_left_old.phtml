@@ -1,0 +1,301 @@
+
+<!-- 显示隐藏 -->
+<script>
+	function displaymao1(){
+	document.getElementById('mao1').style.display="block";
+	document.getElementById('mao2').style.display="none";
+	document.getElementById('mao3').style.display="none";
+	//document.getElementsByName('right-contain').style.overflow="hidden"
+	}
+	
+	function displaymao2(){
+	if(Yzstep1()==true){
+	document.getElementById('mao2').style.display="block";
+	document.getElementById('mao3').style.display="none";
+	document.getElementById('mao1').style.display="none";
+	document.getElementById('right-contain').style.overflow="hidden";
+	}
+	}
+	
+	function displaymao3(){
+	if(Yzstep2()){
+	document.getElementById('mao3').style.display="block";
+	document.getElementById('mao2').style.display="none";
+	document.getElementById('mao1').style.display="none";
+	document.getElementById('right-contain').style.overflow="hidden";
+		}
+	}
+
+</script>
+
+<!-- 显示隐藏结束 -->
+
+<script>
+   function getfQ2(){
+      
+	  　var ip="";
+	　　var rPort = document.getElementsByName("NewUptight");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('result1').value=ip;
+	
+   
+   }
+   
+   
+    function getfQ3(){
+      
+	  　var ip="";
+	　　var rPort = document.getElementsByName("shiny");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('result2').value=ip;
+	
+   
+   }
+   
+   
+      function getfQ4(){
+      
+	  　var ip="";
+	　　var rPort = document.getElementsByName("blackhead");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('result3').value=ip;
+   
+   }
+   
+   
+      function getfQ5(){
+      
+	  　var ip="";
+	　　var rPort = document.getElementsByName("thick");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('result4').value=ip;
+	
+   
+   }
+   
+      
+      function getfQ6(){
+      
+	  　var ip="";
+	　　var rPort = document.getElementsByName("red");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('result5').value=ip;
+	
+   
+   }
+   
+   function addresult(){
+    var all=""
+	all=document.getElementById('result1').value+document.getElementById('result2').value+document.getElementById('result3').value+document.getElementById('result4').value+document.getElementById('result5').value
+   }
+   
+   function Yzstep1(){
+    
+
+    if(!(jQuery("input[name='NewUptight']").is(":checked")|| jQuery("input[name='shiny']").is(":checked")||  jQuery("input[name='shiny']").is(":checked")|| jQuery("input[name='thick']").is(":checked")||jQuery("input[name='red']").is(":checked"))){
+	  alert("请选择一个选项");
+	  //jQuery("input[name='red']").is(":checked")
+	  return false;
+	}else{
+	  return true;
+	}
+   
+	}
+   
+   
+      function Yzstep2(){
+    
+    if(!(document.getElementsByName("lip").checked|| document.getElementsByName("orbit").checked|| document.getElementsByName("pouch").checked)){
+	  alert("请选择一个选项");
+	  return false;
+	}else{
+	  return true;
+	}
+   
+	}
+	 function Yzstep3(){
+    
+    if(!(document.getElementsByName("cosmetics").checked|| document.getElementsByName("hope").checked)){
+	  alert("请选择一个选项");
+	  return false;
+	  
+	}else{
+	return true;
+	}
+   
+	}
+   
+   
+
+</script>
+
+
+<div class="leftcontain">
+	<div class="left-contain">
+	   <ul class="womenpage">
+	   <li><span>1</span><span>判定/识别您的肌肤类型</span></li>
+	   <li><span>2</span><span>完善您的全面保养</span></li>
+	   <li><span>3</span><span>改善您最关注的肌肤问题</span></li>
+	   </ul>
+	</div>
+	<form id="inputceshi" name="inputceshi">
+	<input type="text" id="result1" value=""/> 
+	<input type="text" id="result2" value=""/> 
+	<input type="text" id="result3" value=""/> 
+	<input type="text" id="result4" value=""/> 
+	<input type="text" id="result5" value=""/> 
+	<div id="right-contain">
+	  <div id="mao1" >
+		<div class="right-contain-tit">
+			<span>希思黎可以帮您通过三个简单步骤的测试帮您快速判断肌肤需求。</span>
+		</div>
+		<div class="right-contain-midd">
+			<span>回答下列问题，您将获得适合自己的美容方案：这个基本美容方案需要由希思黎美容顾问进行完善和调整。他/她将为您的肌肤进行检测，为您的护肤需求和问题提供准确的解决方案。
+			</span>
+		</div>
+		<div class="contain-input-tit">
+		 <span>判定/识别您的肌肤类型</span>
+		</div>
+		<div class="right-input">
+		   <dl class="bar">
+			<dt><span>请选择您的年龄:</span></dt>
+			<dd><input type="radio" name="NewAge" id="NewAge1" value="1"/>15-20岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge2" value="2"/>21-30岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge3" value="3"/>31-40岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge4" value="4"/>41-50岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge5" value="5"/>51-60岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge6" value="6"/>61岁以上</dd>
+		   </dl>
+		    
+			<dl class="bar">
+			<dt><span>您的肌肤是否感觉紧绷？</span></dt>
+			<dd><input type="radio" name="NewUptight" id="NewUptight1" value="1" onclick="getfQ2()"/>总是，主要在两颊。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight2" value="2" onclick="getfQ2()"/>有时，主要在两颊。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight3" value="3" onclick="getfQ2()"/>总是，整个脸部。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight4" value="4" onclick="getfQ2()"/>有时，整个脸部。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight5" value="5" onclick="getfQ2()"/>从不。</dd>
+		   </dl>
+		   
+		   <dl class="bar1">
+			<dt><span>您的肌肤是否容易出现油光？</span></dt>
+			<dd><input type="radio" name="shiny" id="shiny1" value="1" onclick="getfQ3()"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="shiny" id="shiny2" value="2" onclick="getfQ3()"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="shiny" id="shiny3" value="3" onclick="getfQ3()"/>不。</dd>
+		   </dl>
+		   
+		    <dl class="bar1">
+			<dt><span>您是否有黑头和/或色斑？</span></dt>
+			<dd><input type="radio" name="blackhead" id="blackhead1" value="1" onclick="getfQ4()"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="blackhead" id="blackhead2" value="2" onclick="getfQ4()"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="blackhead" id="blackhead3" value="3" onclick="getfQ4()"/>不。</dd>
+		   </dl>
+		   
+		   <dl class="bar1">
+			<dt><span>您是否存在毛孔粗大的困扰？</span></dt>
+			<dd><input type="radio" name="thick" id="thick1" value="1" onclick="getfQ5()"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="thick" id="thick2" value="2" onclick="getfQ5()"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="thick" id="thick3" value="3" onclick="getfQ5()"/>不。</dd>
+		   </dl>
+		   
+		   <dl class="bar1">
+			<dt><span>您的肌肤是否出现红肿、刺激或刺痛感？</span></dt>
+			<dd><input type="radio" name="red" id="red1" value="1"/>总是</dd>
+			<dd><input type="radio" name="red" id="red2" value="2"/>偶尔</dd>
+			<dd><input type="radio" name="red" id="red3" value="3"/>从不</dd>
+		   </dl>
+		   
+		</div>
+		<div class="inputbuttom">
+		<button type="button" class="nextto" onclick="javascript:displaymao2();"><span><span><?php echo $this->__('') ?></span></span></button>
+		</div>
+	  </div>
+	  
+	  <!-- start mao2 -->
+	  
+	<div id="mao2" style="display:none;">
+		
+		<div class="contain-input-tit">
+		 <span>完善您的全面保养</span>
+		</div>
+	
+		<div class="right-input">
+			<dl class="bar2">
+			<dt><span>是否发现您的眼部和唇部肌肤出现细纹或皱纹？</span></dt>
+			<dd><input type="radio" name="lip" id="lip1" value="1"/>是</dd>
+			<dd><input type="radio" name="lip" id="lip2" value="2"/>否</dd>
+			
+		   </dl>
+		   <dl class="bar2">
+			<dt><span>是否发现您的眼睛下方容易出现黑眼圈？</span></dt>
+			<dd><input type="radio" name="orbit" id="orbit1" value="1"/>是</dd>
+			<dd><input type="radio" name="orbit" id="orbit2" value="2"/>否</dd>
+			
+		   </dl>
+		   <dl class="bar2">
+			<dt><span>是否发现您的眼睛下方出现眼袋？</span></dt>
+			<dd><input type="radio" name="pouch" id="pouch1" value="1"/>是</dd>
+			<dd><input type="radio" name="pouch" id="pouch2" value="2"/>否</dd>
+			
+		   </dl>
+		</div>
+		<div class="inputbuttom">
+		<button type="button" class="nextto" onclick="javascript:displaymao3();" ><span><span><?php echo $this->__('') ?></span></span></button>
+		</div>
+	</div>
+	
+	<div id="mao3" style="display:none;">
+		<div class="contain-input-tit1">
+		 <span>改善您最关注的肌肤问题</span>
+		</div>
+		
+		<div class="right-input">
+			<dl class="bar3">
+			<dt><span>当您卸除彩妆、清洁脸部肌肤时……</span></dt>
+			<dd><input type="radio" name="cosmetics" id="cosmetics1" value="1"/>您喜欢用水洗的泡沫型洁肤产品。</dd>
+			<dd><input type="radio" name="cosmetics" id="cosmetics2" value="2"/>您使用洁肤乳和化妆水。</dd>
+			
+		   </dl>
+		   
+		   <dl class="bar3">
+			<dt><span>您希望……</span></dt>
+			<dd><input type="radio" name="hope" id="hope1" value="1"/>预防肌肤衰老</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>淡化皱纹</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>紧致肌肤</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>恢复肌肤光泽与明亮</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>令肌肤清爽无油</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>镇静肌肤，消除红肿与刺激</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>洁肤净化</dd>
+			<dd><input type="radio" name="hope" id="hope2" value="2"/>补水保湿</dd>
+			
+		   </dl>
+		</div>
+		<div class="inputbuttom">
+		<button type="submit" class="jifuresult" ><span><span><?php echo $this->__('') ?></span></span></button>
+		</div>
+		
+	</div>
+	  
+	</div>
+	</form>
+
+</div>

@@ -1,0 +1,56 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3><?php echo Mage::helper('aitsys')->__($this->getTitle()) ?></h3></td>
+            <td>
+                <?php if ($this->getExtensions()): ?>
+                    <?php echo $this->__('View By Extension: '); ?>
+                        <select name="extension" class="select" onchange="javascript: document.location = this.value;">
+                                <option value="<?php echo $this->getExtensionUrl(''); ?>"><?php echo $this->__('All Extensions'); ?></option>
+                            <?php foreach ($this->getExtensions() as $key => $name): ?>
+                                <option value="<?php echo $key; ?>" <?php if ($this->getSelfUrl() == $key): ?> selected="selected"<?php endif; ?>><?php echo $name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                <?php endif; ?>
+            </td>
+            <td class="form-buttons"><?php echo $this->getResetButtonHtml(); ?><?php echo $this->getSaveButtonHtml(); ?></td>
+         </tr>
+    </table>
+</div>
+<div class="entry-edit">
+    <form action="<?php echo $this->getSaveUrl(); ?>" method="post" id="rewritesForm">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+        <table width="100%" cellspacing="4" cellpadding="4">
+        <?php $conflicts = $this->getConflictGroups(); ?>
+            <?php if (!empty($conflicts)): ?>
+                <?php foreach ($conflicts as $baseClass => $classes): ?>
+                    <?php $i = 1; ?>
+                    <?php foreach ($classes as $class): ?>
+                    <tr>
+                        <td width="50"><input type="text" name="rewrites[<?php echo $baseClass; ?>][<?php echo $class; ?>]" size="2" value="<?php echo $i++; ?>" class="input-text required-entry validate-number" /></td>
+                        <td>
+                            <pre><?php echo $class; ?></pre> 
+                            extends
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <pre><strong><?php echo $baseClass; ?></strong></pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="40"></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?php echo $this->__('No rewrite conflicts found'); ?>
+            <?php endif; ?>
+        </table>
+    </form>
+    
+    <form action="<?php echo $this->getResetUrl(); ?>" method="post" id="rewritesResetForm">
+    <?php echo $this->getBlockHtml('formkey'); ?>
+    </form>
+</div>

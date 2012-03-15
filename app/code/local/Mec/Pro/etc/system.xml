@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <Mec translate="label" module="pro">
+            <label>MEC  Magento Pro</label>
+            <sort_order>197</sort_order>
+        </Mec>
+    </tabs>
+    <sections>
+	<Mec translate="label" module="pro">
+            <label>MEC  Magento Pro</label>
+            <tab>Mec</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>110</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+
+              <home translate="label"> 
+              <label>Input Magento Pro Licensces</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+
+                     <L1 translate="label">
+                     <label>License 1</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </L1>
+                     <L2 translate="label">
+                     <label>License 2</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </L2>
+                     <L3 translate="label">
+                     <label>License 3</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                     </L3>                     
+                    </fields>
+               </home>
+            </groups>
+        </Mec>
+    </sections>
+</config>

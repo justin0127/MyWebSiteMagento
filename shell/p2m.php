@@ -1,0 +1,317 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<?php
+
+require_once '/var/www/app/Mage.php';
+umask ( 0 );
+
+Mage::app ( 'default' );
+	Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+Mage::log( "Web Service for SAP start");
+?>
+<h2>Pos to Magento</h2>
+<?php
+set_time_limit(0);
+ 
+//error_reporting(E_ERROR );
+$run = 0;
+//create a mysql link
+$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+
+mysql_connect("localhost", $username, $password) or  die("Could not connect: " . mysql_error());
+mysql_select_db($dbname);
+
+// connect to DSN MSSQL with a user and password
+$connect = odbc_connect("mssql", "sa", "Password01") or die ("couldn't connect");
+odbc_exec($connect, "use IMPOS");
+ 
+$result = odbc_exec($connect, "select top 1000 custnr as CustomerID,surname as CustomerName,dob as DateOfBirth,Email,Mobile from SISLEY_WCLAD_Magento where custnr <> ''");
+//$result = odbc_exec($connect, "select top(10) * from CustomerBasicInf_Magento ");
+
+while($row = odbc_fetch_array($result)){
+	$CustomerArr[] = $row;
+}
+echo "客户信息获取成功.等待同步到Magento.<br/>";
+// var_dump($CustomerArr);
+// exit(0);
+echo "<br/>"; 
+$posids = "";
+$i_i = 0;
+if ($run == 0){
+	foreach($CustomerArr as $v){
+		$posids .= $v['CustomerID'].",";
+		$customer_Data['pos_id'] = $v['CustomerID'];
+		$customerName = iconv("gb2312","utf-8",$v['CustomerName']);
+		if($customerName <> ''){
+		$customer_Data['firstname'] = mb_substr($customerName,0,1,'utf-8');
+		$customer_Data['lastname'] = mb_substr($customerName,1,mb_strlen($customerName)-1,'utf-8');}
+		$customer_Data['dob'] = $v['DateOfBirth'];
+		//$customer_Data['region'] = iconv("gb2312","utf-8",$v['Province']);
+		//$customer_Data['city'] = iconv("gb2312","utf-8",$v['City']);
+		//$customer_Data['address'] = iconv("gb2312","utf-8",$v['Address']);
+		//$customer_Data['postcode'] = $v['Zip'];	
+		$customer_Data['email'] = trim($v['Email']);
+		if(trim($v['Mobile']) <> ''){
+		$customer_Data['mobile'] = $v['Mobile'];}
+
+		if(!validEmail($customer_Data['email'])){
+			if(substr($customer_Data['pos_id'], 0, 5) <> '08797'){
+			$customer_Data['email'] = 'P'.$customer_Data['pos_id'].'@sisley.com';}
+		}
+		if($customer_Data['dob'] >= date("Y-m-d",time()) || !strtotime($customer_Data['dob']))
+		{
+			$customer_Data['dob'] = NULL;
+		}
+
+		// var_dump($customer_Data);
+		// echo "<br/><br/><br/>";
+		$i_i++;
+		//echo $i_i."<br>";
+		update_Customer($customer_Data);
+	}
+	$run = 1;
+}
+
+
+if ($run == 1){
+	 //数据后处理流程
+	$posids = substr($posids,0,-1);
+	//echo $posids;
+	$query = "delete from SISLEY_WCLAD_Magento where custnr in (".$posids.")";
+	echo $query;
+	odbc_exec($connect, $query);
+}
+
+$result_count = odbc_exec($connect, "select count(*) as intSum from SISLEY_WCLAD_Magento");
+$rows = odbc_fetch_array($result_count);
+echo "<br/><br/>尚剩余 ".$rows['intSum']."条记录需要处理.<br/><br/>";
+
+odbc_free_result($result);
+odbc_close($connect);
+mysql_close($link); 
+?>
+<?php
+//更新已有的客户信息
+function update_Customer($customerData) {
+
+$posid = "";
+$query = "";
+$posid = $customerData['pos_id'];
+$email = $customerData['email'];
+$query = sprintf("SELECT entity_id FROM customer_entity_varchar WHERE attribute_id ='180' AND value = '%s'",mysql_real_escape_string($posid));
+//echo $query."<br/>";
+
+$query2 = sprintf("SELECT entity_id FROM customer_entity WHERE email ='%s'",mysql_real_escape_string($email));
+//echo $query2."<br/>";
+
+$result = mysql_query($query) or die("Invalid query: " . mysql_error());
+$count=mysql_num_rows($result);
+if($count == 1){
+$list=mysql_fetch_array($result);
+$entity_id = $list['entity_id'];
+$customerId = $list['entity_id'];}
+
+$result2 = mysql_query($query2) or die("Invalid query: " . mysql_error());
+$count2=mysql_num_rows($result2);
+if($count2 == 1){
+$list2 = mysql_fetch_array($result2);
+$entity_id2 = $list2['entity_id'];
+}
+else
+{
+$entity_id2 = $entity_id;
+}
+//echo $posid."-".$count."<br/>";
+  if ($count == 1) {
+	if($entity_id == $entity_id2){
+	//For Update.
+	echo "[".date('Y-m-d H:i:s',time())."]:".$posid."--Update.<br/>";
+	//var_dump($customerData);
+	//echo "<br/><br/><br/>";
+	$customer = Mage::getModel('customer/customer')->load($customerId);
+	//var_dump($customer);
+	//echo "<br/><br/><br/>";
+	foreach ($customerData as $key=>$value) {
+			if($key <> 'email'){
+			$customer->setData($key, $customerData[$key]);}
+		}
+	//var_dump($customer);
+	//echo "<br/><br/><br/>";
+	$customer->save();
+		
+/* 		//if there is already address info
+		$customerAddressId = $customer -> getDefaultBilling();
+		if($customerAddressId) {
+		//update
+			$addressData = array();
+			updateCustomerAddress($customer, $addressData);
+		}else{
+		//create
+			 $addressData = array();
+		         createCustomerAddress($CustomerId, $addressData); 
+		} */
+		}
+	else{
+	echo "[".date('Y-m-d H:i:s',time())."]:".$posid."--Error1(".$email."=".$entity_id."-".$entity_id2.").<br/>";
+	}
+     }
+  else{
+	//For Insert.
+	if($entity_id2 != ''){
+	echo "[".date('Y-m-d H:i:s',time())."]:".$posid."--Error2(".$email."=".$entity_id."-".$entity_id2.").<br/>";
+	}
+	else{
+		echo "[".date('Y-m-d H:i:s',time())."]:".$posid."--Insert.<br/>";
+		$customerData['password'] = '123123';
+		var_dump($customerData);
+		$customer = setCustomer($customerData);
+		//updateCustomerAddress($customer,$customerData);
+		}
+	}
+}
+
+//$NewCustomer = updateCustomer($customerData);
+
+ //生成客户并返回$customerid
+function setCustomer($customerData) {
+
+		try {
+			
+			$customer = Mage::getModel('customer/customer')->setId(null);
+			$customer = Mage::getModel('customer/customer')
+			->setData($customerData)
+			->save();
+		}
+		catch(Exception $e) {
+			//var_dump($e);
+			Mage::logException($e);
+			print_r($e);
+			exit();
+		}
+        //$CustomerId = $customer->getId();
+        
+        //$addressData = array();
+        
+        //createCustomerAddress($CustomerId, $addressData);    //create address info when set new customer
+        //return $CustomerId;
+}
+
+// function updateCustomerAddress($customer, $addressData) {
+	// $customerAddressId = $customer -> getDefaultBilling();
+	// $AddressArr = array();
+	// if ($customerAddressId){
+		// $address = Mage::getModel('customer/address')->load($customerAddressId);
+		// $region = $address->setRegion($addressData['region']);
+		// $city = $address->setCity($addressData['city']);
+		// $street = $address->setStreet($addressData['street']);
+		// $postcode = $address->setPostcode($addressData['postcode']);
+	// }
+// }
+
+/* sample address data
+$addressData = array(
+    'firstname'  => 'First',
+    'lastname'   => 'Last',
+    'country_id' => 'USA',
+    'region_id'  => '43',
+    'region'     => 'New York',
+    'city'       => 'New York',
+    'street'     => array('Bla bla','bla bla'),
+    'telephone'  => '5555-555',
+    'postcode'   => 10021
+);
+*/
+function createCustomerAddress($customerId, $addressData)     //use magento customer entity id as customerId
+{
+	$customer = Mage::getModel('customer/customer')
+	->load($customerId);
+	/* @var $customer Mage_Customer_Model_Customer */
+
+	if (!$customer->getId()) {
+	$this->_fault('customer_not_exists');
+	}
+
+	$address = Mage::getModel('customer/address');
+
+	foreach ($addressData as $key=>$value) {
+		$address->setData($key, $addressData[$key]);
+	}
+
+	$address->setIsDefaultBilling($addressData->is_default_billing);
+
+	$address->setCustomerId($customer->getId());
+
+	$address->save();
+}
+
+function validEmail($email)
+{
+   $isValid = true;
+   $atIndex = strrpos($email, "@");
+   if (is_bool($atIndex) && !$atIndex)
+   {
+      $isValid = false;
+   }
+   else
+   {
+      $domain = substr($email, $atIndex+1);
+      $local = substr($email, 0, $atIndex);
+      $localLen = strlen($local);
+      $domainLen = strlen($domain);
+      if ($localLen < 1 || $localLen > 64)
+      {
+         // local part length exceeded
+         $isValid = false;
+      }
+      else if ($domainLen < 1 || $domainLen > 255)
+      {
+         // domain part length exceeded
+         $isValid = false;
+      }
+      else if ($local[0] == '.' || $local[$localLen-1] == '.')
+      {
+         // local part starts or ends with '.'
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $local))
+      {
+         // local part has two consecutive dots
+         $isValid = false;
+      }
+      else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))
+      {
+         // character not valid in domain part
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $domain))
+      {
+         // domain part has two consecutive dots
+         $isValid = false;
+      }
+      else if
+(!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
+                 str_replace("\\\\","",$local)))
+      {
+         // character not valid in local part unless 
+         // local part is quoted
+         if (!preg_match('/^"(\\\\"|[^"])+"$/',
+             str_replace("\\\\","",$local)))
+         {
+            $isValid = false;
+         }
+      }
+      if ($isValid && !(checkdnsrr($domain,"MX") || 
+ checkdnsrr($domain,"A")))
+      {
+         // domain not found in DNS
+         $isValid = false;
+      }
+   }
+   return $isValid;
+}
+?>
+</html>

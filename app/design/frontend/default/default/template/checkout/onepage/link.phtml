@@ -1,0 +1,24 @@
+<?php if ($this->isPossibleOnepageCheckout()):?>
+<?php
+$cart = Mage::getModel('checkout/cart');
+$cart_items = $cart->getQuote()->getAllItems();
+$ProductList = str_replace(" ","",Mage::getStoreConfig('catalog/freeitem/product_sku'));
+$true=false;
+$ProductArr = explode(",", $ProductList);
+					       foreach($cart_items as $item){
+					       //var_dump($item->getSku());
+					       $ProductSku = $item->getSku();
+					       $ProductId = $item->getId();
+						       	if(in_array($ProductSku,$ProductArr)) {
+						       	$true = true;
+								break;
+								}
+					       }
+						    ?>
+
+    <?php if($true==true) { ?>
+    <button type="button" title="<?php echo $this->__('Proceed to Checkout') ?>" class="button btn-checkout<?php if ($this->isDisabled()):?> no-checkout<?php endif; ?>"<?php if ($this->isDisabled()):?> disabled="disabled"<?php endif; ?> onclick="window.location='<?php echo $this->getCheckoutUrl() ?>';"><span><span><?php echo $this->__('Proceed to Checkout') ?></span></span></button>
+	<?php }else{ ?>
+	 <button type="button" title="<?php echo $this->__('Proceed to Checkout') ?>" class="button btn-checkout"  onclick="window.location='<?php echo $this->getCheckoutUrl() ?>';"><span><span><?php echo $this->__('Proceed to Checkout') ?></span></span></button>
+	<?php }	?>
+<?php endif?>

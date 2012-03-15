@@ -1,0 +1,242 @@
+<div id="billing-address" class="firecheckout-section">
+    <div class="block-title" id='billing-address-title'>
+        <span>
+            <?php if (!$this->canShip() || !Mage::getStoreConfig('firecheckout/general/shipping_address')): ?>
+                <?php echo $this->helper('checkout')->__('Address'); ?>
+            <?php else: ?>
+                <?php echo $this->helper('checkout')->__('Billing Address'); ?>
+            <?php endif; ?>
+        </span>
+    </div>
+    <ul class="form-list" id='billing-address-content'>
+    <?php if ($this->customerHasAddresses()): ?>
+        <li class="wide">
+            <label for="billing-address-select"><?php echo $this->helper('checkout')->__('Select a billing address from your address book or enter a new address.') ?></label>
+            <div class="input-box">
+                <?php echo $this->getAddressesHtmlSelect('billing') ?>
+            </div>
+        </li>
+    <?php endif; ?>
+    <li id="billing-new-address-form"<?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif; ?>>
+        <fieldset>
+            <input type="hidden" name="billing[address_id]" value="<?php echo $this->getAddress()->getId() ?>" id="billing:address_id" />
+            <ul>
+                <li class="fields"><?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getAddress())->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?></li>
+                <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/company') || !$this->isCustomerLoggedIn())  : ?>
+                <li class="fields">
+                    <?php if(!$this->isCustomerLoggedIn()): ?>
+                        <div class="field">
+                            <label for="billing:email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                            <div class="input-box">
+                                <input type="text" name="billing[email]" id="billing:email" value="<?php echo $this->htmlEscape($this->getAddress()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                            </div>
+                        </div>
+                    <?php endif ?>
+                    <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/company')) : ?>
+                        <div class="field">
+                            <label for="billing:company"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/company')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Company') ?></label>
+                            <div class="input-box">
+                                <input type="text" id="billing:company" name="billing[company]" value="<?php echo $this->htmlEscape($this->getAddress()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/company')) ? ' required-entry' : '' ?>" />
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </li>
+                <?php endif; ?>
+                <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/address')) : ?>
+                    <li class="wide">
+                        <label for="billing:street1"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/address')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Address') ?></label>
+                        <div class="input-box">
+                            <input type="text" title="<?php echo $this->__('Street Address') ?>" name="billing[street][]" id="billing:street1" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/address')) ? ' required-entry' : '' ?>" />
+                        </div>
+                    </li>
+                    <?php for ($_i=2, $_n=$this->helper('customer/address')->getStreetLines(); $_i<=$_n; $_i++): ?>
+                        <li class="wide">
+                            <div class="input-box">
+                                <input type="text" title="<?php echo $this->__('Street Address %s', $_i) ?>" name="billing[street][]" id="billing:street<?php echo $_i?>" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet($_i)) ?>" class="input-text" />
+                            </div>
+                        </li>
+                    <?php endfor ?>
+                <?php endif; ?>
+                <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/city') || 'hidden' !== Mage::getStoreConfig('firecheckout/address_form/zip')) : ?>
+                <li class="fields">
+                    <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/zip')) : ?>
+                    <div class="field">
+                        <label for="billing:postcode"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/zip')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Zip/Postal Code') ?></label>
+                        <div class="input-box">
+                            <input type="text" title="<?php echo $this->__('Zip/Postal Code') ?>" name="billing[postcode]" id="billing:postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" class="input-text validate-zip-international<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/zip')) ? ' required-entry' : '' ?>" />
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                   
+                </li>
+                <?php endif ?>
+                <li class="fields"<?php echo ('hidden' === Mage::getStoreConfig('firecheckout/address_form/country') && 'hidden' === Mage::getStoreConfig('firecheckout/address_form/state')) ? ' style="display:none"' : '' ?>>
+                    <div class="field"<?php echo 'hidden' === Mage::getStoreConfig('firecheckout/address_form/country') ? ' style="display:none"' : '' ?>>
+                        <label for="billing:country_id"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/country')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Country') ?></label>
+                        <div class="input-box">
+                            <?php echo $this->getCountryHtmlSelect('billing') ?>
+                        </div>
+                    </div>
+                    <div class="field"<?php echo 'hidden' === Mage::getStoreConfig('firecheckout/address_form/state') ? ' style="display:none"' : '' ?>>
+                        <label for="billing:region_id"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/state')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('State/Province') ?></label>
+                        <div class="input-box">
+                            <select id="billing:region_id" name="billing[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/state')) ? ' required-entry' : '' ?>" style="display:none;">
+                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                            </select>
+                            <script type="text/javascript">
+                            //<![CDATA[
+                                $('billing:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                            //]]>
+                            </script>
+                            <input type="text" id="billing:region" name="billing[region]" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/state')) ? ' required-entry' : '' ?>" style="display:none;" />
+                        </div>
+                    </div>
+					
+					 <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/city')) : ?>
+                    <div class="field">
+                        <label for="billing:city"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/city')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('City') ?></label>
+                        <div class="input-box">
+                            <input type="text" title="<?php echo $this->__('City') ?>" name="billing[city]" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/city')) ? ' required-entry' : '' ?>" id="billing:city" />
+                        </div>
+                    </div>
+                    <?php endif; ?>
+					
+                </li>
+                <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/phone') || 'hidden' !== Mage::getStoreConfig('firecheckout/address_form/fax')) : ?>
+                <li lang="fields">
+                    <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/phone')) : ?>
+                    <div class="field">
+                        <label for="billing:telephone"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/phone')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Telephone') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="billing[telephone]" value="<?php echo $this->htmlEscape($this->getAddress()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/phone')) ? ' required-entry' : '' ?>" id="billing:telephone" />
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <?php if ('hidden' !== Mage::getStoreConfig('firecheckout/address_form/fax')) : ?>
+                    <div class="field">
+                        <label for="billing:fax"<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/fax')) ? ' class="required"><em>*</em' : '' ?>><?php echo $this->__('Fax') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="billing[fax]" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" title="<?php echo $this->__('Fax') ?>" class="input-text<?php echo ('required' === Mage::getStoreConfig('firecheckout/address_form/fax')) ? ' required-entry' : '' ?>" id="billing:fax" />
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </li>
+                <?php endif; ?>
+                <?php if (!$this->isCustomerLoggedIn()) : ?>
+                    <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+                    <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+                    <?php if ($_dob->isEnabled() || $_gender->isEnabled()): ?>
+                        <li class="fields">
+                        <?php if ($_dob->isEnabled()): ?>
+                            <div class="field">
+                                <?php echo $_dob->setDate($this->getQuote()->getCustomerDob())->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($_gender->isEnabled()): ?>
+                            <div class="field">
+                                <?php echo $_gender->setGender($this->getQuote()->getCustomerGender())->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?>
+                            </div>
+                        <?php endif ?>
+                        </li>
+                    <?php endif ?>
+                    <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+                    <?php if ($_taxvat->isEnabled()): ?>
+                        <li>
+                            <?php echo $_taxvat->setTaxvat($this->getQuote()->getCustomerTaxvat())->setFieldIdFormat('billing:%s')->setFieldNameFormat('billing[%s]')->toHtml() ?>
+                        </li>
+                    <?php endif ?>
+                    <?php $registrationMode = Mage::getStoreConfig('firecheckout/general/registration_mode');
+                    if ('optional' == $registrationMode) : ?>
+                        <li class="control">
+                            <input type="checkbox" name="billing[register_account]" value="1" title="<?php echo $this->__('Create account for later use') ?>" id="billing:register_account" onchange="if(window.billing) billing.setCreateAccount(this.checked);"<?php if ($this->getAddress()->getRegisterAccount()):?> checked="checked"<?php endif;?> class="checkbox" /><label for="billing:register_account"><?php echo $this->__('Create account for later use') ?></label>
+                        </li>
+                    <?php else: ?>
+                        <li>
+                            <input type="hidden" name="billing[register_account]" value="1"/>
+                        </li>
+                    <?php endif ?>
+                    <li class="fields" id="register-customer-password" <?php if ('optional' == $registrationMode || 'hidden' == $registrationMode) : ?>style="display: none;" <?php endif; ?>>
+                        <div class="field">
+                            <label for="billing:customer_password" class="required"><em>*</em><?php echo $this->__('Password') ?></label>
+                            <div class="input-box">
+                                <input type="password" name="billing[customer_password]" id="billing:customer_password" title="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="billing:confirm_password" class="required"><em>*</em><?php echo $this->__('Confirm Password') ?></label>
+                            <div class="input-box">
+                                <input type="password" name="billing[confirm_password]" title="<?php echo $this->__('Confirm Password') ?>" id="billing:confirm_password" class="input-text required-entry validate-cpassword" />
+                            </div>
+                        </div>
+                    </li>
+                <?php endif; ?>
+                <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()):?>
+                    <li class="control">
+                        <input type="checkbox" name="billing[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="billing:save_in_address_book" <?php if ($this->getAddress()->getSaveInAddressBook()):?> checked="checked"<?php endif;?> class="checkbox" /><label for="billing:save_in_address_book"><?php echo $this->__('Save in address book') ?></label>
+                    </li>
+                <?php else:?>
+                    <li class="no-display"><input type="hidden" name="billing[save_in_address_book]" value="1" /></li>
+                <?php endif; ?>
+            </ul>
+        </fieldset>
+    </li>
+	</ul>
+	
+	
+	
+	<div class="catalog-gift" style="display:block">
+	<?php $_helper = $this->helper('catalog/output'); ?>
+	<?php
+				$_productCollection_1 = Mage::getModel('catalog/product')->getCollection()
+							->addCategoryFilter(Mage::getModel('catalog/category')->load(143),true)
+							->addAttributeToFilter('visibility',2)
+							->addAttributeToSelect('*')
+							->addAttributeToSort('entity_id', 'ASC')
+							->setPageSize(8)
+							->setCurPage(1)
+							->load();
+
+				Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_1);
+				Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_1);
+				?>
+						
+	
+		<div class="saidongxi">
+		  
+		  <div class="alert">
+		   根据您此次选购的商品，您还可以选择以下8个尊享试用装中的1个作为赠品：
+		  </div>
+			<?php $i=0; foreach ($_productCollection_1 as $_product): ?>
+			
+			 <div class="Radio-contan">
+			  <input type="radio" name="chooseFree" class="cartradio" value="<?php echo $_product->getId(); ?>" /><span class="radioName"><?php echo $this->htmlEscape($_product->getName()) ?></span>
+			  <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(100); ?>" width="100" height="100" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+			  
+			 </div>
+			 
+			<?php endforeach ?>
+		</div>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+    
+    <?php if (!$this->canShip() || !Mage::getStoreConfig('firecheckout/general/shipping_address')): ?>
+        <input type="hidden" name="billing[use_for_shipping]" value="1" />
+    <?php else: ?>
+        <input type="hidden" name="billing[use_for_shipping]" id="billing:use_for_shipping" value="<?php if ($this->isUseBillingAddressForShipping()):?>1<?php else:?>0<?php endif; ?>" />
+    <?php endif; ?>
+    <script type="text/javascript">
+    //<![CDATA[
+        var billing = new Billing();
+        RegionUpdater.prototype.setMarkDisplay = function(){};
+        ZipUpdater.prototype._setPostcodeOptional = function(){};
+        var billingRegionUpdater = new RegionUpdater('billing:country_id', 'billing:region', 'billing:region_id', countryRegions, undefined, 'billing:postcode');
+    //]]>
+    </script>
+</div>

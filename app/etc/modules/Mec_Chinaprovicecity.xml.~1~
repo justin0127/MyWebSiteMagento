@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mec_Chinaprovicecity>
+            <active>false</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mec_Chinaprovice />
+	    </depends>
+        </Mec_Chinaprovicecity>
+    </modules>
+</config>
+

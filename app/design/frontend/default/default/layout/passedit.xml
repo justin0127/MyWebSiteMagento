@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout>
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="customer"><name>passedit</name><path>mec/index/passedit/</path><label>Pass Edit</label></action>
+        </reference>
+    </customer_account>
+    
+    <mec_index_passedit>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="mec/passedit" name="passedit" template="passedit/passedit.phtml" />
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </mec_index_passedit>
+	
+</layout>

@@ -1,0 +1,975 @@
+
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+    
+    
+	function checkSaleable($_product, $elenment) {  //check child product qty
+		$assoc_products = array();
+		$associated_prods = $_product->getTypeInstance()->getUsedProducts();
+		foreach ($associated_prods as $assoc_product) {
+			//Creates the saleable associated products object array.
+			if ($assoc_product->isSaleable()) {
+				$OptionValue = $assoc_product[$elenment];
+				$Id = $assoc_product->getId();
+				$child_product = Mage::getModel('catalog/product')->load($Id);
+				$Qty = Mage::getModel('cataloginventory/stock_item')->loadByProduct($child_product)->getQty();
+				$assoc_products[$OptionValue] = $Qty;
+				//$assoc_products[] = $assoc_product;
+			}
+		}
+		return $assoc_products;
+
+	}
+    
+    
+?>
+<?php  if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = 2?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid Listul">
+        <?php endif ?>
+		
+             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>" >
+		
+			 	 <?php if($_product->getTypeId() =='configurable'){ ?>
+			  <form action="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>checkout/cart/add/uenc/aHR0cDovL3poYW94aW4uY29tL21hZ2VudG8xNDExL2RlbW8xL3Rlc3QxLmh0bWw,/product/<?php echo $_product->getId(); ?>" id="product_addtocart_form" method="post" >
+			 <?php } ?>
+			<div class="product-list-img">
+               <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" target="_blank"><img style="float:left"  src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(190,200); ?>" width="190" height="200" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+			 </div>
+			   
+			    <h1 class="list-english-name"><?php echo $_helper->productAttribute($_product, $_product->getEnglishName(), 'english_name') ?></h1>
+			   <h2 class="product-function">
+			   
+			   
+			   <?php $ProName= $_product->getFunction(); ?>
+				 <?php $mbProName=mb_substr($ProName,"0","15","UTF-8");
+				 //mb_substr($ProName,"0","10","UTF-8"); ?>	
+				 <?php echo $mbProName ?>
+				</h2>
+			   
+                <span class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></span>
+              
+				<?php if($_product->getCapacity()&&$_product->getTypeId() !='configurable') { ?>
+				<div class="Listrongliang">
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span><span>-</span>
+				</div>
+				<?php } ?>
+				
+				
+				<?php if($_product->isSaleable()){ ?> 
+				    <?php echo $this->getPriceHtml($_product, true) ?>
+				<?php }else{ ?>
+				  <?php if($_product->getTypeId() =='configurable'){ ?>
+				        
+					<div class="newListrongliang">
+						<?php echo $_helper->productAttribute($_product, $_product->getCOutofPrice(), 'c_outof_price ') ?>
+					</div>
+					
+				   <?php }else{ ?>
+					<?php echo $this->getPriceHtml($_product, true) ?>
+				   <?php } ?>
+				<?php } ?>
+			
+				
+				<!--抓取可设置商品的价格并做成下拉形式（在分类页中） -->
+				<!-- getAttributeId() == '145' 是香水系列的 -->
+				<!-- getAttributeId() == '80'  是彩妆系列的 -->
+				
+              <?php if($_product->getTypeId() =='configurable') { ?>
+				<?php $_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product); ?>
+				   <?php foreach($_attributes as $_attribute) { ?>
+				   <?php //var_dump($_attribute);
+				   //exit;
+				   ?>
+					 <?php if($_attribute->getAttributeId() == '145') { ?>
+										 <!-- get options -->
+										<?php //echo $_product->isSaleable() ?>
+										<?php //echo count($_attributes) ?>
+										
+										<?php
+										//$ChildProducts = checkSaleable($_product);
+										//var_dump($ChildProducts);
+										//exit;
+										?>
+										
+										<?php if ($_product->isSaleable() && count($_attributes)):?>
+										<dl style="display: none ">
+										
+										<dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+										<dd <?php if ($_attribute->decoratedIsLast){?> class="last" <?php }?>>
+										<!-- xxx -->
+										<select
+										name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"
+										id="attribute<?php echo $_attribute->getAttributeId() ?>"
+										class="required-entry super-attribute-select">
+										</select></dd>
+										
+										</dl>
+										<?php //echo '123'; ?>
+										<input type="hidden" name="jiage" value="on"/>
+										<input type="hidden" name="product" value="<?php echo $_product->getId() ?>"/>
+										<input type="hidden" name="qty" value="1"/>
+										<input type="hidden" name="related_product" value=""/>
+										<input type="hidden" name="type" value="0" id='buttontype'/>
+										
+										<?php //echo $_attribute->getAttributeId() ?>
+										
+										<script type="text/javascript">
+										function setPoint(optionid, proid) {
+										var oid = proid + 'op145';
+										var pid = proid + 'productid';
+											$(oid).value = optionid;
+											$(pid).value = proid;
+											//alert(optionid);
+										}
+										</script>
+										<?php //echo '123'; ?>
+										<?php 
+										$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'rongliang');
+										$allPoints = $attribute->getSource()->getAllOptions(true, true);
+										$pointcolumn = count($allPoints);
+										$IdArr = array();
+										//$ProductInfo = Mage::getModel('catalog/product')->load($productId);
+										$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+										$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+										$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+										$product_id = $_product->getId();
+										Mage::app();
+										$link = mysql_connect('localhost', $username, $password);
+										if (!$link) {
+										die('Not connected : ' . mysql_error());
+										}//end if
+										$db_selected = mysql_select_db($dbname, $link);
+										if (!$db_selected) {
+										die ('Can\'t use foo : ' . mysql_error());
+										}else{
+										//echo $product_id;
+										
+										$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='145'",
+										mysql_real_escape_string($product_id));
+										//echo $query;
+										$result = mysql_query($query); 
+										if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+										}//end if 
+										while ($row = mysql_fetch_assoc($result)) {
+										$ProAttId = $row['product_super_attribute_id'];
+										}
+										//var_dump($ProAttId);
+										?>
+										<?php //echo '456'; ?>
+										<div class='size-color'>
+										<div style="width: 195px;" id="PointDiv">
+										<!-- xxx2 -->
+										<select onchange="setPoint(this.options[this.options.selectedIndex].value, <?php echo $product_id; ?>)">
+										<?php foreach ($allPoints as $point) : ; $pointlabel=$point['label']; $pointid=$point['value'];  ?>
+										<?php if($pointlabel != NULL) { ?>
+										
+										
+										<?php
+										$product_super_attribute_id = $ProAttId;
+										$value_index = $point['value'];
+										
+										$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+											mysql_real_escape_string($product_super_attribute_id),
+											mysql_real_escape_string($value_index));
+										
+										$result = mysql_query($query); 
+										if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+										}//end if 
+										while ($row = mysql_fetch_assoc($result)) {
+										$PriceValue = $row['pricing_value'];
+										}
+										
+										//$PriceValue = 0;
+										if($PriceValue != 0) {
+										$PriceValue = number_format($PriceValue, 2, '.', '');
+										$IdArr[] = $pointid;
+										?>
+										<?php $PriceValue = number_format($PriceValue, 2, '.', ''); ?>
+										<?php
+										$ChildProducts = checkSaleable($_product, 'rongliang');
+										if ($ChildProducts[$pointid] != NULL) {
+										?>
+										<option id="<?php echo $pointid; ?>" name="jiage" value="<?php echo $pointid; ?>" ><?php echo $pointlabel." - ￥".$PriceValue; ?></option>
+										<?php }else{ ?>
+										<!--<option id="<?php //echo $pointid; ?>" style="display:none; visible:hidden; "  name="jiage" value="<?php //echo $pointid; ?>" ><?php //echo $pointlabel." - ￥".$PriceValue; ?>(已售罄)</option>-->
+										<?php } ?>
+										
+										<?php
+										}
+										$PriceValue = 0;
+										?>
+										<?php } ?>
+										<?php endforeach ;?>
+										</select>
+										
+										</div>
+
+									
+										</div>
+
+										<?php
+										}
+										mysql_close($link);
+										?>
+										
+										<input id="<?php echo $_product->getId() ?>op145" type="hidden" name="super_attribute[145]" value="<?php echo $IdArr['0'] ?>"/>
+										
+										<?php endif;?>
+										<div class="clear"></div>
+										<!-- end get options -->		
+								<?php } ?>
+						<?php if($_attribute->getAttributeId() == '80') { ?>
+								<!-- get options -->
+					<?php //echo $_product->isSaleable() ?>
+					<?php //echo count($_attributes) ?>
+					<?php if ($_product->isSaleable() && count($_attributes)):?>
+					<dl style="display: none ">
+					
+					<dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+					<dd <?php if ($_attribute->decoratedIsLast){?> class="last" <?php }?>>
+					<!-- xxx3 -->
+					<select
+					name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"	id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+					</select></dd>
+					
+					</dl>
+					<?php //echo '123'; ?>
+					<input type="hidden" name="jiage" value="on"/>
+		    		<input type="hidden" name="product" value="<?php echo $_product->getId() ?>"/>
+					<input type="hidden" name="qty" value="1"/>
+					<input type="hidden" name="related_product" value=""/>
+					<input type="hidden" name="type" value="0" id='buttontype'/>
+					<input id="op<?php echo $_attribute->getAttributeId() ?>" type="hidden" name="super_attribute[80]" value="16"/>	
+					<?php //echo $_attribute->getAttributeId() ?>
+					
+						<script type="text/javascript">
+						function setPoint(optionid, proid) {
+						var oid = proid + 'op80';
+						var pid = proid + 'productid';
+							$(oid).value = optionid;
+							$(pid).value = proid;
+							//alert(optionid);
+						}
+						</script>
+					<?php //echo '123'; 
+					//$ChildProducts = checkSaleable($_product, 'color');
+					//var_dump($ChildProducts);
+					?>
+					<?php 
+					$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'color');
+					$allPoints = $attribute->getSource()->getAllOptions(true, true);
+
+					$pointcolumn = count($allPoints);
+					$IdArr = array();
+					//$ProductInfo = Mage::getModel('catalog/product')->load($productId);
+					$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+					$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+					$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+					$product_id = $_product->getId();
+					Mage::app();
+					$link = mysql_connect('localhost', $username, $password);
+					if (!$link) {
+					die('Not connected : ' . mysql_error());
+					}//end if
+					$db_selected = mysql_select_db($dbname, $link);
+					if (!$db_selected) {
+					die ('Can\'t use foo : ' . mysql_error());
+					}else{
+					//echo $product_id;
+					
+					$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='80'",
+					mysql_real_escape_string($product_id));
+					$result = mysql_query($query); 
+					if (!$result) {
+					$message = 'Invalid query: ' . mysql_error() . "\n";
+					$message .= 'Whole query: ' . $query;
+					die($message);
+					}//end if 
+					while ($row = mysql_fetch_assoc($result)) {
+					$ProAttId = $row['product_super_attribute_id'];
+					}
+					
+					?>
+					<?php 	//echo '456'; ?>
+					<div class='size-color'>
+					<div style="width: 195px;" id="PointDiv">
+					<!-- xxx4 -->
+					<select id='select<?php echo $product_id; ?>' onchange="setPoint(this.options[this.options.selectedIndex].value, <?php echo $product_id; ?>)">
+					<?php foreach ($allPoints as $point) : ; $pointlabel=$point['label']; $pointid=$point['value'];  ?>
+					<?php if($pointlabel != NULL) { ?>
+					
+					
+					<?php
+					$product_super_attribute_id = $ProAttId;
+					$value_index = $point['value'];
+					
+					$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+				        mysql_real_escape_string($product_super_attribute_id),
+				        mysql_real_escape_string($value_index));
+					$result = mysql_query($query); 
+					if (!$result) {
+					$message = 'Invalid query: ' . mysql_error() . "\n";
+					$message .= 'Whole query: ' . $query;
+					die($message);
+					}//end if 
+					while ($row = mysql_fetch_assoc($result)) {
+					$PriceValue = $row['pricing_value'];
+					
+					}
+					
+					//$PriceValue = 0;
+					if( isset($PriceValue)){
+						if($PriceValue != 0 ) {
+						$PriceValue = number_format($PriceValue, 2, '.', '');
+						$IdArr[] = $pointid;
+						?>
+						<?php $PriceValue = number_format($PriceValue, 2, '.', ''); ?>
+						<?php
+						$ChildProducts = checkSaleable($_product, 'color');
+						//var_dump($ChildProducts);
+						
+						if (isset($ChildProducts[$pointid]) ) {
+						?>
+						<option id="<?php echo $pointid; ?>" name="jiage" value="<?php echo $pointid; ?>" ><?php echo $pointlabel." - ￥".$PriceValue; ?></option>
+						<?php }else{ ?>
+						<!--<option id="<?php //echo $pointid; ?>" name="jiage" value="<?php //echo $pointid; ?>" style="display:none;" ><?php //echo $pointlabel." - ￥".$PriceValue; ?>(已售罄)</option>-->
+						<?php } ?>
+						<?php
+						
+						
+						
+						
+						}
+					}
+					$PriceValue = 0;
+					?>
+					<?php } ?>
+					<?php endforeach ;?>
+					</select>
+					<script>
+						//$(<?php echo $product_id; ?>+ 'op80').value = document.getElementById('select<?php echo $product_id; ?>').options[0].value;
+						//$(<?php echo $product_id; ?>+ 'productid').value = <?php echo $product_id; ?>;
+					</script>
+					
+					</div>
+
+				
+					</div>
+
+					<?php
+					}
+					mysql_close($link);
+					?>
+					<input id="<?php echo $_product->getId() ?>op80" type="hidden" name="super_attribute[80]" value="<?php echo $IdArr['0'] ?>"/>
+					
+					<?php endif;?>
+					<div class="clear"></div>
+					<!-- end get options -->
+								
+						<?php } ?>
+								
+					 <?php } ?>
+				<?php } ?>
+				
+				
+						
+				
+				
+				
+			
+				
+				<!--结束抓取可设置商品的价格（在分类页中）xxx -->
+				
+				
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+					<?php if($_product->getTypeId() =='configurable'){ ?>
+						<input  onclick="setPoint(document.getElementById('select<?php echo $product_id; ?>').options[0].value, <?php echo $product_id; ?>)" type="submit" value="" class="button btn-cart" />
+					 <?php }else{ ?> 
+					
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>')"><span><span><?php echo $this->__('') ?></span></span></button>
+					<?php } ?>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                  
+                </div>
+				<div class="ListDetial">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>">
+				<?php echo $this->__('详情 >>') ?> 
+				</a>
+				</div>
+			
+		<?php if($_product->getTypeId() =='configurable'){ ?>
+			</form>
+		<?php } ?>
+		
+		
+			 <div id="pro-info-<?php echo $i;?>" class="product-list-detailbg">
+			   <?php if($_product->getTypeId() =='configurable'){ ?>
+			  <form action="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>checkout/cart/add/uenc/aHR0cDovL3poYW94aW4uY29tL21hZ2VudG8xNDExL2RlbW8xL3Rlc3QxLmh0bWw,/product/<?php echo $_product->getId(); ?>" id="product_addtocart_form" method="post" >
+			 <?php } ?>
+				
+				<div class="product-list-top">
+				
+				<!--抓套装商品简介 -->
+					<?php if($_product->getSuitds()){ ?>
+					
+					<div class="suit-ds">
+						<?php echo $_helper->productAttribute($_product, nl2br($_product->getSuitds()), 'suitds') ?>
+					</div>
+					<?php } ?>
+				<!-- 结束 -->
+				
+				
+					<div class="product-list-img">
+					  <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(190,200); ?>" width="190" height="200" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+					</div>
+				<div class="product-list-right2">
+					
+				
+					<div class="product-list-img2">
+						
+					    <?php 
+					        $itsProducts = array();
+					        $ii = 0;
+					        foreach ($_product->getRelatedLinkCollection() as $link) {
+                                $ii++;
+                                if ($ii>2) break;
+                                    
+                                $relatedData[$link->getLinkedProductId()]['position'] = $link->getPosition();
+                                $relatedProduct = Mage::getModel('catalog/product')->load($link->getLinkedProductId());  ?>
+						
+							
+
+					<div class="product-list-Imgall">
+					<div class="product-list-img2">
+					  <a href="<?php echo $relatedProduct->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($relatedProduct, 'small_image'), null, true) ?>" class="product-image2" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($relatedProduct, 'small_image')->resize(85,100); ?>" width="85" height="100" alt="<?php echo $this->stripTags($this->getImageLabel($relatedProduct, 'small_image'), null, true) ?>" /></a>
+					</div>
+					
+					<div class="list-product-contain2">
+					<h2 class="product-name2"><a href="<?php echo $relatedProduct->getProductUrl() ?>" title="<?php echo $this->stripTags($relatedProduct->getName(), null, true) ?>" target="_blank"><?php echo $_helper->productAttribute($relatedProduct, $relatedProduct->getName(), 'name') ?></a></h2>
+					</div>
+					</div>
+                         <?php } ?>
+					</div>
+					
+					<div class="list-rec" >
+					搭配使用产品
+					</div>
+					
+				</div>
+				</div>	
+				
+				
+				<div class="product-list-middle">
+				
+					<!--抓套装商品简介 -->
+					<?php if($_product->getSuitls()){ ?>
+					
+					<div class="suit-ls">
+						<?php echo $_helper->productAttribute($_product, nl2br($_product->getSuitls()), 'suitds') ?>
+					</div>
+					<?php } ?>
+				<!-- 结束 -->
+					
+					
+					<div class="list-viewblock">
+						<?php echo $_helper->productAttribute($_product, nl2br($_product->getXiangshui()), 'xiangshui') ?>
+					</div>
+					
+				  <?php if($_product->getTypeId() !='configurable') { ?>
+					<?php if($_product->getCapacity()){ ?>
+					<div class="list-rongliang">
+					产品容量：
+					<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span>
+					</div>
+					<?php } ?>
+				 <?php } ?>		
+					<?php if ($_product->getActiveIngredient()):?>
+					<div class="list-ProductviewDS">
+						<span>活性成分：</span>
+						<div class="list-viewblock">
+						<?php echo $_helper->productAttribute($_product, nl2br($_product->getActiveIngredient()), 'active_ingredient') ?>
+						</div>
+						
+					</div>
+					<?php endif;?>
+					
+					
+				</div>
+				<div class="rongliang-jiage">
+				
+					<div class="r-j-all">
+				  <?php if($_product->getTypeId() !='configurable') { ?>
+					 <?php if($_product->getCapacity()){ ?>
+					 <span class="rongliang-jiage-rongliang"><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?>-</span>
+					 <?php } ?>
+				  <?php } ?>
+				
+				
+				
+				
+				
+				<!--抓取可设置商品的价格并做成下拉形式（在放大镜中） -->
+				<!-- getAttributeId() == '145' 是香水系列的 -->
+				<!-- getAttributeId() == '80'  是彩妆系列的 -->
+				
+              <?php if($_product->getTypeId() =='configurable') { ?>
+				<?php $_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product); ?>
+				   <?php foreach($_attributes as $_attribute) { ?>
+				   <?php //var_dump($_attribute);
+				   //exit;
+				   ?>
+					 <?php if($_attribute->getAttributeId() == '145') { ?>
+										 <!-- get options -->
+										<?php //echo $_product->isSaleable() ?>
+										<?php //echo count($_attributes) ?>
+										<?php if ($_product->isSaleable() && count($_attributes)):?>
+										<dl style="display: none ">
+										
+										<dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+										<dd <?php if ($_attribute->decoratedIsLast){?> class="last" <?php }?>>
+										<!-- xxx5 -->
+										<select
+										name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"
+										id="attribute<?php echo $_attribute->getAttributeId() ?>"
+										class="required-entry super-attribute-select">
+										</select></dd>
+										
+										</dl>
+										<?php //echo '123'; ?>
+										<input type="hidden" name="jiage" value="on"/>
+										<input type="hidden" name="product" value="<?php echo $_product->getId() ?>"/>
+										<input type="hidden" name="qty" value="1"/>
+										<input type="hidden" name="related_product" value=""/>
+										<input type="hidden" name="type" value="0" id='buttontype'/>
+										<input id="op<?php echo $_attribute->getAttributeId() ?>" type="hidden" name="super_attribute[145]" value="16"/>	
+										<?php //echo $_attribute->getAttributeId() ?>
+										
+										<script type="text/javascript">
+										function setPointfd(optionid, proid) {
+										var oid = proid + 'op145fd';
+										var pid = proid + 'productid';
+											$(oid).value = optionid;
+											$(pid).value = proid;
+											//alert(optionid);
+										}
+										</script>
+										<?php //echo '123'; ?>
+										<?php 
+										$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'rongliang');
+										$allPoints = $attribute->getSource()->getAllOptions(true, true);
+										$pointcolumn = count($allPoints);
+										$IdArr = array();
+										//$ProductInfo = Mage::getModel('catalog/product')->load($productId);
+										$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+										$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+										$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+										$product_id = $_product->getId();
+										Mage::app();
+										$link = mysql_connect('localhost', $username, $password);
+										if (!$link) {
+										die('Not connected : ' . mysql_error());
+										}//end if
+										$db_selected = mysql_select_db($dbname, $link);
+										if (!$db_selected) {
+										die ('Can\'t use foo : ' . mysql_error());
+										}else{
+										//echo $product_id;
+										
+										$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='145'",
+										mysql_real_escape_string($product_id));
+										$result = mysql_query($query); 
+										if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+										}//end if 
+										while ($row = mysql_fetch_assoc($result)) {
+										$ProAttId = $row['product_super_attribute_id'];
+										}
+										
+										?>
+										<?php //echo '456'; ?>
+										<div class='size-color'>
+										<div style="width: 195px;" id="PointDiv">
+										<!-- xxx6 -->
+										<select onchange="setPointfd(this.options[this.options.selectedIndex].value, <?php echo $product_id; ?>)">
+										<?php foreach ($allPoints as $point) : ; $pointlabel=$point['label']; $pointid=$point['value'];  ?>
+										<?php if($pointlabel != NULL) { ?>
+									
+										
+										<?php
+										$product_super_attribute_id = $ProAttId;
+										$value_index = $point['value'];
+										
+										$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+											mysql_real_escape_string($product_super_attribute_id),
+											mysql_real_escape_string($value_index));
+										$result = mysql_query($query); 
+										if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+										}//end if 
+										while ($row = mysql_fetch_assoc($result)) {
+										$PriceValue = $row['pricing_value'];
+										
+										}
+										
+										//$PriceValue = 0;
+										if($PriceValue != 0) {
+										$PriceValue = number_format($PriceValue, 2, '.', '');
+										$IdArr[] = $pointid;
+										?>
+										<?php $PriceValue = number_format($PriceValue, 2, '.', ''); ?>
+											<?php
+											$ChildProducts = checkSaleable($_product, 'rongliang');
+											//var_dump($ChildProducts);
+											if ($ChildProducts[$pointid] != NULL) {
+											?>
+											<option id="<?php echo $pointid; ?>" name="jiage" value="<?php echo $pointid; ?>" ><?php echo $pointlabel." - ￥".$PriceValue; ?></option>
+											<?php }else{ ?>
+											<!--<option id="<?php //echo $pointid; ?>" name="jiage" value="<?php //echo $pointid; ?>" style="display:none;" ><?php //echo $pointlabel." - ￥".$PriceValue; ?>(已售罄)</option>-->
+											<?php } ?>
+										
+										
+										
+										<?php
+										}
+										$PriceValue = 0;
+										?>
+										<?php } ?>
+										<?php endforeach ;?>
+										</select>
+									
+										
+										
+										</div>
+
+										<script>
+										
+										var pointidLast ='PointId' + <?php echo $pointid; ?>;
+										SelectPoint(pointidLast);
+										</script>
+										</div>
+
+										<?php
+										}
+										mysql_close($link);
+										?>
+										<input id="<?php echo $_product->getId() ?>op145fd" type="hidden" name="super_attribute[145]" value="<?php echo $IdArr['0'] ?>"/>
+										
+										<?php endif;?>
+										<div class="clear"></div>
+										<!-- end get options -->		
+								<?php } ?>
+						<?php if($_attribute->getAttributeId() == '80') { ?>
+								<!-- get options -->
+					<?php //echo $_product->isSaleable() ?>
+					<?php //echo count($_attributes) ?>
+					<?php if ($_product->isSaleable() && count($_attributes)):?>
+					<dl style="display: none ">
+					
+					<dt><label><?php echo $_attribute->getLabel() ?><span class="required">&nbsp;*</span></label></dt>
+					<dd <?php if ($_attribute->decoratedIsLast){?> class="last" <?php }?>>
+					<!-- xxx7 -->
+					<select
+					name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"	id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+					</select></dd>
+					
+					</dl>
+					<?php //echo '123'; ?>
+					<input type="hidden" name="jiage" value="on"/>
+		    		<input type="hidden" name="product" value="<?php echo $_product->getId() ?>"/>
+					<input type="hidden" name="qty" value="1"/>
+					<input type="hidden" name="related_product" value=""/>
+					<input type="hidden" name="type" value="0" id='buttontype'/>
+					<input id="op<?php echo $_attribute->getAttributeId() ?>" type="hidden" name="super_attribute[80]" value="16"/>	
+					<?php //echo $_attribute->getAttributeId() ?>
+					
+					<script type="text/javascript">
+						function setPointfd(optionid, proid) {
+						var oid = proid + 'op80fd';
+						var pid = proid + 'productid';
+							$(oid).value = optionid;
+							$(pid).value = proid;
+							//alert(optionid);
+						}
+						</script>
+					<?php //echo '123'; ?>
+					<?php 
+					$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'color');
+					$allPoints = $attribute->getSource()->getAllOptions(true, true);
+					$pointcolumn = count($allPoints);
+					$IdArr = array();
+					//$ProductInfo = Mage::getModel('catalog/product')->load($productId);
+					$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+					$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+					$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+					$product_id = $_product->getId();
+					Mage::app();
+					$link = mysql_connect('localhost', $username, $password);
+					if (!$link) {
+					die('Not connected : ' . mysql_error());
+					}//end if
+					$db_selected = mysql_select_db($dbname, $link);
+					if (!$db_selected) {
+					die ('Can\'t use foo : ' . mysql_error());
+					}else{
+					//echo $product_id;
+					
+					$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='80'",
+					mysql_real_escape_string($product_id));
+					$result = mysql_query($query); 
+					if (!$result) {
+					$message = 'Invalid query: ' . mysql_error() . "\n";
+					$message .= 'Whole query: ' . $query;
+					die($message);
+					}//end if 
+					while ($row = mysql_fetch_assoc($result)) {
+					$ProAttId = $row['product_super_attribute_id'];
+					}
+					
+					?>
+					<?php //echo '456'; ?>
+					<div class='size-color'>
+					<div style="width: 195px;" id="PointDiv">
+					<!-- xxx8 xxx -->
+					<select id="select<?php echo $product_id; ?>" onchange="setPointfd(this.options[this.options.selectedIndex].value, <?php echo $product_id; ?>);">
+					<?php foreach ($allPoints as $point) : ; $pointlabel=$point['label']; $pointid=$point['value'];  ?>
+					<?php if($pointlabel != NULL) { ?>
+					
+					
+					<?php
+					$product_super_attribute_id = $ProAttId;
+					$value_index = $point['value'];
+					
+					$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+				        mysql_real_escape_string($product_super_attribute_id),
+				        mysql_real_escape_string($value_index));
+					$result = mysql_query($query); 
+					if (!$result) {
+					$message = 'Invalid query: ' . mysql_error() . "\n";
+					$message .= 'Whole query: ' . $query;
+					die($message);
+					}//end if 
+					while ($row = mysql_fetch_assoc($result)) {
+					$PriceValue = $row['pricing_value'];
+					
+					}
+					
+					//$PriceValue = 0;
+					if($PriceValue != 0) {
+					$PriceValue = number_format($PriceValue, 2, '.', '');
+					$IdArr[] = $pointid;
+					?>
+					<?php $PriceValue = number_format($PriceValue, 2, '.', ''); ?>
+						<?php
+						$ChildProducts = checkSaleable($_product, 'color');
+						//var_dump($ChildProducts);
+						if (isset($ChildProducts[$pointid])) {  //todo
+						?>
+						<option id="<?php echo $pointid; ?>" name="jiage" value="<?php echo $pointid; ?>" ><?php echo $pointlabel." - ￥".$PriceValue; ?></option>
+						<?php }else{ ?>
+						<!--<option id="<?php //echo $pointid; ?>" name="jiage" value="<?php //echo $pointid; ?>" style="display:none;" ><?php //echo $pointlabel." - ￥".$PriceValue; ?>(已售罄)</option>-->
+						<?php } ?>
+
+				 
+					
+					<?php
+					}
+					$PriceValue = 0;
+					?>
+					<?php } ?>
+					<?php endforeach ;?>
+					</select>
+					
+					
+					
+					</div>
+
+				
+					</div>
+
+					<?php
+					}
+					mysql_close($link);
+					?>
+					<input id="<?php echo $_product->getId() ?>op80fd" type="hidden" name="super_attribute[80]" value="<?php echo $IdArr['0'] ?>"/>
+					<?php endif;?>
+					<div class="clear"></div>
+					<!-- end get options -->
+								
+						<?php } ?>
+								
+					 <?php } ?>
+				<?php }else{ ?>
+					<?php if($_product->isSaleable()){ ?>
+						<?php echo $this->getPriceHtml($_product, true) ?>
+					<?php }else{  ?>
+					
+						<?php //var_dump($_product); ?>
+						<div class="price-box">
+						 <span class="price">
+						 ￥<?php echo number_format($_product->getPrice(), 2, '.', ''); ?> <!-- Format price -->
+						 </span>
+						</div>
+					
+					<?php } ?>
+				<?php } ?>
+				
+				<!--结束抓取可设置商品的价格（在分类页中） uuu -->
+				
+				
+				
+				
+				
+					</div>
+				</div>
+				<div class="product-list-bottom ">
+					<div class="list-detail"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>">
+				<span><?php echo $this->__('详情') ?> </span>
+				</a></div>
+					<div class="list-div-button">
+					<?php if($_product->getTypeId() =='configurable'){ ?>
+						 <?php if($_product->isSaleable()){ ?>
+						  <input type="submit" value="" class="button btn-cart" />
+						 <?php }else{ ?>
+						  <div class="FDnewListrongliang">
+						  <?php echo $_helper->productAttribute($_product, $_product->getCOutofPrice(), 'c_outof_price ') ?>
+						  </div>
+						  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+						 <?php } ?>
+					 <?php }else{ ?> 
+						<?php if($_product->isSaleable()){ ?>
+							<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>')"><span><span><?php echo $this->__('') ?></span></span></button>
+						<?php }else{ ?>
+								  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+						<?php } ?>
+					  <?php } ?>
+					</div>
+				
+				</div>
+			
+				
+			<!--放大镜里面的form结束标签 -->
+			 <?php if($_product->getTypeId() =='configurable'){ ?>
+			 </form>
+			 <?php } ?>
+				
+				</div>
+			<!-- 分类产品结束form标签 -->
+		
+            </li>
+			
+			
+			
+		<script type="text/javascript">
+           decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])
+        
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(){
+                    if (this.validator.validate()) {
+                    
+                            this.form.submit();
+                    }
+            }.bind(productAddToCartForm);
+            function setHidden(type){
+            $('buttontype').value = type;
+            //alert(type);
+            }     
+        </script>
+    
+			
+			
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+
+
+<script>
+jQuery('.products-grid li').each(
+function(index){
+      jQuery(this).hover(
+              function(event){
+                   //jQuery('select', this).hover{function(event){event.stopPropagation();}, function(event){event.stopPropagation();}};
+                  //jQuery('.product-list-detailbg',this).show();   
+                   
+             },
+             function(event){      
+                 if  (jQuery(event.target)[0].tagName == 'SELECT')       
+                     return; 
+                 if  (jQuery(event.target)[0].tagName == 'OPTION')       
+                     return;                     
+                 jQuery(this).removeClass('zindex100');
+                 jQuery(this).parent().removeClass('zindex100').addClass('zindex0');
+                 jQuery('*',this).removeClass('zindex100');
+                 jQuery(this).addClass('zindex0');
+                 jQuery('*',this).addClass('zindex0');                  
+                 jQuery('.product-list-detailbg',this).hide();
+             }
+     );
+     
+    jQuery('.product-list-img',this).hover(function(){ 
+                  var li = jQuery(this).parents('li');
+                  jQuery(li).addClass('zindex100');
+                  jQuery(li).parent().removeClass('zindex0').addClass('zindex100');
+                  jQuery('*',li).addClass('zindex100');                     
+                  jQuery(li).removeClass('zindex0');
+                  jQuery('*',li).removeClass('zindex0');          
+
+                 jQuery('.product-list-detailbg',li).show();
+        
+        } );  
+});
+
+jQuery(function(){
+    jQuery('.products-grid li, .products-grid').each(
+    function(index){
+          jQuery('.product-list-detailbg',this).hide();
+          jQuery(this).addClass('zindex0').css('zoom','1');
+          jQuery('*',this).addClass('zindex0').css('zoom', '1');
+    });
+})
+
+
+</script>
+
+
+
+

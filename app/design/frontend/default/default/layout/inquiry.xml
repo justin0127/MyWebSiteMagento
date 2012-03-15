@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+	<default>
+		 <reference name="top.links">
+            <action method="addLink" translate="label title" module="inquiry"><label>Delear Inquery</label><url>inquiry/</url><title>Delear Inquery</title><prepare>ture</prepare><urlParams/><position>100</position></action>
+        </reference>
+	</default>
+	
+	<inquiry_index_index>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="inquiry/inquiry" name="inquiry" template="inquiry/inquiry.phtml"/>
+		</reference>
+	</inquiry_index_index>
+	
+	<inquiry_index_thanks>
+		<reference name="root">
+			<action method="setTemplate"><template>inquiry/thanks.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="inquiry/inquiry" name="inquiryThanks" template="inquiry/thanks.phtml"/>
+		</reference>
+	</inquiry_index_thanks>
+
+</layout>

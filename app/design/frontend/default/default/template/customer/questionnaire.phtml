@@ -1,0 +1,698 @@
+	<script>
+function rate(obj,oEvent){
+var imgSrc = '<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>';
+var imgSrc_2 = '<?php echo $this->getSkinUrl('images/icon_star_2.gif') ?>';
+if(obj.rateFlag) return;
+var e = oEvent || window.event;
+var target = e.target || e.srcElement; 
+var imgArray = obj.getElementsByTagName("img");
+for(var i=0;i<imgArray.length;i++){
+   imgArray[i]._num = i;
+   imgArray[i].onclick=function(){
+    if(obj.rateFlag) return;
+    
+	var inputid=this.parentNode.previousSibling
+	inputid.value=this._num+1;
+   }
+}
+if(target.tagName=="IMG"){
+   for(var j=0;j<imgArray.length;j++){
+    
+    if(j<=target._num){
+     imgArray[j].src=imgSrc_2;
+    } else {
+     imgArray[j].src=imgSrc;
+    }
+	target.parentNode.onmouseout=function(){
+	var imgnum=parseInt(target.parentNode.previousSibling.value);
+		for(n=0;n<imgArray.length;n++){
+			imgArray[n].src=imgSrc;
+			document.getElementById('question5').value=n;
+		}
+		for(n=0;n<imgnum;n++){
+			imgArray[n].src=imgSrc_2;
+		}
+	}
+   }
+} else {
+	 return false;
+}
+}
+</script>
+	
+	
+	<?php
+        if (!$_GET){
+	?>
+	<div class="no-poll">立刻购买投票！</div>
+	<?php
+	}else{
+        
+	//解密函数
+	function hex2str($s)   
+	{   
+	$r = "";   
+	for ( $i = 0; $i<strlen($s); $i += 2)   
+	{   
+	$x1 = ord($s{$i});   
+	$x1 = ($x1>=48 && $x1<58) ? $x1-48 : $x1-97+10;   
+	$x2 = ord($s{$i+1});   
+	$x2 = ($x2>=48 && $x2<58) ? $x2-48 : $x2-97+10;   
+	$r .= chr((($x1 << 4) & 0xf0) | ($x2 & 0x0f));   
+	}   
+	return $r;   
+	}   
+	
+	/**************************  
+	* 函数功能:解密函数  
+	***************************/  
+	FUNCTION DeCode($code,$key){   
+	$code=base64_decode($code);   
+	$code = substr($code,strlen($key)+1);   
+	$code = substr($code,0,-(strlen($key)+1));   
+	return $code;   
+	}   
+	// 结束
+	
+	$text = $_GET['id'];
+	//var_dump($_GET['id']);
+	$key="sisley"; 
+	//$id = DeCode($text,$key);
+	$id = $text;
+	//var_dump($id);
+	
+	$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+        $username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+        $password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+	
+	Mage::app();
+	$link = mysql_connect('localhost', $username, $password);
+	mysql_query("SET NAMES 'utf8'");
+       	if (!$link) {
+         die('Not connected : ' . mysql_error());
+       	}//end if
+       	$db_selected = mysql_select_db($dbname, $link);
+       	if (!$db_selected) {
+         die ('Can\'t use foo : ' . mysql_error());
+       	}else{
+       	       $increment_id = $id;
+       	       $query = sprintf("SELECT question1 FROM sisley_poll WHERE increment_id='%s'",
+               mysql_real_escape_string($increment_id));
+               
+               $result = mysql_query($query); 
+               if (!$result) {
+               $message  = 'Invalid query: ' . mysql_error() . "\n";
+               $message .= 'Whole query: ' . $query;
+               die($message);
+               }//end if 
+               while ($row = mysql_fetch_assoc($result)) {
+               $value = $row['question1'];
+               }
+        $question = $value;
+       	}
+       	if($question){
+       	echo '无效的订单号!';
+       	mysql_close($link);
+       	}else{
+	?>
+	<!-- 开始拿input value JS 代码 -->
+	<script>
+	  function getQ1(){
+	  　var ip="";
+	　　var rPort = document.getElementsByName("age");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('question1').value=ip;
+	  }
+	
+	 function getQ7(){
+	  　var ip="";
+	　　var rPort = document.getElementsByName("share");
+	　　for(i=0;i<rPort.length;i++)
+	　　{
+		　　 if(rPort[i].checked)
+		   　　ip=rPort[i].value;
+	　　}
+		document.getElementById('question7').value=ip;
+	  }
+	  function getQ9(){
+	  document.getElementById('question9').value=document.getElementById('textare1').value
+	  }
+	
+	
+	</script>
+	
+	<?php if(!$_POST) { ?>
+	<form action='' method="post"  id="questionform">
+	<input type="hidden" name="orderid" value="<?php echo $id; ?>">
+	<input type="hidden" name="question1" value="" id="question1"/>
+	<input type="hidden" name="question2" value="" id="question2"/>
+	<input type="hidden" name="question3" value="" id="question3"/>
+	<input type="hidden" name="question4" value="" id="question4"/>
+	<input type="hidden" name="question5" value=""  id="question5"/>
+	<input type="hidden" name="question6" value="" id="question6"/>
+	<input type="hidden" name="question7" value="" id="question7"/>
+	<input type="hidden" name="question8" value="" id="question8"/>
+	<input type="hidden" name="question9" value="" id="question9"/>
+	
+	
+	<!-- 问卷开始 -->
+	<div class="question-all">
+
+   <h1>希思黎网上购物满意度调查问卷</h1>
+   <div class="dear">亲爱的希思黎尊贵会员：</div>
+   <div class="dear-conta">
+  
+   &nbsp;&nbsp;您好！感谢您对希思黎产品的厚爱和选购，为了提高您在网购过程中的满意程度，希望您能抽出宝贵的几分钟完成此份调查问卷。特此感谢您的参与。完整回答问卷后， 将赠送1000积分到您会员账户，您可以用积分在<a style="font-weight: bold;text-decoration: underline;" href="http://www.sisley-beauty.com.cn" target="_blank">希思黎至臻坊社区</a>兑换礼品。
+  
+   </div>
+   
+   <div class="question-question">
+   		<div class="question1">
+         <div class="question1-tit">
+          <b>问题1：您的年龄？</b>
+         </div>
+         <div class="question1-radion">
+         <ul>
+             <li>
+             <input type="radio" name="age" value="25岁以下" onclick="getQ1()" /><span>25岁以下</span>
+             </li>
+             <li>
+             <input type="radio" name="age" value="25-30岁" onclick="getQ1()"/><span>25-30岁</span>
+             </li>
+             <li>
+             <input type="radio" name="age" value="30-40岁" onclick="getQ1()"/><span>30-40岁</span>
+             </li>
+             <li>
+             <input type="radio" name="age" value="40-45岁" onclick="getQ1()"/><span>40-45岁</span>
+             </li>
+             <li>
+             <input type="radio" name="age" value="50岁以上" onclick="getQ1()"/><span>50岁以上</span>
+             </li>
+         </ul>
+         </div>
+        </div>
+        
+		
+		
+        <div class="question2">
+         <div class="question2-tit">
+          <b>问题2：您使用过的化妆品？</b>
+         </div>
+        <div class="question2-check">
+        <ul>
+        	<li>
+            <input type="checkbox" name="brands[]" value="希思黎" /><span>希思黎</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="兰蔻" /><span>兰蔻</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="雅诗兰黛" /><span>雅诗兰黛</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="资生堂" /><span>资生堂</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="娇兰" /><span>娇兰</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="迪奥"/><span>迪奥</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="倩碧" /><span>倩碧</span>
+            
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="碧欧泉" /><span>碧欧泉</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="FANCL" /><span>FANCL</span>
+            </li>
+            <li>
+            <input type="checkbox" name="brands[]" value="香奈儿" /><span>香奈儿</span>
+            </li>
+			</br>
+			</br>
+            <li class="NewAdLi">
+            <input type="checkbox" name="brands[]" value="其他"/><span>其他</span>
+            </li>
+        </ul>
+        </div>
+        </div>
+		
+		<script type="text/javascript"> 
+		function getQ2(){
+		var aa;
+		 jQuery("input[name='brands[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='brands[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='brands[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='brands[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question2').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>            
+
+		
+        
+        <div class="question3">
+        <div class="question3-tit">
+          <b>问题3：请问您是从哪里了解到希思黎网上商城的？</b>
+         </div>
+          <div class="question3-check">
+        	<ul>
+             <li><input type="checkbox" name="where[]" value="报刊杂志"/><span>报刊杂志</span></li>
+             <li><input type="checkbox" name="where[]" value="朋友推荐"/><span>朋友推荐</span></li>
+             <li><input type="checkbox" name="where[]" value="门店专柜"/><span>门店专柜</span></li>
+             <li><input type="checkbox" name="where[]" value="论坛微博"/><span>论坛微博</span></li>
+             <li><input type="checkbox" name="where[]" value="搜索网站"/><span>搜索网站</span></li>
+             <li><input type="checkbox" name="where[]" value="EDM(电子宣传单页)"/><span>EDM(电子宣传单页)</span></li>
+             <li><input type="checkbox" name="where[]" value="希思黎产品/活动单页"/><span>希思黎产品/活动单页</span></li>
+			 </br>
+			 </br>
+             <li class="NewAdLi">
+            <input type="checkbox" name="where[]" value="其他"/><span>其他</span>
+            </li>             
+            </ul>
+           </div>
+       </div>
+	   
+	   <script type="text/javascript"> 
+		function getQ3(){
+		var aa;
+		 jQuery("input[name='where[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='where[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='where[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='where[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question3').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>            
+
+	   
+   
+    
+     <div class="question4">
+      <div class="question4-tit">
+       <b>问题4：网上购物时经常使用的支付方式是：</b>
+      </div>
+       <div class="question4-check">
+       	<ul>
+         <li><input type="checkbox" name="pay[]" value="支付宝"/><span>支付宝</span></li>
+         <li><input type="checkbox" name="pay[]" value="财付通"/><span>财付通</span></li>
+         <li><input type="checkbox" name="pay[]" value="网银"/><span>网银</span></li>
+         <li><input type="checkbox" name="pay[]" value="银行汇款"/><span>银行汇款</span></li>
+         <li><input type="checkbox" name="pay[]" value="银行分期付款"/><span>银行分期付款</span></li>
+         <li><input type="checkbox" name="pay[]" value="货到付款"/><span>货到付款</span></li>
+		 </br>
+		 </br>
+         <li>
+            <input type="checkbox" name="pay[]" value="其他"/><span>其他</span>
+          </li>        
+        </ul>
+       </div>
+     </div>
+	 
+	 	   <script type="text/javascript"> 
+		function getQ4(){
+		var aa;
+		 jQuery("input[name='pay[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='pay[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='pay[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='pay[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question4').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>    
+	 
+     <div class="question5">
+      <div class="question5-tit">
+       <b>问题5：请您对本次网购进行整体评价：</b>
+      </div>
+      
+     <ul> 
+     <li>
+     外包装相符（5颗星）：
+       <div class="question5-start1">
+     <input type="hidden" value="0"/><p onmouseover="rate(this,event)"><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="差得太离谱，非常不满意" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="部分有破损，不满意" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="质量一般" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="质量不错，还是挺满意的" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="质量非常好，非常满意" />
+     </div>
+   </p>
+   </li>
+   
+    <li>
+     如果您拨打过热线400-820-8139，客服人员的服务态度：
+       <div class="question5-start2">
+     <input type="hidden" value="0"/><p onmouseover="rate(this,event)"><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="希思黎态度很差，还骂人，简直不把客户当回事" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="希思黎客服人员有点不耐烦，承诺的服务也兑现不了" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="希思黎回复问题很慢，态度一般，谈不上沟通顺畅" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="希思黎服务挺好的，沟通挺顺畅的总体满意" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="希思黎的服务太棒了，考虑非常周到，完全超出期望值" />
+     </div>
+   </p>
+   </li>
+   
+   <li>
+    发货的速度：
+       <div class="question5-start3">
+     <input type="hidden" value="0"/><p onmouseover="rate(this,event)"><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="再三提醒下才发货" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="发货有点慢的，催了几次终于发货了" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="发货速度一般,提醒后才发货的" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="发货很及时" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="发货速度非常快" />
+     </div>
+   </p>
+   </li>
+   
+   <li>
+    快递公司的服务：
+       <div class="question5-start4">
+     <input type="hidden" value="0"/><p onmouseover="rate(this,event)"><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="快递公司服务态度非常差" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="快递公司服务态度挺差" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="快递公司服务态度一般" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="快递公司服务态度很好" /><img src="<?php echo $this->getSkinUrl('images/icon_star_1.gif') ?>" title="快递公司服务态度非常好" />
+     </div>
+   </p>
+   </li>
+   
+  </ul>
+  </div>
+   
+   
+    <div class="question6">
+      <div class="question6-tit">
+       <b>问题6：请问您是否收到了希思黎品牌宣传资料，票据，会员资料，试用装，您最希望从中获得：</b>
+      </div>
+       <div class="question4-check">
+       	<ul>
+         <li><input type="checkbox" name="hope[]" value="更多产品资讯"/><span>更多产品资讯</span></li>
+         <li><input type="checkbox" name="hope[]" value="多样的试用装"/><span>多样的试用装</span></li>
+         <li><input type="checkbox" name="hope[]" value="促销优惠信息"/><span>促销优惠信息</span></li>
+         <li><input type="checkbox" name="hope[]" value="护肤小窍门"/><span>护肤小窍门</span></li>
+         <li><input type="checkbox" name="hope[]" value="如果您没有收到，可以致电我们客服热线400-820-8139"/><span>如果您没有收到，可以致电我们客服热线400-820-8139</span></li>
+         </br>
+		 </br>
+		 <li class="NewAdLi">
+            <input type="checkbox" name="hope[]" value="其他"/><span>其他</span>
+          </li>        
+        </ul>
+       
+       </div>
+      
+    </div>
+     
+	   <script type="text/javascript"> 
+		function getQ4(){
+		var aa;
+		 jQuery("input[name='hope[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='hope[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='hope[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='hope[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question6').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>   
+	 
+         <div class="question7">
+      <div class="question7-tit">
+       <b>问题7：您是否会向您的朋友，亲人，同事推荐希思黎官方网站暨网上商城：</b>
+      </div>
+       <div class="question7-radio">
+       	<ul>
+         <li><input type="radio" name="share" value="肯定会" onclick="getQ7()"/><span>肯定会</span></li>
+         <li><input type="radio" name="share" value="很可能会" onclick="getQ7()"/><span>很可能会</span></li>
+         <li><input type="radio" name="share" value="可能会" onclick="getQ7()"/><span>可能会</span></li>
+         <li><input type="radio" name="share" value="很可能不会" onclick="getQ7()"/><span>很可能不会</span></li>
+         <li><input type="radio" name="share" value="肯定不会" onclick="getQ7()"/><span>肯定不会</span></li>
+       
+        </ul>
+       
+       </div>
+      
+     </div>
+     
+   	 <div class="question8">
+      <div class="question8-tit">
+       <b>问题8：请问您目前最主要的肌肤需求是(可多选)：</b>
+      </div>
+       <div class="question8-check">
+       	<ul>
+         <li><input type="checkbox" name="need[]" value="保湿"/><span>保湿</span></li>
+         <li><input type="checkbox" name="need[]" value="滋养"/><span>滋养</span></li>
+         <li><input type="checkbox" name="need[]" value="防敏"/><span>防敏</span></li>
+         <li><input type="checkbox" name="need[]" value="美白"/><span>美白</span></li>
+         <li><input type="checkbox" name="need[]" value="提亮"/><span>提亮</span></li>
+         <li><input type="checkbox" name="need[]" value="紧肤"/><span>紧肤</span></li>
+         <li><input type="checkbox" name="need[]" value="抗皱"/><span>抗皱</span></li>
+         <li><input type="checkbox" name="need[]" value="控油"/><span>控油</span></li>
+         <li><input type="checkbox" name="need[]" value="密集疗程"/><span>密集疗程</span></li>
+         <li><input type="checkbox" name="need[]" value="全方位"/><span>全方位</span></li>
+        </ul>
+       
+       </div>
+      
+     </div>
+	 
+	   <script type="text/javascript"> 
+		function getQ8(){
+		var aa;
+		 jQuery("input[name='need[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='need[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='need[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='need[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question8').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>   
+	 
+	 
+   
+   
+    <div class="question9">
+      <div class="question9-tit">
+       <b>问题9：欢迎您能提出宝贵建议与意见：</b>
+    </div>
+       <div class="question9-text">
+         <textarea rows="3" style="width:700px;" id="textare1" onmouseout="getQ9()"></textarea>
+       
+       </div>
+      
+     </div>
+	 
+	 
+	 
+   
+  <div class="wenjuanBdiv"> <button  type="submit" value="提交" s='3' id='btnsubmit' onclick="Form.submit(); delaysubmit(); return false;" class="wenjuanquest" >提交</button></div>
+</div>
+</form>
+
+<script>
+
+function delaysubmit(){
+
+    var timeleft = jQuery('#btnsubmit').attr('s');
+    jQuery('#btnsubmit').attr("disabled",true); 
+    if (timeleft > 0){           
+            jQuery('#btnsubmit').attr('s', timeleft-1) ;
+            jQuery('#Spantext').text('正在提交 ...');
+            setTimeout("delaysubmit()", 1000); 
+        }else{
+              jQuery('#questionform').submit();   
+              
+        }
+}
+
+ var Form = new VarienForm('questionform');
+            Form.submit = function(){
+                            this.form.submit();
+                            
+            }.bind(Form);
+</script>
+
+
+<div class="sumbitBottom">再次感谢您的配合。<span id="Spantext"></span></div>
+</div>
+	
+	
+	<!-- 问卷结束 -->
+	
+	
+	<?php } ?>
+	<?php
+	
+	if($_POST['question1']){
+	//var_dump($_POST);
+	
+	$orderid = $_POST['orderid'];
+	$question1 = $_POST['question1'];
+	$question2 = $_POST['question2'];
+	$question3 = $_POST['question3'];
+	$question4 = $_POST['question4'];
+	$question5 = $_POST['question5'];
+	$question6 = $_POST['question6'];
+	$question7 = $_POST['question7'];
+	$question8 = $_POST['question8'];
+	$question9 = $_POST['question9'];
+	//var_dump($orderid.'@'.$question1.'@'.$question2.'@'.$question3.'@'.$question4.'@'.$question5.'@'.$question6.'@'.$question7.'@'.$question8.'@'.$question9);
+	/*
+	$orderid = '1';
+	$question1 = '2';
+	$question2 = '3';
+	$question3 = '4';
+	$question4 = '5';
+	$question5 = '6';
+	$question6 = '7';
+	$question7 = '8';
+	$question8 = '9';
+	$question9 = '0';
+	*/
+	
+	$con = mysql_connect("localhost",$username,$password);
+	//var_dump('@@@'.$username);
+	if (!$con)
+	  {
+	  die('Could not connect: ' . mysql_error());
+	  }
+	mysql_select_db($dbname, $con);
+	/*
+	mysql_query("INSERT INTO sisley_poll (question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('1', '2', '3', '4', '5', '6', '7', '8', '9')");
+	mysql_close($con);
+	*/
+	
+	mysql_query("INSERT INTO sisley_poll (increment_id, question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('$orderid', '$question1', '$question2', '$question3', '$question4', '$question5', '$question6', '$question7', '$question8', '$question9')");
+	/*
+	var_dump("INSERT INTO sisley_poll (increment_id, question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('$orderid', '$question1', '$question2', '$question3', '$question4', '$question5', '$question6', '$question7', '$question8', '$question9')");
+	*/
+        ?>
+        <div>感谢您的参与!正在提交。。。</div>
+        <script language=javascript>
+	setTimeout("location.href='http://www.sisley.com.cn'", 5);
+	</script>
+        <?php
+        mysql_close($link);
+	//header('Location:  index.php');
+	//exit();
+	}
+	}
+	}
+	
+	?>

@@ -1,0 +1,138 @@
+<script>
+	function displaymao1(){
+	document.getElementById('mao1').style.display="block";
+	document.getElementById('mao2').style.display="none";
+	
+	//document.getElementsByName('right-contain').style.overflow="hidden"
+	}
+	
+	function displaymao2(){
+	document.getElementById('mao2').style.display="block";
+	
+	document.getElementById('mao1').style.display="none";
+	
+	}
+	
+
+
+</script>
+
+
+<div class="leftcontain">
+	<div class="left-contain">
+	   <ul class="menpage">
+	   <li><span>1</span><span>判定/识别您的肌肤类型</span></li>
+	   <li><span>2</span><span>完善您的全面保养</span></li>
+	   <li><span>3</span><span>改善您最关注的肌肤问题</span></li>
+	   </ul>
+	</div>
+	<form id="inputceshi" name="inputceshi">
+	<div id="right-contain">
+	  <div id="mao1" >
+		<div class="right-contain-tit">
+			<span>希思黎可以帮您通过三个简单步骤的测试帮您快速判断肌肤需求。</span>
+		</div>
+		<div class="right-contain-midd">
+			<span>回答下列问题，您将获得适合自己的基本美容程序，之后由<span class="guwen">希思黎美容顾问</span>进行完善和调整。</span>
+		</div>
+		<div class="contain-input-tit">
+		 <span>判定/识别您的肌肤类型</span>
+		</div>
+		<div class="right-input">
+		   <dl class="bar">
+			<dt><span>请选择您的年龄:</span></dt>
+			<dd><input type="radio" name="NewAge" id="NewAge1" value="1"/>15-20岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge2" value="2"/>21-30岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge3" value="3"/>31-40岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge4" value="4"/>41-50岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge5" value="5"/>51-60岁</dd>
+			<dd><input type="radio" name="NewAge" id="NewAge6" value="6"/>61岁以上</dd>
+		   </dl>
+		    
+			<dl class="bar">
+			<dt><span>您的肌肤是否感觉紧绷？</span></dt>
+			<dd><input type="radio" name="NewUptight" id="NewUptight1" value="1"/>总是，主要在两颊。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight2" value="2"/>有时，主要在两颊。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight3" value="3"/>总是，整个脸部。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight4" value="4"/>有时，整个脸部。</dd>
+			<dd><input type="radio" name="NewUptight" id="NewUptight5" value="5"/>从不。</dd>
+		   </dl>
+		   
+		   <dl class="bar1">
+			<dt><span>您的肌肤是否容易出现油光？</span></dt>
+			<dd><input type="radio" name="shiny" id="shiny1" value="1"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="shiny" id="shiny2" value="2"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="shiny" id="shiny3" value="3"/>不。</dd>
+		   </dl>
+		   
+		    <dl class="bar1">
+			<dt><span>您是否有黑头和/或色斑？</span></dt>
+			<dd><input type="radio" name="blackhead" id="blackhead1" value="1"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="blackhead" id="blackhead2" value="2"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="blackhead" id="blackhead3" value="3"/>不。</dd>
+		   </dl>
+		   
+		   <dl class="bar1">
+			<dt><span>您是否存在毛孔粗大的困扰？</span></dt>
+			<dd><input type="radio" name="thick" id="thick1" value="1"/>是的，整个脸部。</dd>
+			<dd><input type="radio" name="thick" id="thick2" value="2"/>是的，仅在T区。</dd>
+			<dd><input type="radio" name="thick" id="thick3" value="3"/>不。</dd>
+		   </dl>
+		  
+		   
+		</div>
+		<div class="inputbuttom">
+		<button type="button" class="mennextto" onclick="javascript:displaymao2();"><span><span><?php echo $this->__('') ?></span></span></button>
+		</div>
+	  </div>
+	  
+	  <!-- start mao2 -->
+	  
+	<div id="mao2" style="display:none;">
+		
+		<div class="contain-input-tit">
+		 <span>量身定制您的护肤方案</span>
+		</div>
+	
+		<div class="right-input">
+			<dl class="bar2">
+			<dt><span>您的肌肤是否会出现红肿、刺激或刺痛感？</span></dt>
+			<dd><input type="radio" name="Mpricking" id="Mpricking1" value="1"/>是</dd>
+			<dd><input type="radio" name="Mpricking" id="Mpricking2" value="2"/>否</dd>
+			
+		   </dl>
+		   <dl class="bar2">
+			<dt><span>肌肤是否在剃须后感到刺激？</span></dt>
+			<dd><input type="radio" name="shave" id="shave1" value="1"/>是</dd>
+			<dd><input type="radio" name="shave" id="shave2" value="2"/>否</dd>
+			
+		   </dl>
+		   <dl class="bar2">
+			<dt><span>您的眼部肌肤是否出现眼袋和/或黑眼圈？</span></dt>
+			<dd><input type="radio" name="Mpouch" id="Mpouch1" value="1"/>是</dd>
+			<dd><input type="radio" name="Mpouch" id="Mpouch2" value="2"/>否</dd>
+			
+		   </dl>
+		   <dl class="bar2">
+			<dt><span>您的肌肤目前主要受到哪些因素的刺激？</span></dt>
+			<dd><input type="radio" name="excite" id="excite1" value="1"/>吸烟</dd>
+			<dd><input type="radio" name="excite" id="excite2" value="2"/>疲劳/压力</dd>
+			<dd><input type="radio" name="excite" id="excite3" value="3"/>采暖/空调</dd>
+			<dd><input type="radio" name="excite" id="excite4" value="4"/>饮食</dd>
+			<dd><input type="radio" name="excite" id="excite5" value="5"/>寒冷/风吹</dd>
+			<dd><input type="radio" name="excite" id="excite6" value="6"/>阳光</dd>
+			
+			
+		   </dl>
+		</div>
+		<div class="inputbuttom">
+		<button type="button" class="menresult" onclick="javascript:displaymao3();" ><span><span><?php echo $this->__('') ?></span></span></button>
+		</div>
+	</div>
+	
+
+	  
+	</div>
+	</form>
+
+</div>

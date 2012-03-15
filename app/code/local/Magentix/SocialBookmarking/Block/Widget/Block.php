@@ -1,0 +1,5 @@
+<?php
+
+class Magentix_SocialBookmarking_Block_Widget_Block extends Magentix_SocialBookmarking_Block_Bookmarks implements Mage_Widget_Block_Interface {
+
+}

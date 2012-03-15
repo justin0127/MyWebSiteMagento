@@ -1,0 +1,50 @@
+<config>
+	<sections>
+		<socialbookmarking translate="label" module="socialbookmarking">
+			<label>Social Bookmarking</label>
+			<tab>advanced</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>1000</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<bitly translate="label">
+					<label>bit.ly</label>
+					<comment><![CDATA[<a href="http://bit.ly" target="_blank">Sign up for bit.ly Account</a>]]></comment>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<version translate="label">
+							<label>Version</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</version>
+						<login translate="label">
+							<label>API Login</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</login>
+						<key translate="label">
+							<label>API Key</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</key>
+					</fields>
+				</bitly>
+			</groups>
+		</socialbookmarking>
+	</sections>
+</config>

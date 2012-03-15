@@ -1,0 +1,68 @@
+<?php if ($this->getQuote()->isVirtual()) : return; endif; ?>
+<div id="shipping-method" class="firecheckout-section">
+    <div class="block-title" id="billing-shipping-title"><span><?php echo $this->__('Shipping Method') ?></span></div>
+    <ul id="billing-shipping-content">
+    <li style="float: left; width: 570px;">
+    <div id="checkout-shipping-method-load">
+        <?php echo $this->getChildHtml('available') ?>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+        var shippingMethod = new ShippingMethod('shipping-method');
+    //]]>
+    </script>
+	
+	
+    <div id="onepage-checkout-shipping-method-additional-load">
+        <?php echo $this->getChildHtml('additional') ?>
+        
+    </div>
+    </li>
+    
+    <li style="float: left;">
+	<div class="shipping-time">
+	
+	<script type="text/javascript">
+
+	//window.onload=shippingMethod.save();
+
+	</script>
+	<input type='hidden' name='deliveryTime' id="deliveryTime" value="all"/>
+		<div><strong>选择送货时间</strong></div>
+			<ul>
+			<li><input type="radio" checked="checked" id='time1' value="all" name="shipping_time"/>
+			     <label for="time1">工作日、双休日与假日均可送货</label>
+			</li>
+			<li><input type="radio" id='time2' value="holidays" name="shipping_time"/>
+			     <label for="time2">仅双休日、假日送货(工作日不用送货)</label>
+			</li>
+			<li><input type="radio"  id='time3' value="workdays" name="shipping_time"/>
+			     <label for="time3">仅工作日送货(双休日、假日不用送货)</label>
+			     <div class="shipping-tips" style="padding-left:16px;color:#999;">写字楼/商用地址客户选择</div>
+			</li> 
+			<!--<li><input type="radio"  id='time4' value="nights" name="shipping_time"/>
+			     <label for="time4">学校地址(该地址白天没人，请尽量安排其他时间送货)</label>
+			     <div class="shipping-tips" style="padding-left:16px;color:#999;">特别安排可能超出预算送货天数</div>
+			</li>-->                      
+			</ul>
+		</div>
+	<div class="clearer"></div>	
+    </li>
+    </ul>
+</div>
+
+    <script type="text/javascript">
+    //<![CDATA[
+	//var shippingMethod = new ShippingMethod('co-shipping-method-form', "<?php echo $this->getUrl('checkout/onepage/saveShippingMethod') ?>");
+	jQuery("input[name='shipping_time']").change(
+	function()
+	{
+	//alert(jQuery("input[name='shipping_time']:checked").val());
+	//if (jQuery("input[name='shipping_time']:checked").val()){
+		 $('deliveryTime').value = jQuery("input[name='shipping_time']:checked").val();
+		 
+	//}
+	}
+	);   
+    //]]>
+    </script>

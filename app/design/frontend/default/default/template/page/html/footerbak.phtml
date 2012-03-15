@@ -1,0 +1,287 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<script type="text/javascript" src="http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/js/jquery.blockUI.js"></script>
+<div class="footer-container">
+    <div class="footer">
+		<div class="footer-top">
+			<div class="font1">
+				<img src="<?php echo $this->getSkinUrl('images/footer-1.jpg') ?>">
+				<a href="http://weibo.com/1901600134" target="_blank"><span>希思黎官方微博</span></a>
+				<ul class="left jiaul">
+				<?php //echo $this->getChildHtml('bookmarks') ?> 
+				<a href="javascript:void((function(s,d,e){if(/renren\.com/.test(d.location))return;var f='http://share.renren.com/share/buttonshare?link=',u=d.location,l=d.title,p=[e(u),'&title=',e(l)].join('');function%20a(){if(!window.open([f,p].join(''),'xnshare',['toolbar=0,status=0,resizable=1,width=626,height=436,left=',(s.width-626)/2,',top=',(s.height-436)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent));" title="分享到人人"><img src="<?php echo $this->getSkinUrl('images/share-renren.jpg') ?>"></a>
+				<a href="javascript:window.open('http://www.kaixin001.com/repaste/share.php?rtitle='+encodeURIComponent(document.title)+'&rurl='+encodeURIComponent(document.location.href)+'&rcontent=');void(0)"><img src="<?php echo $this->getSkinUrl('images/share-kaixin.jpg') ?>"></a>
+				 <a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','图片链接|默认为空','标题|默认当前页标题','内容链接|默认当前页location','页面编码gb2312|utf-8默认gb2312'));"><img src="<?php echo $this->getSkinUrl('images/share-sina.jpg') ?>"></a>
+
+				<a id='asend1'><img src="<?php echo $this->getSkinUrl('images/email-icon.gif') ?>" class="foot-email"/></a>
+				
+				
+				<!-- Start Email Function -->
+				<style>
+					.frmLabel {
+						FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+					}
+					.frmInput {
+						FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+					}
+
+					INPUT {
+						BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 10px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 0px; BORDER-BOTTOM: #cccccc 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+					}
+
+					.button {
+						BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #adadad
+					}
+					.button-hover {
+						BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #8d8d8d
+					}
+
+					#valider {margin-left: 206px;}
+
+
+					</style>
+						<div style='display:none' id='sendtofriend1'>
+							<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btn1' style="float:right; width:5px;margin-right: 6px;" >X</a></div>
+
+
+							<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+								<tr id="tr_entete_popup">
+									<td>
+										<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+
+											<tr>
+												<td>
+													<table width="100%" border="0" cellpadding="0" cellspacing="0">
+														<tr>
+															<td width="61" style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+															<td width="148" align="center"><a href="?page=accueil"><img src="/sisleysource/images/logo.gif" alt="Sisley" border="0"/></a></td>
+															<td style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+														</tr>
+													</table>
+
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="conteneur" style="width:100%;height:100%;">
+							<form name="formulaire_mail" method="post" action="http://232.magentoecommerce.cn/sisley2/mail.php">
+
+							<div id="page_titre" ><div class="page_titre" style="margin: 4px 0 5px 4px;;"><p style="font-weight:100;font-size:12px;line-height:25px;margin:10px 20px 3px">发送该网页给你的好友<br />
+							这些信息将不被希思黎网站记录
+							</p></div>
+							<div id="page_main">
+							<input type="hidden" name="url_lien" id="url_lien" value="" />
+								<table id="tableau_frm" cellspacing="0" align="center" cellpadding="0" style="padding-left:24px;padding-right:10px;background-color:#EEEDEE;">
+									<tbody>
+										<tr>
+											<td colspan="2">&nbsp;</td>
+										</tr>
+										<tr>
+
+											<td class="frmLabel" nowrap>
+											您的名字<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+											</td>
+											<td class="frmInput">
+												<input type="text" name="nom_expediteur" id="nom_expediteur" maxlength="50" value="" style="width:400px;"/>
+												<input type="hidden" name="prenom_expediteur" id="prenom_expediteur" maxlength="50" value=""/>
+											</td>
+
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+											您的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+											</td>
+											<td class="frmInput">
+												<input type="text" name="adresse_expediteur" id="adresse_expediteur" maxlength="50" value="" style="width:400px;"/>
+
+											</td>
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+												<input type="hidden" name="nom_destinataire" id="nom_destinataire" maxlength="50" value=""/>
+												<input type="hidden" name="prenom_destinataire" id="prenom_destinataire" maxlength="50" value=""/>
+												您朋友的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+											</td>
+											<td class="frmInput">
+												<input type="text" name="adresse_destinataire" id="adresse_destinataire" maxlength="50" value="" style="width:400px;"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+											您的留言<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+											</td>
+											<td class="frmInput">
+												<textarea name="message_destinataire" id="message_destinataire"  style="height:100px;width:400px;"></textarea>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="mandatory_legend">
+												<span style="font-family:Arial;">*<span><!--号-->部分必须填写				</td>
+
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="2" align="center" style="height:25px;">
+												<input type="button" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="valider" id="valider" value="发送" onclick="enregistrerFrm();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="button" class="button" id="fanhui" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="retour" id="retour" value="返回" onclick="retourFiltre();"/>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="2">&nbsp;</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							</form>
+							<script type="text/javascript">
+							function enregistrerFrm(){
+								document.getElementById('url_lien').value = parent.url_lien_ami;
+								var erreur = '';
+								if(document.getElementById('nom_expediteur').value==''){
+									erreur+='请填写您的名字\n';
+								}
+
+								if(document.getElementById('adresse_expediteur').value==''){
+									erreur+='请填写您的电子邮件\n';
+								}
+								if(document.getElementById('adresse_destinataire').value==''){
+									erreur+='请填写您朋友的电子邮件。\n';
+								}
+								
+								if(erreur==''){
+									document.forms["formulaire_mail"].submit();
+								}
+								else{
+									alert(erreur);
+								}
+							}
+
+							function retourFiltre(){
+
+							}
+							</script>
+							﻿			</div>
+									</td>
+
+								</tr>
+							</table>
+							</div>
+							<script>
+								jQuery(document).ready(function() {
+										jQuery('#asend1').click( function(){
+										jQuery.blockUI({ message: jQuery('#sendtofriend1'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 555) /2 + 'px', width: '555px' } }); } );
+										
+										jQuery('#btn1').click( jQuery.unblockUI );
+										jQuery('#fanhui').click( jQuery.unblockUI );
+								}); 
+							</script>
+				
+				
+				<!-- End -->
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<!--<li>
+				<img src="<?php echo $this->getSkinUrl('images/f-1.jpg') ?>">
+				</li>
+				<li>
+				<img src="<?php echo $this->getSkinUrl('images/f-2.jpg') ?>">
+				</li>
+				<li>
+				<img src="<?php echo $this->getSkinUrl('images/f-3.jpg') ?>">
+				</li>-->
+				<!--<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>questionnaire">入口</a>-->
+				</ul>
+			</div>
+			<div class="font2">
+				<span>订购/咨询热线:400-820-8139 (9:00-21:00国定节假日除外)</span>
+			</div>
+			
+			<div class="font3">
+				<span><a href="javascript:window.external.addFavorite('http://232.magentoecommerce.cn/sisley','希思黎网上商城首页 ');">收藏本网站</a></span>
+				
+			</div>
+			
+			<div class="font4">
+			<?php echo $this->getChildHtml('left.newsletter') ?>
+			
+			<?php //echo $this->getChildHtml('store_switcher') ?>
+			<div class="yuancon">
+			<span>语言</span>
+			<select class="yuyan" onchange="window.location.href=this.value" >
+			<option>请选择</option>
+			<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=1">English</option>
+			<option value="#">中文</option>
+			<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=2">Fran?ais</option>
+			<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=3">日本語</option>
+			<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=4">韩语</option>
+			</select>
+			</div>
+			</div>
+			
+		</div>
+		
+		<div class="footer-bottom">
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('sis-footer')->toHtml(); ?>
+		</div>
+	
+	
+		<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer-block')->toHtml(); ?>
+		<!--div class="footer-banner"><img src="<?php //echo $this->getSkinUrl('images/footer-banner.png') ?>"></div-->
+		<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer-banner-1')->toHtml(); ?>
+
+
+        
+        
+        <address><?php echo $this->getCopyright() ?></address>
+		<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer-banner-2')->toHtml(); ?>
+
+		
+    </div>
+</div>

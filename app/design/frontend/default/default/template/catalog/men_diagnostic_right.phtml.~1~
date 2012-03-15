@@ -1,0 +1,209 @@
+<div class="col1">
+
+<p>
+希思黎设计研发了一系列专业护肤产品，协助恢复肌肤的生理平衡，全年呵护肌肤的健康与光泽。 
+</p>
+
+</div>
+
+
+<div class="col2">
+<select style="font-size:12px;font-family:宋体;" onchange="window.location.href=this.value" id="recherche_par_besoin" name="recherche_par_besoin">
+
+<option>根据您的要求搜索:</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_1">每日平衡肌肤</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_2">剃须前的肌肤护理</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_3">舒缓剃须刺激</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_4">补水</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_5">淡化疲惫痕迹</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_6">抑止过多皮脂</option>
+</select>
+
+
+
+</div>
+
+<div class="col3">
+
+<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female">
+<img src="<?php echo $this->getSkinUrl('images/diagnostic_beaute_female_ba.gif') ?>">
+</a>
+</div>
+
+
+<script type="text/javascript" src="http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/js/jquery.blockUI.js"></script>
+<div id="print_email">
+<ul>
+<li><a onclick="window.print(); return false;">打印</a></li>
+<li><a id='asend'>发送给好友</a></li>
+</ul>
+</div>
+
+
+<style>
+.frmLabel {
+	FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+}
+.frmInput {
+	FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+}
+
+INPUT {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 10px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 0px; BORDER-BOTTOM: #cccccc 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+
+.button {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #adadad
+}
+.button-hover {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #8d8d8d
+}
+
+#valider {margin-left: 206px;}
+
+
+</style>
+
+
+<div style='display:none' id='sendtofriend'>
+<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btn1' style="float:right; width:5px;margin-right: 6px;" ><img src="<?php echo $this->getSkinUrl('images/close.jpg') ?>"></img></a></div>
+
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+	<tr id="tr_entete_popup">
+		<td>
+			<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+
+				<tr>
+					<td>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td width="61" style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+								<td width="148" align="center"><a href="?page=accueil"><img src="/sisleysource/images/logo.gif" alt="Sisley" border="0"/></a></td>
+								<td style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="conteneur" style="width:100%;height:100%;">
+<form name="formulaire_mail" method="post" action="http://232.magentoecommerce.cn/sisley2/mail.php">
+
+<div id="page_titre" ><div class="page_titre" style="margin: 4px 0 5px 4px;;"><p style="font-weight:100;font-size:12px;line-height:25px;margin:10px 20px 3px">发送该网页给你的好友<br />
+这些信息将不被希思黎网站记录
+</p></div>
+<div id="page_main">
+<input type="hidden" name="url_lien" id="url_lien" value="" />
+	<table id="tableau_frm" cellspacing="0" align="center" cellpadding="0" style="padding-left:24px;padding-right:10px;background-color:#EEEDEE;">
+		<tbody>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+
+				<td class="frmLabel" nowrap>
+				您的名字<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+				</td>
+				<td class="frmInput">
+					<input type="text" name="nom_expediteur" id="nom_expediteur" maxlength="50" value="" style="width:400px;"/>
+					<input type="hidden" name="prenom_expediteur" id="prenom_expediteur" maxlength="50" value=""/>
+				</td>
+
+			</tr>
+			<tr>
+				<td class="frmLabel" nowrap>
+				您的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+				</td>
+				<td class="frmInput">
+					<input type="text" name="adresse_expediteur" id="adresse_expediteur" maxlength="50" value="" style="width:400px;"/>
+
+				</td>
+			</tr>
+			<tr>
+				<td class="frmLabel" nowrap>
+					<input type="hidden" name="nom_destinataire" id="nom_destinataire" maxlength="50" value=""/>
+					<input type="hidden" name="prenom_destinataire" id="prenom_destinataire" maxlength="50" value=""/>
+					您朋友的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+				</td>
+				<td class="frmInput">
+					<input type="text" name="adresse_destinataire" id="adresse_destinataire" maxlength="50" value="" style="width:400px;"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="frmLabel" nowrap>
+				您的留言<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+				</td>
+				<td class="frmInput">
+					<textarea name="message_destinataire" id="message_destinataire"  style="height:100px;width:400px;"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="mandatory_legend">
+					<span style="font-family:Arial;">*<span><!--号-->部分必须填写				</td>
+
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2" align="center" style="height:25px;">
+					<input type="button" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="valider" id="valider" value="发送" onclick="enregistrerFrm();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="button" id="fanhui" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="retour" id="retour" value="返回" onclick="retourFiltre();"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+</form>
+<script type="text/javascript">
+function enregistrerFrm(){
+	document.getElementById('url_lien').value = parent.url_lien_ami;
+	var erreur = '';
+	if(document.getElementById('nom_expediteur').value==''){
+		erreur+='请填写您的名字\n';
+	}
+
+	if(document.getElementById('adresse_expediteur').value==''){
+		erreur+='请填写您的电子邮件\n';
+	}
+	if(document.getElementById('adresse_destinataire').value==''){
+		erreur+='请填写您朋友的电子邮件。\n';
+	}
+	
+	if(erreur==''){
+		document.forms["formulaire_mail"].submit();
+	}
+	else{
+		alert(erreur);
+	}
+}
+
+function retourFiltre(){
+
+}
+</script>
+﻿			</div>
+		</td>
+
+	</tr>
+</table>
+</div>
+<script>
+    jQuery(document).ready(function() {
+            jQuery('#asend').click( function(){
+            jQuery.blockUI({ message: jQuery('#sendtofriend'), css: {  top:  (jQuery(window).height() - 200) /2 + 'px', left: (jQuery(window).width() - 555) /2 + 'px', width: '555px' } }); 
+            jQuery('#btn1').click( jQuery.unblockUI );
+			jQuery('#fanhui').click( jQuery.unblockUI );
+} );
+    }); 
+</script>

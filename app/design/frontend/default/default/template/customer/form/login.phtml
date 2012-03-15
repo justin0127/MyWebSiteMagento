@@ -1,0 +1,156 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Customer login form template
+ *
+ * @see Mage_Customer_Block_Form_Login
+ */
+?>
+<script type="text/javascript">
+
+	function onSubmit(){
+		var pass=document.getElementById('pass').value;
+		if(pass==""||pass==null){
+			alert("请输入密码！")
+			return false;
+		}else{
+			return true;
+		}
+	
+	}
+
+</script>
+
+<div class="account-login">
+
+    <!--<div class="page-title">
+        <h1><?php echo $this->__('Login or Create an Account') ?></h1>
+    </div>-->
+
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="login-form" onsubmit="return onSubmit();">
+        <div class="col2-set">
+		   <div class="col-2 registered-users">
+                <div class="content">
+                    <h2><?php echo $this->__('希思黎会员登录') ?></h2>
+                    <!--<p><?php echo $this->__('If you have an account with us, please log in.') ?></p>-->
+
+                    <ul class="form-list">
+                        <li>
+                            <label for="email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label><span style="color:#a5a5a5; float:left; font-size:11px; padding-left:10px;">(example@sisley.com.cn)</span>
+                            <div class="input-box">
+                                <input type="text" name="login[username]" value="<?php echo $this->htmlEscape($this->getUsername()) ?>" id="email" class="input-text required-entry validate-email" title="<?php echo $this->__('Email Address') ?>" />
+                            </div>
+                        </li>
+                        <li>
+                            <label for="pass" class="required"><em>*</em><?php echo $this->__('Password') ?></label>
+                            <div class="input-box">
+                                <input type="password" name="login[password]" class="input-text required-entry validate-password" id="pass" title="<?php echo $this->__('Password') ?>" />
+                            </div>
+                        </li>
+						<li>
+						 <!--  session yz  -->
+						<label for="ya" class="required"><em>*</em><?php echo $this->__('验证码') ?></label>               
+			  <div class="input-box">
+                <input name="verif_box" type="text" id="verif_box" style="padding:2px; border:1px solid #CCCCCC; width:180px; height:14px;font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px;" maxlength="4" class="input-text required-entry"/>
+				
+				
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+
+	jQuery("#verify4").attr("src","/yz.php?"+Math.round(Math.random()*9999));
+	jQuery("#nextverify4").click(function(){
+		jQuery("#verify4").attr("src","/yz.php?"+Math.round(Math.random()*9999));
+		return false;
+	});
+});
+</script>
+			<img id='verify4' width='50' height='24' style='float:left' />
+		</div>
+		<div class="next" id="nextverify4" style="cursor:pointer;" alt="点击刷新">换一张</div>
+		<?php 
+		//$_COOKIE['tntcon'];
+		//md5($verif_box).'a4xn'
+		?>
+		
+                <!--  end yz  -->
+					</li>	
+                    </ul>
+                     <div class="buttons-set Llogin">
+					 
+					 
+					<div class="Newrember"><a href="<?php echo $this->getForgotPasswordUrl() ?>" class="f-left under "><?php echo $this->__('忘记密码?') ?></a>
+					<div class="remenber"> <input type="checkbox" name="rememberme" value="remember">记住登录状态</div></div>
+						<p class="required left em1"><em>*</em><span><?php echo $this->__('必填项目') ?></span></p>
+						
+					</div>
+					    <div class="buttons-set Llogin">
+						
+					
+						
+						
+						
+						 <button type="submit" class="button left" title="<?php echo $this->__('Login') ?>" name="send" id="send2"><span><span><?php echo $this->__('Login') ?></span></span></button>
+						
+                    
+                   
+						</div>
+						<!-- remember me -->
+						
+						 
+                </div>
+            </div>
+		
+            <div class="col-1 new-users">
+                <div class="content">
+                    <h2><?php echo $this->__('新用户注册') ?></h2>
+                    <p><?php echo $this->__('您是第一次进入希思黎官方网站？') ?></p>
+                </div>
+				<div class="buttons-set">
+                    <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ooffregister" class="button left" ><span><span><?php echo $this->__('Create an Account') ?></span></span></a>
+                </div>
+            </div>
+         
+        </div>
+        <!--<div class="col2-set">
+            <div class="col-1 new-users">
+                
+            </div>
+            <div class="col-2 registered-users">
+            
+            </div>
+        </div>-->
+
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var dataForm = new VarienForm('login-form', true);
+    //]]>
+    </script>
+</div>

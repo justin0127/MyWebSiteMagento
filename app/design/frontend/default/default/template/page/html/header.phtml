@@ -1,0 +1,640 @@
+<!--
+<script type="text/javascript" src="/js/ticker.js"></script> 
+
+<script> 
+jQuery(function(){
+jQuery("#newsticker").liScroll();//{travelocity: 0.15}
+});
+</script> -->
+
+<style>
+
+.tickercontainer { 
+border: 0;
+background: #fff; 
+width: 958px; 
+height: 20px; 
+margin: 0; 
+padding: 0;
+overflow: hidden; 
+
+}
+.tickercontainer .mask {
+position: relative;
+left: 0px;
+top: 3px;
+height: 16px; 
+width: 940px;
+overflow: hidden;
+}
+ul.newsticker {
+position: relative;
+left: 960px;
+font: bold 10px;
+list-style-type: none;
+margin: 0;
+padding: 0;
+height: 20px; 
+}
+ul.newsticker li {
+float: left; 
+margin: 0 50px 0 0;
+padding: 0;
+background: #fff;
+}
+ul.newsticker a {
+white-space: nowrap;
+padding: 0;
+color: #000;
+font: bold 10px;
+margin: 0 50px 0 0;
+} 
+ul.newsticker span {
+margin: 0 10px 0 0;
+}
+</style>
+
+
+<div class="header-container">
+    <div class="header">
+		<div class="header-top">
+			<div class="header-top-contain">
+				<ul class="headerul1">
+				<li>
+				
+				<?php $customerAlies = Mage::getModel('customer/session')->getCustomer()->getAlias();
+					//var_dump($customerAlies);
+					//exit;
+				?>
+				
+				<?php if($customerAlies!=null){ ?>
+				
+				<?php echo '亲爱的&nbsp;'.$customerAlies;?>
+				<?php }else{ ?>
+				
+				
+				<?php echo $this->getWelcome()?>
+				<?php } ?>
+				</li>
+				<li class="LogoLli">
+				  <?php if( Mage::getSingleton('customer/session')->isLoggedIn() ) { ?>
+				   <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/logout/"><span class="Padding1">退出</span></a>
+				   <?php }else{ ?>
+				<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/login/"><span class="padding1">登录</span></a>
+				  <?php } ?> 
+				  </li>
+				 <?php if( Mage::getSingleton('customer/session')->isLoggedIn() ) { ?>
+				
+				<?php }else{ ?>
+				
+				<li>|</li>
+				<li class="LogoLli"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>ooffregister"><span class="padding2">注册/线下会员激活</span></a></li>
+				<?php } ?>
+				</li>
+				
+				<li>|</li>
+				</ul>
+				<ul class="headerul2">
+				<li>
+				<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>customer/account/"><span>我的账户</span>
+				</a>
+				</li>
+				<li>|</li>
+				<li><span class="Textd"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>checkout/cart">购物车</a></span> <span>
+					<?php if (Mage::getSingleton('checkout/cart')->getSummaryQty()==0):?>
+							<span><?php echo $this->__('(0)') ?></span>
+						<?php else:?>
+						<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>checkout/cart">
+						
+						
+						<?php echo $this->__('(') ?><?php echo Mage::getSingleton('checkout/cart')->getSummaryQty() ?><?php echo $this->__(')') ?></a>
+						<?php endif?>
+						</span>
+			
+				</li>
+				<li>|</li>
+				<li>
+				<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>checkout/cart"><span>去结算</span></a>
+				</li>
+				</ul>
+			
+			</div> 
+		</div>
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+		  <h1 class="logo">
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php endif?>
+		
+		
+		
+		
+		
+        <div class="quick-access">
+          
+			  <?php echo $this->getChildHtml('topSearch') ?> 
+           <?php //echo $this->getWelcome()?>
+            <?php //echo $this->getChildHtml('topLinks') ?>
+            <?php //echo $this->getChildHtml('store_language') ?>
+        </div>
+		 <?php if(date("Y-m-d")=="2012-01-22" or date("Y-m-d")=="2012-01-23" or date("Y-m-d")=="2011-01-24"
+		 or date("Y-m-d")=="2011-01-25"or date("Y-m-d")=="2011-01-26"
+		 or date("Y-m-d")=="2011-01-27"or date("Y-m-d")=="2011-01-28"
+		):?>
+		 <div id="newstickerC"  style="width:960px;margin:0 auto;height: 29px; padding: 0;overflow:hidden;margin-bottom:5px;text-align:center;"> 
+			 <ul id="newsticker"> 
+				 <li><a href="#">欢迎您订购希思黎官方网上商城产品，1月22日-1月28日春节假日期间的订单，将在1月29日为您安排配送流程。不便之处，敬请谅解！</a></li>
+			 </ul> 
+		 </div>
+		 <?php endif?>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+    </div>
+</div>
+
+
+
+
+
+<div class="nav-container">
+    <ul id="nav">
+		<li class="level nav-parent" onmouseout="toggleMenu(this,0)" onmouseover="toggleMenu(this,1)" id="">
+        <a href="http://127.0.0.1/"><span>首页</span></a>
+        </li>
+        <li class="level0 nav-1 level-top inactive first parent" id="">
+<a href="http://127.0.0.1/news.html" class="level-top">
+<span>希思黎最新动态</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-1-1 inactive first" id="">
+<a href="http://127.0.0.1/news/gfs.html">
+<span>抗皱修活紧致精华液</span>
+</a>
+</li><li class="level1 nav-1-2 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-7.html">
+<span>植物纤柔护肤粉饼</span>
+</a>
+</li><li class="level1 nav-1-3 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-1.html">
+<span>瞬采亮肌面膜</span>
+</a>
+</li><li class="level1 nav-1-4 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-2.html">
+<span>致臻夜间修复精华露 </span>
+</a>
+</li><li class="level1 nav-1-5 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-3.html">
+<span>全日呵护精华乳</span>
+</a>
+</li><li class="level1 nav-1-6 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-4.html">
+<span>全能乳液</span>
+</a>
+</li><li class="level1 nav-1-7 inactive" id="">
+<a href="http://127.0.0.1/news/zxdt-5.html">
+<span>瞬间紧致眼膜</span>
+</a>
+</li><li class="level1 nav-1-8 inactive last" id="">
+<a href="http://127.0.0.1/news/zxdt-6.html">
+<span>植物净颜平衡面膜</span>
+</a>
+</li>
+</ul>
+</li><li class="level0 nav-2 level-top inactive parent" id="">
+<a href="http://127.0.0.1/about-sisley.html" class="level-top">
+<span>关于希思黎</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-2-1 inactive first parent" id="">
+<a href="http://127.0.0.1/about-sisley/brand-history.html">
+<span>品牌历史</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-2-1-1 inactive first" id="">
+<a href="http://127.0.0.1/about-sisley/brand-history/history-1.html">
+<span>源自法国的著名公司</span>
+</a>
+</li><li class="level2 nav-2-1-2 inactive" id="">
+<a href="http://127.0.0.1/about-sisley/brand-history/history-2.html">
+<span>源远流长的家族企业</span>
+</a>
+</li><li class="level2 nav-2-1-3 inactive last" id="">
+<a href="http://127.0.0.1/about-sisley/brand-history/history-3.html">
+<span>享誉国际的企业</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-2-2 inactive parent" id="">
+<a href="http://127.0.0.1/about-sisley/creat-mind.html">
+<span>创新理念</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-2-2-4 inactive first" id="">
+<a href="http://127.0.0.1/about-sisley/creat-mind/plant.html">
+<span>植物美容学</span>
+</a>
+</li><li class="level2 nav-2-2-5 inactive last" id="">
+<a href="http://127.0.0.1/about-sisley/creat-mind/creat-2.html">
+<span>超凡卓越的品质</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-2-3 inactive parent" id="">
+<a href="http://127.0.0.1/about-sisley/plant.html">
+<span>植物美容学专家</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-2-3-6 inactive first" id="">
+<a href="http://127.0.0.1/about-sisley/plant/plant-1.html">
+<span>希思黎试验中心 </span>
+</a>
+</li><li class="level2 nav-2-3-7 inactive last" id="">
+<a href="http://127.0.0.1/about-sisley/plant/plant-2.html">
+<span>希思黎的前沿研发</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-2-4 inactive" id="">
+<a href="http://127.0.0.1/about-sisley/devolop.html">
+<span>职业发展</span>
+</a>
+</li><li class="level1 nav-2-5 inactive last" id="">
+<a href="http://127.0.0.1/about-sisley/foundation.html">
+<span>希思黎基金会</span>
+</a>
+</li>
+</ul>
+</li><li class="level0 nav-3 level-top inactive parent" id="">
+<a href="http://127.0.0.1/skincare.html" class="level-top">
+<span>护肤系列</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-3-1 inactive first parent" id="">
+<a href="http://127.0.0.1/skincare/base.html">
+<span>面部肌肤保养</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-3-1-1 inactive first" id="">
+<a href="http://127.0.0.1/skincare/base/toner.html">
+<span>清洁 化妆水</span>
+</a>
+</li><li class="level2 nav-3-1-2 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/horny.html">
+<span>去角质护理</span>
+</a>
+</li><li class="level2 nav-3-1-3 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/cleansing.html">
+<span>面膜</span>
+</a>
+</li><li class="level2 nav-3-1-4 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/oil-control.html">
+<span>平衡护理</span>
+</a>
+</li><li class="level2 nav-3-1-5 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/e-e-e-c.html">
+<span>美白护理</span>
+</a>
+</li><li class="level2 nav-3-1-6 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/keep-water.html">
+<span>抗衰老护理</span>
+</a>
+</li><li class="level2 nav-3-1-7 inactive" id="">
+<a href="http://127.0.0.1/skincare/base/light-skin.html">
+<span>针对性美容护理</span>
+</a>
+</li><li class="level2 nav-3-1-8 inactive last" id="">
+<a href="http://127.0.0.1/skincare/base/ae-ae-e-e-e-c.html">
+<span>密集护理</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-3-2 inactive parent" id="">
+<a href="http://127.0.0.1/skincare/eye-lip.html">
+<span>眼唇护理</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-3-2-9 inactive first" id="">
+<a href="http://127.0.0.1/skincare/eye-lip/a-a.html">
+<span>卸妆</span>
+</a>
+</li><li class="level2 nav-3-2-10 inactive" id="">
+<a href="http://127.0.0.1/skincare/eye-lip/aes-ae-e-aes-c.html">
+<span>抗浮肿护理</span>
+</a>
+</li><li class="level2 nav-3-2-11 inactive" id="">
+<a href="http://127.0.0.1/skincare/eye-lip/e-e-e-e.html">
+<span>抗衰老护理</span>
+</a>
+</li><li class="level2 nav-3-2-12 inactive" id="">
+<a href="http://127.0.0.1/skincare/eye-lip/a-e-aes-c.html">
+<span>唇部护理</span>
+</a>
+</li><li class="level2 nav-3-2-13 inactive last" id="">
+<a href="http://127.0.0.1/skincare/eye-lip/ae-aoe-cs-c.html">
+<span>瞬间紧致眼膜</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-3-3 inactive parent" id="">
+<a href="http://127.0.0.1/skincare/body-one.html">
+<span>身体护理系列</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-3-3-14 inactive first" id="">
+<a href="http://127.0.0.1/skincare/body-one/c-za-a-e.html">
+<span>美体塑身</span>
+</a>
+</li><li class="level2 nav-3-3-15 inactive" id="">
+<a href="http://127.0.0.1/skincare/body-one/c-ze-a-sc-ze.html">
+<span>美颈及美胸</span>
+</a>
+</li><li class="level2 nav-3-3-16 inactive" id="">
+<a href="http://127.0.0.1/skincare/body-one/az-e-e.html">
+<span>去角质及清洁</span>
+</a>
+</li><li class="level2 nav-3-3-17 inactive" id="">
+<a href="http://127.0.0.1/skincare/body-one/ae-a-aes-c.html">
+<span>滋养护理</span>
+</a>
+</li><li class="level2 nav-3-3-18 inactive last" id="">
+<a href="http://127.0.0.1/skincare/body-one/e-a-sae-e-aes-c.html">
+<span>手部保养</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-3-4 inactive parent" id="">
+<a href="http://127.0.0.1/skincare/hair.html">
+<span>头发护理系列</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-3-4-19 inactive first last" id="">
+<a href="http://127.0.0.1/skincare/hair/aes-a.html">
+<span>头发护理</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-3-5 inactive last parent" id="">
+<a href="http://127.0.0.1/skincare/sun.html">
+<span>防晒护理系列</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-3-5-20 inactive first" id="">
+<a href="http://127.0.0.1/skincare/sun/face.html">
+<span>植物身体防晒乳液</span>
+</a>
+</li><li class="level2 nav-3-5-21 inactive" id="">
+<a href="http://127.0.0.1/skincare/sun/body.html">
+<span>身体防晒护理霜</span>
+</a>
+</li><li class="level2 nav-3-5-22 inactive" id="">
+<a href="http://127.0.0.1/skincare/sun/e-ae-aes-c-ae-eoeoe.html">
+<span>防晒护理日霜</span>
+</a>
+</li><li class="level2 nav-3-5-23 inactive" id="">
+<a href="http://127.0.0.1/skincare/sun/e-ae-es-c-eoeoe.html">
+<span>防晒隔离霜</span>
+</a>
+</li><li class="level2 nav-3-5-24 inactive last" id="">
+<a href="http://127.0.0.1/skincare/sun/a-ae-e-ae-a.html">
+<span>修活防晒乳</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</li><li class="level0 nav-4 level-top inactive parent" id="">
+<a href="http://127.0.0.1/color.html" class="level-top">
+<span>彩妆系列</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-4-1 inactive first parent" id="">
+<a href="http://127.0.0.1/color/face.html">
+<span>肤色</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-4-1-1 inactive first" id="">
+<a href="http://127.0.0.1/color/face/concealer.html">
+<span>眼部遮瑕</span>
+</a>
+</li><li class="level2 nav-4-1-2 inactive" id="">
+<a href="http://127.0.0.1/color/face/e-c-1.html">
+<span>腮红</span>
+</a>
+</li><li class="level2 nav-4-1-3 inactive" id="">
+<a href="http://127.0.0.1/color/face/c-a-ae.html">
+<span>粉底液</span>
+</a>
+</li><li class="level2 nav-4-1-4 inactive" id="">
+<a href="http://127.0.0.1/color/face/c-e.html">
+<span>粉饼</span>
+</a>
+</li><li class="level2 nav-4-1-5 inactive last" id="">
+<a href="http://127.0.0.1/color/face/loose-powder.html">
+<span>植物至美柔肤底霜</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-4-2 inactive parent" id="">
+<a href="http://127.0.0.1/color/eye.html">
+<span>眼部</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-4-2-6 inactive first" id="">
+<a href="http://127.0.0.1/color/eye/coe-c.html">
+<span>眉笔</span>
+</a>
+</li><li class="level2 nav-4-2-7 inactive" id="">
+<a href="http://127.0.0.1/color/eye/coe-c-c.html">
+<span>眼线笔</span>
+</a>
+</li><li class="level2 nav-4-2-8 inactive" id="">
+<a href="http://127.0.0.1/color/eye/c-ae-e.html">
+<span>睫毛膏</span>
+</a>
+</li><li class="level2 nav-4-2-9 inactive last" id="">
+<a href="http://127.0.0.1/color/eye/coe-a.html">
+<span>眼影</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-4-3 inactive last parent" id="">
+<a href="http://127.0.0.1/color/lip.html">
+<span>唇部</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-4-3-10 inactive first" id="">
+<a href="http://127.0.0.1/color/lip/a-c-c.html">
+<span>唇线笔</span>
+</a>
+</li><li class="level2 nav-4-3-11 inactive" id="">
+<a href="http://127.0.0.1/color/lip/a-a.html">
+<span>唇彩</span>
+</a>
+</li><li class="level2 nav-4-3-12 inactive last" id="">
+<a href="http://127.0.0.1/color/lip/a-e.html">
+<span>唇膏</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</li><li class="level0 nav-5 level-top inactive parent" id="">
+<a href="http://127.0.0.1/perfume.html" class="level-top">
+<span>香水系列</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-5-1 inactive first" id="">
+<a href="http://127.0.0.1/perfume/yyqh.html">
+<span>夜幽情怀</span>
+</a>
+</li><li class="level1 nav-5-2 inactive" id="">
+<a href="http://127.0.0.1/perfume/lyfz.html">
+<span>绿野芳踪</span>
+</a>
+</li><li class="level1 nav-5-3 inactive" id="">
+<a href="http://127.0.0.1/perfume/yy.html">
+<span>缘月香水</span>
+</a>
+</li><li class="level1 nav-5-4 inactive last" id="">
+<a href="http://127.0.0.1/perfume/qx.html">
+<span>沁香水</span>
+</a>
+</li>
+</ul>
+</li><li class="level0 nav-6 level-top inactive parent" id="">
+<a href="http://127.0.0.1/man.html" class="level-top">
+<span>男士系列</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-6-1 inactive first parent" id="">
+<a href="http://127.0.0.1/man/discover.html">
+<span>探寻</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-1-1 inactive first last" id="">
+<a href="http://127.0.0.1/man/discover/sisleyman.html">
+<span>希思黎男士</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-6-2 inactive parent" id="">
+<a href="http://127.0.0.1/man/face.html">
+<span>脸部护理</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-2-2 inactive first" id="">
+<a href="http://127.0.0.1/man/face/clean.html">
+<span>清洁</span>
+</a>
+</li><li class="level2 nav-6-2-3 inactive" id="">
+<a href="http://127.0.0.1/man/face/moisture.html">
+<span>滋润</span>
+</a>
+</li><li class="level2 nav-6-2-4 inactive" id="">
+<a href="http://127.0.0.1/man/face/deep.html">
+<span>深层净化 - 去油光</span>
+</a>
+</li><li class="level2 nav-6-2-5 inactive" id="">
+<a href="http://127.0.0.1/man/face/smooth.html">
+<span>平滑 - 修护</span>
+</a>
+</li><li class="level2 nav-6-2-6 inactive" id="">
+<a href="http://127.0.0.1/man/face/protect.html">
+<span>防护</span>
+</a>
+</li><li class="level2 nav-6-2-7 inactive last" id="">
+<a href="http://127.0.0.1/man/face/anti-aging.html">
+<span>抗衰老</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-6-3 inactive parent" id="">
+<a href="http://127.0.0.1/man/eye.html">
+<span>眼部护理</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-3-8 inactive first" id="">
+<a href="http://127.0.0.1/man/eye/anti-edema.html">
+<span>抗浮肿护理</span>
+</a>
+</li><li class="level2 nav-6-3-9 inactive last" id="">
+<a href="http://127.0.0.1/man/eye/anti-aging-one.html">
+<span>抗衰老护理</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-6-4 inactive parent" id="">
+<a href="http://127.0.0.1/man/hair.html">
+<span>头发护理系列</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-4-10 inactive first last" id="">
+<a href="http://127.0.0.1/man/hair/hair-one.html">
+<span>头发护理</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-6-5 inactive parent" id="">
+<a href="http://127.0.0.1/man/sun.html">
+<span>防晒护理系列</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-5-11 inactive first" id="">
+<a href="http://127.0.0.1/man/sun/face-one.html">
+<span>脸部防晒</span>
+</a>
+</li><li class="level2 nav-6-5-12 inactive" id="">
+<a href="http://127.0.0.1/man/sun/body.html">
+<span>身体防晒</span>
+</a>
+</li><li class="level2 nav-6-5-13 inactive last" id="">
+<a href="http://127.0.0.1/man/sun/sun-after.html">
+<span>晒后护理</span>
+</a>
+</li>
+</ul>
+</li><li class="level1 nav-6-6 inactive last parent" id="">
+<a href="http://127.0.0.1/man/e-ae.html">
+<span>香水</span>
+</a>
+<ul class="level1">
+<li class="level2 nav-6-6-14 inactive first last" id="">
+<a href="http://127.0.0.1/man/e-ae/c-e-zes-e.html">
+<span>绿野芳踪</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</li><li class="level0 nav-7 level-top inactive" id="">
+<a href="http://127.0.0.1/classic-box.html?utm_source=navi&utm_medium=website&utm_campaign=2012%2DAbtesting&utm_nooverride=1" class="level-top">
+<span>经典礼盒套装</span>
+</a>
+</li><li class="level0 nav-8 level-top inactive last parent" id="">
+<a href="http://127.0.0.1/sisley-share.html?utm_source=navi&utm_medium=website&utm_campaign=2012%2DAbtesting&utm_nooverride=1" class="level-top">
+<span>希思黎至臻分享</span>
+</a>
+<ul class="level0">
+<li class="level1 nav-8-1 inactive first" id="">
+<a href="http://127.0.0.1/sisley-share/box.html?utm_source=navi&utm_medium=website&utm_campaign=2012%2DAbtesting&utm_nooverride=1">
+<span>经典礼盒套装</span>
+</a>
+</li><li class="level1 nav-8-2 inactive" id="">
+<a href="http://127.0.0.1/sisley-share/beauty-square.html">
+<span>希思黎美容坊</span>
+</a>
+</li><li class="level1 nav-8-3 inactive last" id="">
+<a href="http://127.0.0.1/sisley-share/skin-faq.html">
+<span>美肤常见问题</span>
+</a>
+</li>
+</ul>
+</li>		
+		<li class="level0 nav-9 level-top inactive last parent newnav" onmouseout="toggleMenu(this,0)" onmouseover="toggleMenu(this,1)" id="">
+        <a href="http://www.sisley-beauty.com.cn/"><span>至臻坊社区</span></a>
+        </li>
+    </ul>
+</div>
+
+
+<?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('hot-keywords')->toHtml(); ?>

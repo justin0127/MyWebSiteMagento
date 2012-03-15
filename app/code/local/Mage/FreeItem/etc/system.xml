@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <catalog>
+            <groups>
+                <freeitem translate="label" module="FreeItem">
+                    <label>Free Item</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                       <product_sku translate="label">
+			                <label>Product SKU</label>
+                            <frontend_type>text</frontend_type>
+		                    <sort_order>1</sort_order>
+		                    <show_in_default>1</show_in_default>
+		                    <show_in_website>1</show_in_website>
+		                    <show_in_store>1</show_in_store>
+                       </product_sku>
+					   <total_purchase translate="label">
+                        	<label>Total Purchase</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+					   </total_purchase>
+                    </fields>
+                </freeitem>
+            </groups>
+        </catalog>
+    </sections>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <pro_adminhtml_pro_index>
+        <reference name="content">
+            <block type="pro/adminhtml_pro" name="pro" />
+        </reference>
+    </pro_adminhtml_pro_index>
+</layout>

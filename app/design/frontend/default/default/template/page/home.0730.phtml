@@ -1,0 +1,131 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>">
+<head>
+<style type="text/css">
+*{margin:0; padding:0;}/*为了方便 直接这样重置了*/
+#main{margin:0 auto; width:960px;}
+#banner{display:none; margin:0 auto; width:800px; height:450px; background:url(http://sisley.mec365.com/skin/frontend/default/default/images/campaign0729.jpg) no-repeat; position:relative;}
+#close{display:block; width:50px; height:22px; text-align:center; line-height:22px; border:1px #ddd solid; background:#000; color:#fff; font-size:12px; float:right; cursor:pointer;}
+</style>
+<?php echo $this->getChildHtml('head') ?>
+</head>
+<body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>>
+<?php echo $this->getChildHtml('after_body_start') ?>
+<script type="text/javascript">
+jQuery
+(
+function()
+{
+jQuery("#banner").slideDown();
+var Up=function(){jQuery("#banner").slideUp(1500)}
+setTimeout(Up,8000);
+jQuery("#close").click
+(
+function()
+{
+jQuery("#banner").slideToggle
+(
+600,function()
+{
+if(jQuery("#banner").css("display") == "none")
+{
+jQuery("#close").text("打开");
+}
+else
+{
+jQuery("#close").text("关闭");
+}
+}
+);
+}
+);
+}
+);
+</script>
+<div class="wrapper">
+    <?php echo $this->getChildHtml('global_notices') ?>
+    <div class="page">
+	<div id="banner"></div>
+        <?php echo $this->getChildHtml('header') ?>
+        <div class="main-container col1-layout">
+            <div class="main">
+                <?php echo $this->getChildHtml('breadcrumbs') ?>
+                <div class="col-main">
+                    <?php echo $this->getChildHtml('global_messages') ?>
+					
+					
+                  
+					<div>
+					<div class="left-banner">
+					
+					
+					
+						<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('home-slider')->toHtml(); ?>
+			
+					</div>
+					
+					
+					<div class="right-banner">
+					<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>skin.html"><img src=" <?php echo $this->getSkinUrl('images/home_right3.gif') ?>" alt="护肤之旅" /></a>
+					
+					
+					<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female">
+					<img src="<?php echo $this->getSkinUrl('images/home_right2.gif') ?>" alt="美容方案" /></a> 
+					<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>about-sisley/creat-mind/plant.html">
+					<img src="<?php echo $this->getSkinUrl('images/home_right1.gif') ?>" alt="创新" /> </a>
+					</div>
+					</div>
+					
+					
+			
+					
+					
+					  <?php //echo $this->getChildHtml('content') ?>
+                </div>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('footer') ?>
+        <?php echo $this->getChildHtml('before_body_end') ?>
+    </div>
+</div>
+<?php echo $this->getAbsoluteFooter() ?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.2.3.pack.js') ?>"></script>
+<script>
+jQuery.noConflict();
+</script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/slidetip.js') ?>"></script>
+
+
+</body>
+</html>

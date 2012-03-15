@@ -1,0 +1,297 @@
+<?php
+    
+    
+?>
+<?php  $_helper = $this->helper('catalog/output'); ?>
+<?php if($this->getResultCount()): ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="page-title">
+    <?php if ($this->helper('rss/catalog')->getTagFeedUrl()): ?>
+        <a href="<?php echo $this->helper('rss/catalog')->getTagFeedUrl() ?>" class="nobr link-rss"><?php echo $this->__('Subscribe to Feed') ?></a>
+    <?php endif; ?>
+    <h1><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '%s'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
+</div>
+    <?php if ($messages = $this->getNoteMessages()):?>
+    <p class="note-msg">
+        <?php foreach ($messages as $message):?>
+            <?php echo $message?><br />
+        <?php endforeach;?>
+    </p>
+    <?php endif; ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php else: ?>
+
+
+<div class="no-result">
+<img src="<?php echo $this->getSkinUrl('images/mark.png') ?>"/>
+<?php echo ($this->getNoResultText()) ? $this->getNoResultText() : $this->__('很抱歉，没有搜索到关于“'.$this->helper('catalogsearch')->getEscapedQueryText().'”的相关产品。') ?>
+</div>
+
+<!--
+<p class="note-msg">
+    <?php //echo ($this->getNoResultText()) ? $this->getNoResultText() : $this->__('对不起，没有搜索到关于“'.$this->helper('catalogsearch')->getEscapedQueryText().'”的相关产品') ?>
+	 
+    <?php if ($messages = $this->getNoteMessages()):?>
+        <?php foreach ($messages as $message):?>
+        <br /><?php echo $message?>
+        <?php endforeach;?>
+    <?php endif; ?>
+</p>
+-->
+	
+	<?php //echo $this->getChildHtml('interster.hot') ?>
+
+<div class="HotSale">
+	<div class="HotSaleTit"><h1>精品推荐</h1></div> 
+	
+		<?php
+		$_productCollection_1 = Mage::getModel('catalog/product')->getCollection()
+					->addCategoryFilter(Mage::getModel('catalog/category')->load(301),true)
+					->addAttributeToFilter('visibility',4)
+					->addAttributeToSelect('*')
+					->addAttributeToSort('entity_id', 'DESC')
+					->setPageSize(4)
+					->setCurPage(1)
+					->load();
+
+		Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_1);
+		Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_1);
+		?>
+		
+		<div class="season-prolist1">
+							<?php $_collectionSize = $_productCollection_1->count() ?>
+								<?php $_columnCount = 4; ?>
+								<?php $i=0; foreach ($_productCollection_1 as $_product): ?>
+									<?php if($i++%$_columnCount==0): ?>
+									<ol class="grid-row">
+									<?php endif; ?>
+									<?php if($_product->getTypeId() =='simple') { ?>
+										<li class="item_home">
+											<div class="hotsaelwidth">
+											<p class="product-image">
+												<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+													<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(166, 176); ?>" width="166" height="176" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+												</a>
+											</p>
+											<h5><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h5>
+				<?php if($_product->getCapacity()) { ?>
+				<div class="Listrongliang">
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span><span>-</span>
+				</div>
+				<?php } ?>
+														<?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+           	$_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+           	$_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+           	$_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+           	$_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+           	?>
+           	<div class="price-box">
+           	<p class="price-from">
+           	<span class="price-label">价格区间:</span>
+                <span class="price">
+           	<?php
+		echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+		echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                	if ($Product->getId() == $_product->getId()) {
+                	 $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                	}
+                }
+           	?>
+           	<div class="price-box">
+           	<p class="minimal-price">
+           	<span class="price-label">起价：</span>
+           	<span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+           	<?php echo $_showPrice; ?>
+           	</span>
+           	</p>
+                </div>
+                <?php } ?>
+								<?php if($_product->isSaleable()){ ?>
+								<div class="NewProuductsBuy">
+								<button type="button" class="Buy-now" onclick="setLocation('<?php echo $_product->getProductUrl() ?>')"><span><?php echo $this->__('') ?></span></button>
+								</div>
+								<?php }else{ ?>
+								<div class="NewProuductsOut">
+								<p class="availability out-of-stock zindex0" style="zoom: 1;"><span class="zindex0" style="zoom: 1;">售罄</span></p>
+								<!--<span><?php //echo $this->__('Out Of Stock') ?></span>-->
+								
+								</div>
+								<?php } ?>
+								<?php } ?>
+										</li>
+									<?php if($i%$_columnCount==0 || $i==$_collectionSize): ?>
+									</ol>
+									<?php endif; ?>
+								<?php endforeach ?>
+								</div>
+								
+								
+									</div>
+									
+									
+								
+<div class="HotSale">
+	<div class="HotSaleTit"><h1>精品推荐</h1></div>
+	
+		<?php
+		$_productCollection_1 = Mage::getModel('catalog/product')->getCollection()
+					->addCategoryFilter(Mage::getModel('catalog/category')->load(302),true)
+					->addAttributeToFilter('visibility',4)
+					->addAttributeToSelect('*')
+					->addAttributeToSort('entity_id', 'DESC')
+					->setPageSize(4)
+					->setCurPage(1)
+					->load();
+
+		Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_1);
+		Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_1);
+		?>
+		
+		<div class="season-prolist1">
+							<?php $_collectionSize = $_productCollection_1->count() ?>
+								<?php $_columnCount = 4; ?>
+								<?php $i=0; foreach ($_productCollection_1 as $_product): ?>
+									<?php if($i++%$_columnCount==0): ?>
+									<ol class="grid-row">
+									<?php endif; ?>
+								
+										<li class="item_home">
+											<div class="hotsaelwidth">
+											<p class="product-image">
+												<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+													<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(166, 176); ?>" width="166" height="176" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+												</a>
+											</p>
+											<h5><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h5>
+				<?php if($_product->getCapacity()&&$_product->getTypeId() =='simple') { ?>
+				<div class="Listrongliang">
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span><span>-</span>
+				</div>
+				<?php } ?>
+														<?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+           	$_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+           	$_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+           	$_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+           	$_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+           	?>
+           	<div class="price-box">
+           	<p class="price-from">
+           	<span class="price-label">价格区间:</span>
+                <span class="price">
+           	<?php
+		echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+		echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+				
+				<?php 
+					if($_product->getTypeId() =='configurable'){
+				
+				?>
+				<div class="price-box newcss">
+					<?php echo $_helper->productAttribute($_product, $_product->getCOutofPrice(), 'c_outof_price ') ?>
+				</div>
+				
+				<?php } ?>
+				
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                	if ($Product->getId() == $_product->getId()) {
+                	 $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                	}
+                }
+           	?>
+           	<div class="price-box">
+           	<p class="minimal-price">
+           	<span class="price-label">起价：</span>
+           	<span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+           	<?php echo $_showPrice; ?>
+           	</span>
+           	</p>
+                </div>
+                <?php } ?>
+								<?php if($_product->isSaleable()){ ?>
+								<div class="NewProuductsBuy">
+								<button type="button" class="Buy-now" onclick="setLocation('<?php echo $_product->getProductUrl() ?>')"><span><?php echo $this->__('') ?></span></button>
+								</div>
+								<?php }else{ ?>
+								<div class="NewProuductsOut">
+								<p class="availability out-of-stock zindex0" style="zoom: 1;"><span class="zindex0" style="zoom: 1;">售罄</span></p>
+								<!--<span><?php //echo $this->__('Out Of Stock') ?></span>-->
+								
+								</div>
+								<?php } ?>
+								
+										</li>
+									<?php if($i%$_columnCount==0 || $i==$_collectionSize): ?>
+									</ol>
+									<?php endif; ?>
+								<?php endforeach ?>
+								</div>
+								
+								
+									</div>
+
+		
+									
+									
+									
+									
+		<div class="searchbottom">	
+		<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>skin.html">
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('cataserchdown')->toHtml(); ?>
+		</a>
+		</div>
+
+		
+
+<?php endif; ?>

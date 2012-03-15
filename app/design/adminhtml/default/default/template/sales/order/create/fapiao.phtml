@@ -1,0 +1,50 @@
+<div class="entry-edit">
+           <div class="entry-edit-head"><h4>发票</h4></div>
+		   <div class="fieldset">
+           <ul>
+	       <li><input type="radio" id='yesfabiao' value="yesfabiao" name="fabiao" onclick="jQuery('#fapiaotitle').removeAttr('disabled'); jQuery('#fapiaocat').removeAttr('disabled'); jQuery('#abc').css('display','block'); "/>
+		     <label for="yesfabiao">是</label>
+	       </li>
+	       <li><input type="radio" id='nofabiao' value="nofabiao" name="fabiao"  checked onclick="jQuery('#fapiaotitle').attr('disabled','disabled'); jQuery('#fapiaocat').attr('disabled','disabled');jQuery('#abc').css('display','none');  "/>
+		     <label for="nofabiao">否</label>
+	       </li>      
+           </ul>
+         
+		   
+		   
+           <div class="clearer"></div>
+			<div id="abc" style="display:none;">
+           <label for="fapiaotitle">发票抬头(限30字)：</label><br /><input type="text" maxlength="30" id='fapiaotitle' name="fapiaotitle" class="input-text" style="width:250px;" disabled /><br />
+           <label for="fapiaocat">发票内容：</label><br />
+			<select name="fapiaocat" class="input-text" id="fapiaocat" disabled>
+			<option value="化妆品">化妆品</option>
+			</select>   
+
+	     </div>	 
+		</div>
+		
+		
+		
+		 <div class="entry-edit-head"><h4>选择送货时间</h4></div>
+	    <div class="fieldset">
+       <ul>
+       <li><input type="radio" checked="checked" id='time1' value="all" name="shipping_time"/>
+             <label for="time1">工作日、双休日与假日均可送货</label>
+       </li>
+       <li><input type="radio" id='time2' value="holidays" name="shipping_time"/>
+             <label for="time2">仅双休日、假日送货(工作日不用送货)</label>
+       </li>
+       <li><input type="radio"  id='time3' value="workdays" name="shipping_time"/>
+             <label for="time3">仅工作日送货(双休日、假日不用送货)</label>
+             <div class="shipping-tips" style="padding-left:16px;color:#999;">写字楼/商用地址客户选择</div>
+       </li> 
+       <li><input type="radio"  id='time4' value="nights" name="shipping_time"/>
+	   
+             <label for="time4">学校地址(该地址白天没人，请尽量安排其他时间送货)</label>
+             <div class="shipping-tips" style="padding-left:16px;color:#999;">特别安排可能超出预算送货天数</div>
+       </li>                      
+       </ul>
+	   </div>
+		
+ </div>
+<div class="clearer"></div>

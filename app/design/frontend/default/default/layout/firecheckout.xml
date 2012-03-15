@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+
+    <firecheckout_index_index translate="label">
+        <label>Easy Checkout</label>
+        <remove name="left"/>
+        <remove name="right"/>
+        <reference name="root">
+            <action method="setTemplate"><template>page/checkout.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addItem" ifconfig="firecheckout/general/enabled"><type>skin_css</type><name>css/firecheckout.css</name></action>
+            <action method="addItem" ><type>skin_js</type><name>js/chinacities.js</name></action>
+	    <action method="addItem" ><type>skin_js</type><name>js/cityupdater.js</name></action>
+	    <action method="addJs"><script>jquery/jquery-1.4.2.min.js</script></action>
+            <action method="addJs"><script>jquery/jquery-noconflict.js</script></action>
+        </reference>
+        <reference name="content">
+            <block type="firecheckout/checkout" name="firecheckout" template="firecheckout/checkout.phtml">
+                <block type="customer/account_forgotpassword" name="customer.forgot" template="firecheckout/forgotpassword.phtml"/>
+
+                <block type="firecheckout/checkout_billing" name="checkout.onepage.billing" as="billing.address" template="firecheckout/checkout/billing.phtml"/>
+                <block type="firecheckout/checkout_shipping" name="checkout.onepage.shipping" as="shipping.address" template="firecheckout/checkout/shipping.phtml"/>
+
+                <block type="checkout/onepage_shipping_method" name="checkout.onepage.shipping_method" as="shipping.method" template="firecheckout/checkout/shipping_method.phtml">
+                    <block type="checkout/onepage_shipping_method_available" name="checkout.onepage.shipping_method.available" as="available" template="checkout/onepage/shipping_method/available.phtml"/>
+                    <block type="checkout/onepage_shipping_method_additional" name="checkout.onepage.shipping_method.additional" as="additional" template="checkout/onepage/shipping_method/additional.phtml"/>
+                </block>
+
+                <block type="checkout/onepage_payment" name="checkout.onepage.payment" as="payment.method" template="firecheckout/checkout/payment.phtml">
+                    <block type="checkout/onepage_payment_methods" name="checkout.payment.methods" as="methods" template="firecheckout/checkout/payment/methods.phtml">
+                        <action method="setMethodFormTemplate"><method>purchaseorder</method><template>payment/form/purchaseorder.phtml</template></action>
+                    </block>
+                </block>
+
+                <block type="checkout/cart_coupon" name="checkout.coupon" as="coupon">
+                    <action method="setTemplate" ifconfig="firecheckout/general/discount"><template>firecheckout/checkout/coupon.phtml</template></action>
+                </block>
+
+                <block type="checkout/onepage_review" name="checkout.onepage.review" as="review" template="firecheckout/checkout/review.phtml">
+                    <block type="firecheckout/agreements" name="checkout.onepage.agreements" as="agreements" template="firecheckout/checkout/agreements.phtml"/>
+                    <block type="checkout/onepage_review_info" name="info" template="checkout/onepage/review/info.phtml">
+                        <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>checkout/onepage/review/item.phtml</template></action>
+                        <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>checkout/onepage/review/item.phtml</template></action>
+                        <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>checkout/onepage/review/item.phtml</template></action>
+                        <block type="checkout/cart_totals" name="checkout.onepage.review.info.totals" as="totals" template="checkout/onepage/review/totals.phtml"/>
+                        <block type="core/text_list" name="checkout.onepage.review.info.items.before" as="items_before"/>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </firecheckout_index_index>
+
+    <checkout_cart_index>
+        <reference name="checkout.cart.top_methods">
+            <action method="unsetChild" ifconfig="firecheckout/general/enabled"><name>checkout.cart.methods.onepage</name></action>
+        </reference>
+        <reference name="checkout.cart.methods">
+            <action method="unsetChild" ifconfig="firecheckout/general/enabled"><name>checkout.cart.methods.onepage</name></action>
+        </reference>
+        <reference name="checkout.cart.top_methods">
+            <block type="firecheckout/checkout_link" name="checkout.cart.methods.fire" template="firecheckout/checkout/link.phtml"/>
+        </reference>
+        <reference name="checkout.cart.methods">
+            <block type="firecheckout/checkout_link" name="checkout.cart.methods.fire" template="firecheckout/checkout/link.phtml" before="checkout.cart.methods.multishipping"/>
+        </reference>
+    </checkout_cart_index>
+
+    <firecheckout_index_updatecheckout>
+        <remove name="right"/>
+        <remove name="left"/>
+        <block type="checkout/onepage_payment_methods" name="checkout.payment.method" template="firecheckout/checkout/payment/methods.phtml">
+            <action method="setMethodFormTemplate"><method>purchaseorder</method><template>payment/form/purchaseorder.phtml</template></action>
+        </block>
+        <block type="checkout/onepage_shipping_method_available" name="checkout.shipping.method" template="checkout/onepage/shipping_method/available.phtml"/>
+        <block type="checkout/cart_coupon" name="checkout.coupon" as="coupon">
+            <action method="setTemplate" ifconfig="firecheckout/general/discount"><template>firecheckout/checkout/coupon.phtml</template></action>
+        </block>
+        <block type="checkout/onepage_review_info" name="checkout.review" template="checkout/onepage/review/info.phtml">
+            <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>checkout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>checkout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>checkout/onepage/review/item.phtml</template></action>
+            <block type="checkout/cart_totals" name="checkout.onepage.review.info.totals" as="totals" template="checkout/onepage/review/totals.phtml"/>
+            <block type="core/text_list" name="checkout.onepage.review.info.items.before" as="items_before"/>
+        </block>
+    </firecheckout_index_updatecheckout>
+
+    <firecheckout_index_success translate="label">
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/onepage_success" name="checkout.success" template="checkout/success.phtml"/>
+        </reference>
+    </firecheckout_index_success>
+
+    <firecheckout_index_failure translate="label">
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/onepage_failure" name="checkout.failure" template="checkout/onepage/failure.phtml"/>
+        </reference>
+    </firecheckout_index_failure>
+</layout>

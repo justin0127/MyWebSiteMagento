@@ -1,0 +1,229 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+ 
+ 
+ 
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<div class="cart">
+<h1 class="carth1">
+		
+		<span>希思黎网上商城首页</span> <img src=" <?php echo $this->getSkinUrl('images/dark_ar.jpg') ?>"> <span>购物车</span></h1> 
+    <div class="page-title title-buttons">
+	<div class="cart-step"><img src=" <?php echo $this->getSkinUrl('images/cart-step1.gif') ?>"></div>
+	
+        <?php if(!$this->hasError()): ?>
+        <ul class="checkout-types">
+        <?php foreach ($this->getMethods('top_methods') as $method): ?>
+            <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+            <li><?php //echo $methodHtml; ?></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+		
+		
+    </div>
+	<div class="mytiaoxuan">我挑选的商品</div>
+        
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <col width="1" />
+                <col width="1" />
+                <col />
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                <col width="1" />
+            <?php endif ?>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+
+                        <th rowspan="<?php echo $mergedCells; ?>" class="image"><?php echo $this->__('产品图片') ?></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="name"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+						<th rowspan="<?php echo $mergedCells; ?>" class="image"><?php echo $this->__('产品规格') ?></th>
+						
+                        <?php /*if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center whish"><span class="nobr"><?php echo $this->__('Move to Wishlist') ?></span></th>
+                        <?php endif*/ ?>
+                        <th class="a-center unit_price" colspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Unit Price') ?></span></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center qty"><?php echo $this->__('Qty') ?></th>
+                        <th class="a-center sub_total" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Subtotal') ?></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center trash"><?php echo $this->__('删除产品') ?></th>
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="50" class="a-right">
+                            <?php if($this->getContinueShoppingUrl()): ?>
+                            <?php
+                            	$cart_items = $this->getItems();
+                            	$SkuArr = array();
+		                foreach($cart_items as $a){
+		                	$SkuArr[] = $a->getSku();
+		                }
+		                $sku = $SkuArr[count($SkuArr)-1];
+		                $ProductInfo = Mage::getModel('catalog/product')->loadByAttribute('sku', $sku);
+		               	//var_dump($ProductInfo->getUrlModel()->getUrl($ProductInfo));
+                            ?>
+								
+                             <button type="button" title="<?php echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php echo $ProductInfo->getUrlModel()->getUrl($ProductInfo) ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+                               <!--<button type="button" title="<?php //echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php //echo $this->getContinueShoppingUrl() ?>')"><span><span><?php //echo $this->__('Continue Shopping') ?></span></span></button>-->
+                            <?php endif; ?>
+                            <button type="submit" title="<?php echo $this->__('Update Shopping Cart') ?>" class="button btn-update"><span><span><?php echo $this->__('Update Shopping Cart') ?></span></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </fieldset>
+    </form>
+	<!--<div class="cartFalse">
+		<div class="cartFalseTit">
+		根据您此次选购的商品，您还可以选择以下3个体验包中的1个作为赠品：
+		</div>
+		<div class="cartFalseCon">
+		<div class="Cartwidth">
+		<input type="radio" id="1" name="zen">补水保湿</input>
+		</div>
+		<div class="Cartwidth">
+		<input type="radio" id="2" name="zen">镇定肌肤</input>
+		</div>
+		<div class="Cartwidth">
+		<input type="radio" id="3" name="zen">补水保湿</input>
+		</div>
+		</div>
+	
+	</div>-->
+	<!-- 调取分类 -->			
+	
+	<?php
+				/*$_productCollection_1 = Mage::getModel('catalog/product')->getCollection()
+							->addCategoryFilter(Mage::getModel('catalog/category')->load(143),true)
+							->addAttributeToFilter('visibility',2)
+							->addAttributeToSelect('*')
+							->addAttributeToSort('entity_id', 'ASC')
+							->setPageSize(8)
+							->setCurPage(1)
+							->load();
+
+				Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection_1);
+				Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productCollection_1);*/
+				?>
+						
+
+	<!-- 可以往这个里面塞东西了 -->
+		<!--<div class="saidongxi">
+		  
+		  <div class="alert">
+		   根据您此次选购的商品，您还可以选择以下8个尊享试用装中的1个作为赠品：
+		  </div>
+		<form action="" id="">
+			<?php //$i=0; foreach ($_productCollection_1 as $_product): ?>
+			
+			 <div class="Radio-contan">
+			  <input type="radio" name="chooseFree" class='cartradio' onclick="this.form.action='<?php //echo $this->helper('checkout/cart')->getAddUrl($_product) ?>';this.form.submit(); $$('.cartradio').each(function(item){item.disabled='disabled'}) "  /><span class="radioName"><?php //echo $this->htmlEscape($_product->getName()) ?></span>
+			  <span><?php //echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?></span>
+			   <button type="button" class="Buy-now" onclick="setLocation('<?php //echo $_product->getProductUrl() ?>')"><span><?php //echo $this->__('') ?></span></button>
+			   <div class="home_cart"><a href="<?php //echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php //echo $this->__('Add to Cart') ?></a></div>
+			 </div>
+			 
+			<?php //endforeach ?>
+			</form>
+		</div>-->
+		
+	
+	
+    <div class="cart-collaterals">
+        <div class="col2-set">
+            	
+            	<?php //echo $this->getChildHtml('sample') ?>
+            	
+                <?php echo $this->getChildHtml('crosssell') ?>
+            
+           
+               
+                <?php if (!$this->getIsVirtual()): echo $this->getChildHtml('shipping'); endif; ?>
+            
+        </div>
+		<div class="totalsall">
+		<div class="youhuiquan">
+		 <?php echo $this->getChildHtml('coupon') ?>
+		 </div>
+		
+        <div class="totals">
+            <?php echo $this->getChildHtml('totals'); ?>
+            <?php if(!$this->hasError()): ?>
+            <ul class="checkout-types">
+            <?php foreach ($this->getMethods('methods') as $method): ?>
+                <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                <li><?php echo $methodHtml; ?></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+        </div>
+		
+		 </div>
+    </div>
+</div>
+

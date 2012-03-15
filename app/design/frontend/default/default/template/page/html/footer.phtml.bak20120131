@@ -1,0 +1,386 @@
+
+<script type="text/javascript">
+
+
+ 
+
+jQuery(document).ready(function() {
+		jQuery('#asend1').click( function(){
+		jQuery.blockUI({ message: jQuery('#sendtofriend1'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 555) /2 + 'px', width: '555px' } }); } );
+		
+		jQuery('#btn1').click( jQuery.unblockUI );
+		jQuery('#fanhui').click( jQuery.unblockUI );
+}); 
+function enregistrerFrm(){
+	document.getElementById('url_lien').value = parent.url_lien_ami;
+	var erreur = '';
+	if(document.getElementById('nom_expediteur').value==''){
+		erreur+='请填写您的名字\n';
+	}
+
+	if(document.getElementById('adresse_expediteur').value==''){
+		erreur+='请填写您的电子邮件\n';
+	}
+	if(document.getElementById('adresse_destinataire').value==''){
+		erreur+='请填写您朋友的电子邮件。\n';
+	}
+	
+	if(erreur==''){
+		document.forms["formulaire_mail"].submit();
+	}
+	else{
+		alert(erreur);
+	}
+}
+
+function retourFiltre(){
+
+}
+</script>
+
+<!-- Start Email Function -->
+<style>
+#sendtofriend1 .frmLabel {
+	FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+}
+#sendtofriend1 .frmInput {
+	FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+}
+
+#sendtofriend1 INPUT {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 10px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 0px; BORDER-BOTTOM: #cccccc 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+
+#sendtofriend1 .button {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #adadad
+}
+#sendtofriend1 .button-hover {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #8d8d8d
+}
+
+#sendtofriend1 #valider {margin-left: 206px;}
+
+</style>
+<script type="text/javascript" src="http://www.sisley.com.cn/skin/frontend/default/default/js/jquery.blockUI.js"></script>
+<div class="footer-container">
+    <div class="footer">
+		<div class="footer-top">
+			<div class="font1">
+				<ul class="left jiaul">
+					<img src="<?php echo $this->getSkinUrl('images/footer-1.jpg') ?>" />
+					<a class="sisleya" href="http://weibo.com/sisleychina" target="_blank"><span>希思黎官方微博</span></a>
+					<?php //echo $this->getChildHtml('bookmarks') ?> 
+					<a href="javascript:void((function(s,d,e){if(/renren\.com/.test(d.location))return;var f='http://share.renren.com/share/buttonshare?link=',u=d.location,l=d.title,p=[e(u),'&title=',e(l)].join('');function%20a(){if(!window.open([f,p].join(''),'xnshare',['toolbar=0,status=0,resizable=1,width=626,height=436,left=',(s.width-626)/2,',top=',(s.height-436)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent));" title="分享到人人"><img src="<?php echo $this->getSkinUrl('images/share-renren.jpg') ?>" /></a>
+					<a href="javascript:window.open('http://www.kaixin001.com/repaste/share.php?rtitle='+encodeURIComponent(document.title)+'&rurl='+encodeURIComponent(document.location.href)+'&rcontent=');void(0)"><img src="<?php echo $this->getSkinUrl('images/share-kaixin.jpg') ?>" /></a>
+					<a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','图片链接|默认为空','<?php echo $this->getLayout()->getBlock('head')->getTitle(); ?> ','<?php echo $this->helper('core/url')->getCurrentUrl(); ?>','页面编码gb2312|utf-8默认gb2312'));"><img src="<?php echo $this->getSkinUrl('images/share-sina.jpg') ?>" /></a>
+					<a id='asend1'><img src="<?php echo $this->getSkinUrl('images/email-icon.gif') ?>" class="foot-email" /></a>
+					<div style='display:none' id='sendtofriend1'>
+						<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btn1' style="float:right; width:5px;margin-right: 6px; color:#fff;" >X</a></div>
+						<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+							<tr id="tr_entete_popup">
+								<td>
+									<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>
+												<table width="100%" border="0" cellpadding="0" cellspacing="0">
+													<tr>
+														<td width="61" style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+														<td width="148" align="center"><a href="?page=accueil"><img src="/sisleysource/images/logo.gif" alt="Sisley" border="0"/></a></td>
+														<td style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div id="conteneur" style="width:100%;height:100%;" >
+										<form name="formulaire_mail" method="post" action="http://www.sisley.com.cn/mail.php">
+											<div id="page_titre" >
+												<div class="page_titre" style="margin: 4px 0 5px 4px;;">
+													<p style="font-weight:100;font-size:12px;line-height:25px;margin:10px 20px 3px">
+														发送该网页给你的好友<br />这些信息将不被希思黎网站记录
+													</p>
+												</div>
+												<div id="page_main">
+													<input type="hidden" name="url_lien" id="url_lien" value="" />
+													<table id="tableau_frm" cellspacing="0" align="center" cellpadding="0" style="padding-left:24px;padding-right:10px;background-color:#EEEDEE;">
+														<tbody>
+															<tr>
+																<td colspan="2">&nbsp;</td>
+															</tr>
+															<tr>
+																<td class="frmLabel" nowrap>
+																您的名字<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+																</td>
+																<td class="frmInput">
+																	<input type="text" name="nom_expediteur" id="nom_expediteur" maxlength="50" value="" style="width:400px;"/>
+																	<input type="hidden" name="prenom_expediteur" id="prenom_expediteur" maxlength="50" value=""/>
+																</td>
+															</tr>
+															<tr>
+																<td class="frmLabel" nowrap>
+																您的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+																</td>
+																<td class="frmInput">
+																	<input type="text" name="adresse_expediteur" id="adresse_expediteur" maxlength="50" value="" style="width:400px;"/>
+																</td>
+															</tr>
+															<tr>
+																<td class="frmLabel" nowrap>
+																	<input type="hidden" name="nom_destinataire" id="nom_destinataire" maxlength="50" value=""/>
+																	<input type="hidden" name="prenom_destinataire" id="prenom_destinataire" maxlength="50" value=""/>
+																	您朋友的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+																</td>
+																<td class="frmInput">
+																	<input type="text" name="adresse_destinataire" id="adresse_destinataire" maxlength="50" value="" style="width:400px;"/>
+																</td>
+															</tr>
+															<tr>
+																<td class="frmLabel" nowrap>
+																您的留言<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+																</td>
+																<td class="frmInput">
+																	<textarea name="message_destinataire" id="message_destinataire"  style="height:100px;width:400px;"></textarea>
+																</td>
+															</tr>
+															<tr>
+																<td colspan="2" class="mandatory_legend">
+																	<span style="font-family:Arial;">*<span><!--号-->部分必须填写
+																</td>
+															</tr>
+														</tbody>
+														<tfoot>
+															<tr>
+																<td colspan="2" align="center" style="height:25px;">
+																	<input type="button" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="valider" id="valider" value="发送" onclick="enregistrerFrm();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																	<input type="button" class="button" id="fanhui" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="retour" id="retour" value="返回" onclick="retourFiltre();"/>
+																</td>
+															</tr>
+															<tr>
+																<td colspan="2">&nbsp;</td>
+															</tr>
+														</tfoot>
+													</table>
+												</div>
+											</div>
+										</form>
+									﻿</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</ul>
+			</div>
+			<div class="font2">
+				<span>订购/咨询热线:400-820-8139 (9:00-21:00国定节假日除外)</span>
+			</div>
+			<div class="font3">
+				<span><a href="javascript:window.external.addFavorite('http://www.sisley.com.cn','希思黎网上商城首页 ');">收藏本网站</a></span>
+			</div>
+			<div class="font4">
+				<?php echo $this->getChildHtml('left.newsletter') ?>
+				<div class="yuancon">
+					<span>语言</span>
+					<select class="yuyan" onchange="window.location.href=this.value" >
+						<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=1">English</option>
+						<option value="#" selected="selected">中文</option>
+						<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=2">Fran?ais</option>
+						<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=3">日本語</option>
+						<option value="http://www.sisley-cosmetics.com/gb-en/?page=accueil&id_lang=4">韩语</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('sis-footer')->toHtml(); ?>
+		</div>
+        <div class="footeradd"><?php echo $this->getCopyright() ?></div>
+    </div>
+</div>
+
+
+
+	<?php 
+	$cookiename="the_cookie1002";
+	if( $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) != $this->getUrl('customer/account')  && $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) != $this->getUrl('customer/verify')  && $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) !=  $this->getUrl('*', array('_direct'=>'registration')) && $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) !=  $this->getUrl('*', array('_direct'=>'registersuccess'))   && $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) !=  $this->getUrl('*', array('_direct'=>'registerfail')) && $this->getUrl('*/*', array('_current'=>true, '_use_rewrite'=>true)) !=  $this->getUrl('*', array('_direct'=>'ooffregister')) ){
+	//echo "1";
+	if(!isset($_COOKIE[$cookiename])){
+	?>
+	<style>
+.cms-home .blockOverlay {/*background:transparent!important;*/}
+	</style>
+	<?php
+	//echo "2";
+	?>
+												
+<div style='display:none' id='regform' style="" >
+	<div style="float:right;margin-right: 6px;height:16px;width:19px;margin-top:8px;">
+		<a id='regformclose' class='regformclose' style="display:block;float:right;margin-right:22px;height:16px;width:19px;cursor:pointer;" ><img src="/media/popup/popupclose.png" /></a>
+	</div>
+	<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="clear:both;">
+		<tr>
+			<td>
+				<form name="popup_mail" id="popup_mail" method="post" action="<?php echo $this->getUrl('campaign/index/index'); ?>">
+					<div style="width:250px;margin-top: 203px;margin-left: 360px;">
+						<div style="height:51px;">
+							<input type="text" name="popupemail" id="popupemail"  maxlength="50" value="" style="width:240px;border:0;" class="validate-email required-entry" />
+							<div class="validation-advice" id="advice-required-entry-popupemail" style="display:none">请输入Email</div>
+							<div class="validation-advice" id="advice-validate-email-popupemail" style="display:none">您输入的E-mail格式错误！</div>
+						</div>
+						<div style="margin-top:0;height:40px;">
+							<input name="verif_box" class="required-entry" type="text" id="verif_box" style="width:240px;border:0;margin-top: 1px;" maxlength="4"/>  
+						</div>
+				
+						<div style="margin-top:0px;line-height:24px;height:24px">
+							<img id='verify2' width='50' height='24' style='float:left' />
+							<div style="line-height:24px;height:24px;float:left;">
+							<a class='next' id="nextverify2" style='cursor:pointer;line-height:24px;height:24px;vertical-align:middle;' >&nbsp;&nbsp;换一张?</a>&nbsp;
+							<span id="codeerror"  style="color:#00a8a4;line-height:24px;height:24px;vertical-align:middle;font-weight: normal;" >&nbsp; </span>
+							<span id="advice-required-entry-verif_box" style="margin:0;padding:0;color:#00a8a4;line-height:24px;height:24px;vertical-align:middle;font-weight: normal;display:none;">请输入验证码</span>
+							</div>
+							<div style="clear:both;"></div>
+						</div>
+						<div style="margin-top:5px;text-align:center;">
+							<button type="submit" class="button" title="<?php echo $this->__('Login') ?>" name="send" id="send2"><span style="background:url('/media/popup/popupsubmit.png') no-repeat;height:26px;width:83px;" ></span></button>
+						</div>
+					</div>
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script type="text/javascript">
+var dataForm3 = new VarienForm('popup_mail', true);
+jQuery(document).ready(function() {
+	jQuery.blockUI({ message: jQuery('#regform'), css: {  top:  (jQuery(window).height() - 445) /2 + 'px', left: (jQuery(window).width() - 676) /2 + 'px', width: '676px',height:'445px',background:'url(/media/popup/popup.png)' } }); 
+	
+	jQuery(window).resize(function() {
+		if(jQuery('#regform').css('display')=="block"){
+		jQuery.blockUI({ message: jQuery('#regform'), css: {  top:  (jQuery(window).height() - 445) /2 + 'px', left: (jQuery(window).width() - 676) /2 + 'px', width: '676px',height:'445px',background:'url(/media/popup/popup.png)' } }); 
+		}
+	
+	});
+
+	
+
+	jQuery("#verify2").attr("src","/yz.php?"+Math.round(Math.random()*9999));
+	jQuery("#nextverify2").click(function(){
+		jQuery("#verify2").attr("src","/yz.php?"+Math.round(Math.random()*9999));
+		return false;
+	});
+	
+	jQuery('.regformclose').click( jQuery.unblockUI );
+	
+	jQuery('img').bind('contextmenu', function(e){ return false; }); 
+	jQuery("#send2").hover(function(){
+		jQuery('#send2 span').css('background','url("/media/popup/popupsubmita.png") no-repeat');
+	},function(){
+		jQuery('#send2 span').css('background','url("/media/popup/popupsubmit.png") no-repeat');
+	});
+	
+	
+	var valid2 = new Validation('popup_mail', {immediate : true});
+
+	if($("popupemail").value){
+		valid2.validate();
+	}
+	jQuery('#send2').click(function() {
+		jQuery('#codeerror').html('');
+		var dataForm3 = new VarienForm('popup_mail', true);
+		if(!valid2.validate()){
+			return false;
+		}
+               
+		var url = '<?php echo $this->getUrl('campaign/index/popup'); ?>';
+		var parameters = { 
+			popupemail: $("popupemail").value,
+			verif_box: $("verif_box").value
+		}
+
+		_gaq.push(['_trackPageview', '/2012_registration_popup']); 
+		
+		jQuery('#codeerror').html('<img src="/media/popup/ajax-loader-tr.gif" height="16" width="16" />');
+
+		new Ajax.Request(url, {
+			method: 'post',
+			parameters: parameters,
+			onSuccess: function(transport)  {
+				if(transport.responseText=="fail"){
+					jQuery('#codeerror').html('验证码输入有误！');
+				}else{
+					$('regform').update(transport.responseText);
+				}
+			}
+		});
+		
+		return false;
+
+	});
+	
+}); 
+function isValidEmailAddress(emailAddress) {
+    var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+    return pattern.test(emailAddress);
+};
+
+</script>
+<?php
+
+		setcookie($cookiename, 1,time()+360000000);
+}
+}
+?>
+ 
+<!-- XITI TRACKING CODE TO INSERT JUST BEFORE </BODY> -->
+
+<script type="text/javascript">
+<!--
+xtnv = document;        //parent.document or top.document or document         
+xtsd = "http://logi241";
+xtsite = "487764";
+xtn2 = "";        // level 2 site ID
+xtpage = "";        //page name (with the use of :: to create chapters)
+xtdi = "";        //implication degree
+xt_multc = "";		//all the xi indicators (like "&x1=...&x2=....&x3=...")
+xt_an = "";        //user ID
+xt_ac = "";        //category ID
+//do not modify below
+if (window.xtparam!=null){window.xtparam+="&ac="+xt_ac+"&an="+xt_an+xt_multc;}
+else{window.xtparam="&ac="+xt_ac+"&an="+xt_an+xt_multc;};
+
+
+
+
+
+
+
+
+//-->
+</script>
+<style>
+#popup_mail .validation-failed{
+	border:0 !important;
+	background: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+#popup_mail .validation-advice{
+	display:block;
+	margin-top:8px;
+	color:#00a8a4 !important;
+	border:0 !important;
+	background: none;
+	font-weight:normal;
+	margin-left: 0;
+	padding-left: 0;
+}
+</style>
+
+<script type="text/javascript" src="http://www.sisley.com.cn/js/xtcore.js"></script>
+<noscript>
+<img width="1" height="1" alt="" src="http://logi241.xiti.com/hit.xiti?s=487764&s2=&p=&di=&an=&ac=" />
+</noscript>

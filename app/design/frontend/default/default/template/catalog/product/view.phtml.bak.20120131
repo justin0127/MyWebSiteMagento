@@ -1,0 +1,572 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.blockUI.js') ?>"></script>
+<?php					
+    $_helper = $this->helper('catalog/output');
+    $_product = $this->getProduct();
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+    <div class="product-essential">
+	
+	
+    <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+        <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+
+     
+
+        <div class="product-img-box">
+            <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/mz-packed.js') ?>"></script>
+            <link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/MagicZoom.css') ?>" type="text/css" media="screen"></link>
+           <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(237,247); ?>" width="237" height="247" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+        </div>
+		
+		<div class="block-after-img">
+		<div class="rl-price">
+		<?php if($_product->getCapacity()){ ?>
+		
+		
+		<div class="rongliang">
+			
+				<?php 
+				if($_product->getTypeId() =='configurable' && $_product->isSaleable()){ ?>
+				容量
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?></span>
+				<?php }else if($_product->getTypeId() =='simple'){ ?>
+				容量-价格:
+				<span><?php echo $_helper->productAttribute($_product, $_product->getCapacity(), 'capacity') ?>&nbsp;- </span>
+				<?php } ?>
+				
+			
+		</div>
+		<?php } ?>
+		
+		
+		<?php echo $this->getChildHtml('product_type_data') ?>
+		</div>
+		
+		<?php if ($_product->isSaleable()==false && $_product->getTypeId() =='configurable'){ ?>
+		 <div class="OutOfStock-price">
+			  <?php echo $_helper->productAttribute($_product, $_product->getCOutofPrice(), 'c_outof_price ') ?>
+		</div>
+		<?php } ?>
+		
+			<?php if ($_product->isSaleable() && $this->hasOptions()){?>
+            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+			
+			<?php if( $_product->getVideo()){ ?>
+	
+		  <div><A id="jingcaishipin"><img src="<?php echo $this->getSkinUrl('images/voir_animation_EN.gif') ?>"/></A></div>
+		<?php } ?>
+		<?php if($_product->getColoradvice()){ ?>
+		<div><A id="caizhuangjianyi"><img src="<?php echo $this->getSkinUrl('images/produit_conseil_EN.gif') ?>"/></A></div>
+		<?php } ?>
+		
+		<?php if($_product->getColoradvice($_product->getSuit())){ ?>
+		<div><?php echo $_helper->productAttribute($_product, $_product->getSuit(), 'suit') ?></div>
+		<?php } ?>
+		
+		
+		 <b>本产品参与免运费活动</b>	
+			
+			
+			
+			<?php }else{ ?>
+		<?php if($_product->isSaleable()){ ?>
+		  <?php echo $this->getChildHtml('addtocart') ?>
+		  
+		<?php }else{ ?>
+			<!--<p class="availability out-of-stock"><span class="view-outstock"><?php echo $this->__('Out of stock') ?></span>-->
+			<?php if( $this->helper('wishlist')->isAllow()){ ?>
+		    <span><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('') ?></a></span></p>
+		    <?php } ?>
+		
+		<?php } ?>
+		<?php if( $_product->getVideo()){ ?>
+		  <div><A id="jingcaishipin"><img src="<?php echo $this->getSkinUrl('images/voir_animation_EN.gif') ?>"/></A></div>
+		<?php } ?>
+			<?php if($_product->getColoradvice()){ ?>
+		 <div><A id="caizhuangjianyi"><img src="<?php echo $this->getSkinUrl('images/produit_conseil_EN.gif') ?>"/></A></div>
+		<?php } ?>
+		
+		<?php if($_product->getSuit()){ ?>
+		<div class="view-suit"><?php echo $_helper->productAttribute($_product, $_product->getSuit(), 'suit') ?></div>
+		<?php } ?>
+		 <b>本产品参与免运费活动</b>	
+        <?php } ?>
+		</div>
+		<!----end---->
+		
+		<?php 
+		$url = Mage::helper('core/url')->getCurrentUrl(); 
+		$furl="/man/";
+		//$ArrCurrent=array(25,26,48,27,49,50,51,52,53,54,28,55,56,29,57,30,58,59,60,289);
+		//$current_cat = Mage::registry('current_category')->getId();
+		
+		//var_dump($current_cat);
+	   //exit;
+	   
+		//if(in_array($current_cat, $ArrCurrent)){ 
+		if(strpos($url,$furl)>0){ ?>
+		<!-- 男士的肌肤问题-->
+		<div class="newclo2 NewBg">
+		  <select style="font-size:12px;font-family:宋体;" onchange="window.location.href=this.value" id="recherche_par_besoin" name="recherche_par_besoin">
+		 <option>根据您的要求搜索:</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_1">每日平衡肌肤</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_2">剃须前的肌肤护理</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_3">舒缓剃须刺激</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_4">补水</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_5">淡化疲惫痕迹</option>
+		<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male_6">抑止过多皮脂</option>
+		 
+		 
+		 </select>
+		</div>
+		 
+		 <div class="ad">
+		<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_male">
+		<img src="<?php echo $this->getSkinUrl('images/view-diagnostic-homme-uk.jpg') ?>" alt=""/>
+		</a>
+		 </div>
+		 
+		<!-- 结束 -->
+		
+		
+		 	<?php }else{ ?>
+			
+			<div class="newclo2 NewBg">
+ <select style="font-size:12px;font-family:宋体;" onchange="window.location.href=this.value" id="recherche_par_besoin" name="recherche_par_besoin">
+
+ 
+ 
+		
+		
+<option>根据您的要求搜索:</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_1">隐藏肌肤瑕疵</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_2">抗皱护理</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_3">恢复肌肤光泽</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_4">均匀肤色</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_5">修复各类岁月痕迹</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_6">保护</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_7">舒缓修复</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_8">净化，控油，均衡 </option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_9">滋养</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_10">补水</option>
+<option value="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female_11">紧致</option></select>
+</div>
+
+		
+		
+		
+		<div class="ad">
+		  <!-- left adv -->
+		  <?php echo $this->getChildHtml('new'); ?>
+		  <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('leftad')->toHtml(); ?>
+		</div>
+		
+		<?php } ?>
+		
+		
+	
+		
+		  <div class="pro-left-info">
+	<ul>
+    <li>唯一网上销售官方渠道</li>
+    <li>全国免费送货上门</li>
+    <li>所有订单免运费</li>
+    <li>精致礼盒包装</li>
+    <li>尊享体验装一份</li>
+	</ul>
+    </div>
+
+        <div class="clearer"></div>
+       
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+            var productAddToCartForm = new VarienForm('product_addtocart_form');
+            productAddToCartForm.submit = function(){
+                    if (this.validator.validate()) {
+                            this.form.submit();
+                    }
+            }.bind(productAddToCartForm);
+    //]]>
+    </script>
+    </div>
+
+  
+</div>
+
+  <div class="product-collateral">
+	 <div class="ProductTit-all">
+	 <div class="ProductviewTit">
+	 <h1 class="english-name"><?php echo $_helper->productAttribute($_product, $_product->getEnglishName(), 'english_name') ?></h1>
+	 <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+	 </div>
+	 
+	 <div class="view-function">
+	 
+	  <?php echo $_product->getFunction(); ?>
+	 </div>
+	 
+	 <div class="view-share">
+	 <ul class="right jiaul">
+				
+				<?php //echo $this->getChildHtml('bookmarks') ?> 
+				<a href="javascript:void((function(s,d,e){if(/renren\.com/.test(d.location))return;var f='http://share.renren.com/share/buttonshare?link=',u=d.location,l=d.title,p=[e(u),'&title=',e(l)].join('');function%20a(){if(!window.open([f,p].join(''),'xnshare',['toolbar=0,status=0,resizable=1,width=626,height=436,left=',(s.width-626)/2,',top=',(s.height-436)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent));" title="分享到人人"><img src="<?php echo $this->getSkinUrl('images/share-renren.jpg') ?>"></a>
+				<a href="javascript:window.open('http://www.kaixin001.com/repaste/share.php?rtitle='+encodeURIComponent(document.title)+'&rurl='+encodeURIComponent(document.location.href)+'&rcontent=');void(0)"><img src="<?php echo $this->getSkinUrl('images/share-kaixin.jpg') ?>"></a>
+				 <a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','图片链接|默认为空','<?php echo $this->getLayout()->getBlock('head')->getTitle(); ?> ','<?php echo $this->helper('core/url')->getCurrentUrl(); ?>','页面编码gb2312|utf-8默认gb2312'));"><img src="<?php echo $this->getSkinUrl('images/share-sina.jpg') ?>"></a>
+
+				<a id='asend2'><img src="<?php echo $this->getSkinUrl('images/email-icon.gif') ?>" class="foot-email"/></a>
+				
+				
+				<!-- Start Email Function -->
+					<style>
+					#sendtofriend2 .frmLabel {
+						FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+					}
+					#sendtofriend2 .frmInput {
+						FONT-SIZE: 12px; COLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif; HEIGHT: 20px
+					}
+
+					#sendtofriend2 INPUT {
+						BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 10px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 0px; BORDER-BOTTOM: #cccccc 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+					}
+
+					#sendtofriend2 .button {
+						BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #adadad
+					}
+					#sendtofriend2 .button-hover {
+						BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-LEFT: 5px; BORDER-LEFT: 0px; CURSOR: pointer; COLOR: #ffffff; MARGIN-RIGHT: 5px; BORDER-BOTTOM: 0px; FONT-FAMILY: Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #8d8d8d
+					}
+
+					#sendtofriend2 #valider {margin-left: 206px;}
+
+
+					</style>
+						<div style='display:none' id='sendtofriend2'>
+							<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btn6' style="float:right; width:5px;margin-right: 6px; color:#fff; margin-top:1px;" ><img  src="<?php echo $this->getSkinUrl('images/ico_fermer.gif') ?>"/></a></div>
+
+
+							<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+								<tr id="tr_entete_popup">
+									<td>
+										<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+
+											<tr>
+												<td>
+													<table width="100%" border="0" cellpadding="0" cellspacing="0">
+														<tr>
+															<td width="61" style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+															<td width="148" align="center"><a href="?page=accueil"><img src="/sisleysource/images/logo.gif" alt="Sisley" border="0"/></a></td>
+															<td style="background-position:center; background-image:url(/sisleysource/images/rayure.gif); background-repeat:repeat-x;">&nbsp;</td>
+														</tr>
+													</table>
+
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="conteneur" style="width:100%;height:100%;">
+							<form name="formulaire_mail1" method="post" action="http://www.sisley.com.cn/mail1.php">
+
+							<div id="page_titre" ><div class="page_titre" style="margin: 4px 0 5px 4px;;"><p style="font-weight:100;font-size:12px;line-height:25px;margin:10px 20px 3px">发送该网页给你的好友<br />
+							这些信息将不被希思黎网站记录
+							</p></div>
+							<div id="page_main">
+							<input type="hidden" name="url_lien" id="url_lien" value="" />
+								<table id="tableau_frm" cellspacing="0" align="center" cellpadding="0" style="padding-left:24px;padding-right:10px;background-color:#EEEDEE;">
+									<tbody>
+										<tr>
+											<td colspan="2">&nbsp;</td>
+										</tr>
+										<tr>
+
+											<td class="frmLabel" nowrap>
+											您的名字<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+											</td>
+											<td class="frmInput">
+												<input type="text" name="nom_expediteur1" id="nom_expediteur1" maxlength="50" value="" style="width:400px;"/>
+												<input type="hidden" name="prenom_expediteur1" id="prenom_expediteur1" maxlength="50" value=""/>
+											</td>
+
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+											您的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+											</td>
+											<td class="frmInput">
+												<input type="text" name="adresse_expediteur1" id="adresse_expediteur1" maxlength="50" value="" style="width:400px;"/>
+
+											</td>
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+												<input type="hidden" name="nom_destinataire1" id="nom_destinataire1" maxlength="50" value=""/>
+												<input type="hidden" name="prenom_destinataire1" id="prenom_destinataire1" maxlength="50" value=""/>
+												您朋友的电子邮件<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+											</td>
+											<td class="frmInput">
+												<input type="text" name="adresse_destinataire1" id="adresse_destinataire1" maxlength="50" value="" style="width:400px;"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="frmLabel" nowrap>
+											您的留言<span style="font-family:Arial;">(<span class="mandatory">&nbsp;*&nbsp;</span>)</span>
+
+											</td>
+											<td class="frmInput">
+												<textarea name="message_destinataire1" id="message_destinataire1"  style="height:100px;width:400px;"></textarea>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2" class="mandatory_legend">
+												<span style="font-family:Arial;">*<span><!--号-->部分必须填写				</td>
+
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="2" align="center" style="height:25px;">
+												<input type="button" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="valider" id="valider" value="发送" onclick="enregistrerFrm();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<input type="button" class="button" id="fanhui1" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" name="retour" id="retour" value="返回" onclick="retourFiltre();"/>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="2">&nbsp;</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							</form>
+							<script type="text/javascript">
+							function enregistrerFrm(){
+								document.getElementById('url_lien').value = parent.url_lien_ami;
+								var erreur = '';
+								if(document.getElementById('nom_expediteur1').value==''){
+									erreur+='请填写您的名字\n';
+								}
+
+								if(document.getElementById('adresse_expediteur1').value==''){
+									erreur+='请填写您的电子邮件\n';
+								}
+								if(document.getElementById('adresse_destinataire1').value==''){
+									erreur+='请填写您朋友的电子邮件。\n';
+								}
+								
+								if(erreur==''){
+									document.forms["formulaire_mail1"].submit();
+								}
+								else{
+									alert(erreur);
+								}
+							}
+
+							function retourFiltre(){
+
+							}
+							</script>
+							﻿			</div>
+									</td>
+
+								</tr>
+							</table>
+							</div>
+							<script>
+								jQuery(document).ready(function() {
+										jQuery('#asend2').click( function(){
+										jQuery.blockUI({ message: jQuery('#sendtofriend2'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 555) /2 + 'px', width: '555px' } }); } );
+										
+										jQuery('#btn6').click( jQuery.unblockUI );
+										jQuery('#fanhui1').click( jQuery.unblockUI );
+								}); 
+							</script>
+				
+				
+				<!-- End -->
+				</ul>
+	 
+	 </div>
+	 
+	 </div>
+	 <div class="ProductviewDS">
+	  <span>产品功效：</span>
+	  <div class="viewblock">
+	   <?php if ($_product->getDescription()):?>
+		<?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?>
+	 <?php endif; ?>
+	   </div>
+	 </div>
+	 
+  <?php if ($_product->getActiveIngredient()):?>
+		<div class="ProductviewDS">
+			<span>活性成分：</span>
+			<div class="viewblock">
+			<?php echo $_helper->productAttribute($_product, nl2br($_product->getActiveIngredient()), 'active_ingredient') ?>
+			</div>
+		</div>
+	<?php endif;?>
+	
+	<?php if ($_product->getActiveIngredient()!=null||$_product->getActiveIngredient()!=""):?>
+		<div class="ProductviewSF">
+			<span>使用方法：</span>
+			<div class="viewblock">
+			<?php echo $_helper->productAttribute($_product, nl2br($_product->getUesMethod()), 'ues_method') ?>
+			</div>
+		</div>
+	<?php endif;?>
+	
+	<div class="ViewVideo">
+		  <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('video')->toHtml(); ?>
+		  <?php if($_product->getFlashvideo()){ ?>
+			<?php echo $_helper->productAttribute($_product, nl2br($_product->getFlashvideo()), 'flashvideo') ?>
+		  <?php } ?>
+		  
+	</div>
+	
+	
+	<div class="view-upsell">
+	 <?php echo $this->getChildHtml('catalog.product.related') ?>
+	</div>
+    </div>
+    <!-- 拿当前面包屑导航器的title -->
+	<?php //$breadcrumb = $this->getLayout()->getBlock('breadcrumbs')->getCrumbs(); 
+	//var_dump($breadcrumb);
+	//exit;
+		
+	?>
+	
+	
+	
+	
+	
+ <!-- 精彩视频层-->
+ 
+ 		<div style='display:none' id='JCSP'>
+							<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btnjcgb' style="float:right; width:5px;margin-right: 6px; color: #FFFFFF; margin-top:1px;" ><img src="<?php echo $this->getSkinUrl('images/ico_fermer.gif') ?>"/></a></div>
+
+
+							<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+								<tr id="tr_entete_popup">
+									
+								</tr>
+								<tr>
+									<td>
+							<div id="conteneur" style="width:100%;height:100%;">
+								<iframe src="<?php echo $_helper->productAttribute($_product, $_product->getVideo(), 'video') ?>"   width="100%" id="bobo" height="500px" frameborder="0" style="overflow:hidden" scrolling="no">
+								</iframe>
+							</div>
+						
+									</td>
+
+								</tr>
+							</table>
+							</div>
+							<script>
+								jQuery(document).ready(function() {
+										jQuery('#jingcaishipin').click( function(){
+										jQuery.blockUI({ message: jQuery('#JCSP'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 850) /2 + 'px', width: '850px' } }); } );
+										
+										jQuery('#btnjcgb').click( jQuery.unblockUI );
+										
+								}); 
+							</script>
+				
+				
+			
+				</ul>
+	 
+	 </div>
+	 
+	<!-- 精彩视频层结束 --> 
+	
+	
+	
+	<!-- 彩妆建议层-->
+ 
+ 		<div style='display:none' id='CZJY'>
+							<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='btnczjy' style="float:right; width:5px;margin-right: 6px; color: #FFFFFF; margin-top:1px;" ><img src="<?php echo $this->getSkinUrl('images/ico_fermer.gif') ?>"/></a></div>
+
+
+							<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+								<tr id="tr_entete_popup">
+									
+								</tr>
+								<tr>
+									<td>
+							<div id="conteneur" style="width:100%;height:100%;">
+								<iframe src="<?php echo $_helper->productAttribute($_product, $_product->getColoradvice(), 'coloradvice') ?>"   width="100%" id="bobo" height="500px" frameborder="0" style="overflow:hidden" scrolling="no">
+								</iframe>
+							</div>
+						
+									</td>
+
+								</tr>
+							</table>
+							</div>
+							<script>
+								jQuery(document).ready(function() {
+										jQuery('#caizhuangjianyi').click( function(){
+										jQuery.blockUI({ message: jQuery('#CZJY'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 850) /2 + 'px', width: '850px' } }); } );
+										
+										jQuery('#btnczjy').click( jQuery.unblockUI );
+										
+								}); 
+							</script>
+				
+				
+			
+				</ul>
+	 
+	 </div>
+	 
+	<!-- 彩妆建议层结束 --> 
+	
+	 
+	
+	
+	
+	
+  

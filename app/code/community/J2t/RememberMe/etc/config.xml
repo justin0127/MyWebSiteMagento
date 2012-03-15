@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <global>
+        <models>
+            <core>
+                <rewrite>
+                    <cookie>J2t_RememberMe_Model_Cookie</cookie>
+                </rewrite>
+            </core>
+        </models>
+    </global>
+    <default>
+        <J2t_RememberMe>
+            <default>
+                <cookie_lifetime2>3600</cookie_lifetime2>
+            </default>
+        </J2t_RememberMe>
+    </default>
+
+</config>

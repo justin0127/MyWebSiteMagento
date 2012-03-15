@@ -1,0 +1,47 @@
+
+<script type="text/javascript" src="http://www.sisley.com.cn/skin/frontend/default/default/js/jquery.blockUI.js"></script>
+
+
+<div class="LeftQuest">
+<A id="leftCZadvice"><img src="<?php echo $this->getSkinUrl('images/teaser-conseils-mkp_uk-.gif') ?>"/></a>
+</div>
+
+<!-- 彩妆建议层-->
+ 
+ 		<div style='display:none' id='LeftCZJY'>
+							<div style="background-color:#ADADAD;border: 2px solid #FFFFFF;height: 13px;line-height: 13px;"><a id='leftbtnczjy' style="float:right; width:5px;margin-right: 6px; color:#fff; margin-top:1px;" ><img src="<?php echo $this->getSkinUrl('images/ico_fermer.gif') ?>"/></a></div>
+
+
+							<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" >
+								<tr id="tr_entete_popup">
+									
+								</tr>
+								<tr>
+									<td>
+							<div id="conteneur" style="width:100%;height:100%;">
+								<iframe src="http://www.sisley.com.cn/sisleysource/?page=conseils&id_produit=152&id_conseil=7"   width="100%" id="bobo" height="500px" frameborder="0" style="overflow:hidden" scrolling="no">
+								</iframe>
+							</div>
+						
+									</td>
+
+								</tr>
+							</table>
+							</div>
+							<script>
+								jQuery(document).ready(function() {
+										jQuery('#leftCZadvice').click( function(){
+										jQuery.blockUI({ message: jQuery('#LeftCZJY'), css: {  top:  (jQuery(window).height() - 555) /2 + 'px', left: (jQuery(window).width() - 850) /2 + 'px', width: '850px' } }); } );
+										
+										jQuery('#leftbtnczjy').click( jQuery.unblockUI );
+										
+								}); 
+							</script>
+				
+				
+			
+				</ul>
+	 
+	 </div>
+	 
+	<!-- 彩妆建议层结束 --> 

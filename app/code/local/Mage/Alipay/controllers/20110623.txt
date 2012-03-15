@@ -1,0 +1,32 @@
+2011-06-23 07:25:31
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000470',
+    'trade_no' => '2011062340568032',
+    'buyer_email' => 'ht221ht@yahoo.com.cn',
+    'gmt_create' => '2011-06-23 15:26:08',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000470',
+    'body' => '100000470',
+    'notify_time' => '2011-06-23 15:26:39',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-06-23 15:26:39',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002436845329',
+    'notify_id' => '58564d10e766bbbcfbea894ff796694e03',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'e40b6940bff05cd25850007630d2a89c',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+

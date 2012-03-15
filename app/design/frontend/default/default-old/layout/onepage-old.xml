@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+           <reference name="head" >
+                <action method="addJs"><script>jquery/jquery-1.4.2.min.js</script></action>
+                <action method="addJs"><script>jquery/jquery-noconflict.js</script></action>
+                <action method="addCss"><stylesheet>css/checkout.css</stylesheet></action>
+           </reference>    
+    </default>
+    
+    <checkout_onepage_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <reference name="checkout.onepage">
+                <action method="setTemplate"><template>onepage/onepage.phtml</template></action>
+            </reference>
+        </reference>
+    </checkout_onepage_index>    
+</layout> 

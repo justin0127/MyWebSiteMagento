@@ -1,0 +1,61 @@
+<?php
+$_product = Mage::registry('current_product');
+# Get product's category collection object
+$catCollection = $_product->getCategoryCollection();
+# export this collection to array so we could iterate on it's elements
+$categs = $catCollection->exportToArray();
+$_cat = array();
+$categsToLinks = array();
+$catArr = array();
+$parent = array();
+# Get categories names
+foreach($categs as $cat){
+//var_dump(Mage::getModel('catalog/category')->load($cat['entity_id']));
+$_cat ['name'] = Mage::getModel('catalog/category')->load($cat['entity_id'])->getName();
+$_cat ['level'] = Mage::getModel('catalog/category')->load($cat['entity_id'])->getLevel();
+$_cat ['parent_id'] = Mage::getModel('catalog/category')->load($cat['entity_id'])->getParentId();
+$_cat ['is_active'] = Mage::getModel('catalog/category')->load($cat['entity_id'])->getIsActive();
+$_cat ['id'] = $cat['entity_id'];
+$categsToLinks [$_cat ['name']] = $_cat;
+}
+//var_dump($categsToLinks);
+foreach($categsToLinks as $key=>$val) {
+   if($val['is_active'] == '1') {
+      if($val['level'] == '2') {
+      $catArr [$val['name']] = $val;
+      }else{
+      $ParentName = Mage::getModel('catalog/category')->load($val['parent_id'])->getName();
+         if(!array_key_exists($ParentName,$catArr)) {
+           $parent['name'] = Mage::getModel('catalog/category')->load($val['parent_id'])->getName();
+           $parent['id'] = $val['parent_id'];
+         }
+      }
+   }
+}
+//var_dump($catArr);
+?>
+<ul class="all_cats">
+<?php foreach($catArr as $key=>$_val) { ?>
+   <li class="parent_cat">
+   <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).Mage::getModel('catalog/category')->load($_val['id'])->getUrlPath(); ?>"><?php echo $_val['name']; ?></a>
+   </li>
+<?php
+}
+$children = explode(",",Mage::getModel('catalog/category')->load($_val['id'])->getChildren());
+//var_dump($children);
+if(count($children) != NULL) { 
+?>
+<ul class="all_children">
+<?php foreach($children as $key=>$id) { ?>
+   <li class="child_cat">
+   
+   <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).Mage::getModel('catalog/category')->load($id)->getUrlPath(); ?>"><?php echo Mage::getModel('catalog/category')->load($id)->getName(); ?></a>
+   </li>
+<?php
+}
+?>
+</ul>
+<?php
+}
+?>
+</ul>

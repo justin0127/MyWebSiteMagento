@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mec_Chinaprovice>
+            <version>0.1.0</version>
+        </Mec_Chinaprovice>
+    </modules>
+
+
+    <global>
+        <resources>
+            <chinaprovice_setup>
+                <setup>
+                    <module>Mec_Chinaprovice</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </chinaprovice_setup>
+            <chinaprovice_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </chinaprovice_write>
+            <chinaprovice_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </chinaprovice_read>
+        </resources>
+    </global>
+</config>

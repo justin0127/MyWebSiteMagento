@@ -1,0 +1,6 @@
+(OrderCancellationInformation){
+   OnlineOrderID = "100000117"
+   CancelDate = "2011-01-03"
+   CancelOption = "option - (option)"
+   CancelReason = "reason - (option)"
+ } 0

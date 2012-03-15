@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+       <default>
+		<reference name="head">
+			<action method="addJs"><name>jquery/jquery-1.4.2.min.js</name></action>
+			<action method="addJs"><name>jquery/jquery-noconflict.js</name></action>
+			<action method="addJs"><name>jquery/opensocial-jquery.autoHeight.min.js</name></action>
+		</reference>
+	</default>
+    <help_adminhtml_help_index>
+        <reference name="content">
+            <block type="help/adminhtml_help" name="help" />
+        </reference>
+    </help_adminhtml_help_index>
+</layout>

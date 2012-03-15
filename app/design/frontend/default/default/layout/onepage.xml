@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+           <reference name="head" >
+                <action method="addJs"><script>jquery/jquery-1.4.2.min.js</script></action>
+                <action method="addJs"><script>jquery/jquery-noconflict.js</script></action>
+           </reference>    
+    </default>
+    
+    <checkout_onepage_index>
+        <reference name="content">
+            <reference name="checkout.onepage">
+                <action method="setTemplate"><template>onepage/onepage.phtml</template></action>
+            </reference>
+
+            <reference name="checkout.onepage.billing">
+                <action method="setTemplate"><template>onepage/billing.phtml</template></action>
+            </reference>            
+
+            <reference name="checkout.progress">
+                <action method="setTemplate"><template>onepage/progress.phtml</template></action>
+            </reference>  
+            
+        </reference>
+    </checkout_onepage_index>    
+    
+    <checkout_onepage_progress>
+         <reference name="root">
+            <action method="setTemplate"><template>onepage/progress.phtml</template></action>
+         </reference>  
+    </checkout_onepage_progress>
+    
+</layout> 

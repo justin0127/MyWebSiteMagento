@@ -1,0 +1,32 @@
+<?php
+//echo '123';
+if($_GET){
+$id = $_GET['id'];
+$customer = Mage::getModel('customer/customer')->load($id);
+//var_dump($customer);
+$Alias=$customer->getAlias();
+
+
+if($Alias!=null||$Alias!=""){
+$real_name=$Alias;
+}else{
+$real_name = $customer->getName();
+}
+//$real_name = trim(substr($real_name,0,strrpos($real_name,"先生")));
+//$real_name = str_replace(" ","",$real_name);
+
+}
+?>
+<?php //var_dump($real_name); 
+
+//exit;
+?>
+<div class="registtips">
+
+
+<strong>亲爱的 <?php echo $real_name ?>,</strong><br />
+
+<div class="registtips-body">
+<p>非常感谢您在希思黎官方网站注册，一封包含链接的电子邮件已发送至您的邮箱地址<br /><span style="background:#BDBDBD; font-size:14px; padding:2px;"><?php echo $customer->getEmail(); ?></span>,用于验证激活您的账户。<br />请务必在两天内通过该链接完成您的账户注册，过期无效。
+</p></div>
+</div>

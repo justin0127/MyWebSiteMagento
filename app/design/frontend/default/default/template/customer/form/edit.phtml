@@ -1,0 +1,463 @@
+
+<style>
+.validation-advice{display:block;}
+.error-msg{background-color:#FDEEF4;}
+</style>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getUrl('customer/account/editPost') ?>" method="post" id="form-validate" >
+    <div class="fieldset">
+        <?php echo $this->getBlockHtml('formkey')?>
+      <div class="passedit-tit">
+        <span>个人信息</span></div>
+        <ul class="form-list">
+            <li class="fields">
+                <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getCustomer())->toHtml() ?>
+					<!-- Need Js to SubString Xingming -->
+					
+				<div class="customer-name-suffix">
+				<label for="fullname" class="required"><em>*</em><?php echo $this->__('姓名') ?></label>
+				<div class="input-box">
+				<input type="text" name="fullname" id="fullname" value="<?php echo $this->htmlEscape($this->getCustomer()->getFirstname().$this->getCustomer()->getLastname()) ?>" title="" class="input-text required-entry" />
+				</div>
+				<div class="validation-advice" id="advice-required-entry-fullname" style="display:none;">姓名不可为空，请输入您的姓名</div>
+				</div>
+			
+			<?php //var_dump($this->getCustomer()); ?>	
+            </li>
+			
+			<li class="fields">
+				<label for="alias" class="required"><em>*</em><?php echo $this->__('昵称') ?></label>
+                <div class="input-box">
+                    <input type="text" name="alias" id="alias" value="<?php echo $this->htmlEscape($this->getCustomer()->getAlias()) ?>" title="<?php echo $this->__('昵称') ?>" maxlength="20" class="input-text required-entry" />
+					<div class="validation-advice" id="advice-required-entry-alias" style="display:none;">请输入您的昵称。</div>
+                </div>
+			</li>
+			
+            <li>
+                <label for="email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                <div class="input-box">
+                    <input type="text" name="email" id="email" value="<?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text required-entry" readonly="readonly" style="background:#eee" />
+					<div class="validation-advice" id="advice-required-entry-email" style="display:none;">请输入您的邮箱。</div>
+                </div>
+            </li>
+			<li style="display:none">
+				<label for="menage" class="required"><em></em><?php echo $this->__('年龄') ?></label>
+                <div class="input-box">
+				<input type="text" name="menage" id="menage" value="<?php echo $this->htmlEscape($this->getCustomer()->getMenage()) ?>" title="<?php echo $this->__('年龄') ?>" class="input-text "  readonly />
+				<input type="hidden" id="birthday-dob" value="<?php echo $this->getCustomer()->getDob();?>" readonly />
+				</div>
+
+			</li>
+			 <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+        <?php if ($_dob->isEnabled()): ?>
+			<?php if(1){ ?>
+            <li><?php echo $_dob->setDate($this->getCustomer()->getDob())->toHtml() ?></li>
+			<?php }else{  ?>
+			<?php //echo date("Y",strtotime($this->getCustomer()->getDob()))?> <!--抓取后台生日并抽出年份 -->
+			<?php //echo date("m",strtotime($this->getCustomer()->getDob()))?> <!--抓取后台生日并抽出年份 -->
+			<?php //echo date("d",strtotime($this->getCustomer()->getDob()))?> <!--抓取后台生日并抽出年份 -->
+			<li>
+				
+					<label for="month">出生日期<em>*</em></label>
+					<div class="input-box customer-dob" >
+						<div class="fields">
+						 <div class="riqiSelect"><input type="text" readonly style="background:#eee;width:60px" value="<?php echo date("Y",strtotime($this->getCustomer()->getDob()))?> "/>&nbsp;年&nbsp;</div>
+						 <div class="riqiSelect"><input type="text" readonly style="background:#eee;width:60px" value="<?php echo date("m",strtotime($this->getCustomer()->getDob()))?>"/>&nbsp;月&nbsp;</div>
+						 <div class="riqiSelect"><input type="text" readonly style="background:#eee;width:60px" value="<?php echo date("d",strtotime($this->getCustomer()->getDob()))?>"/>&nbsp;日</div>
+						<span class="day-day-span">一经填写不可修改，请准确填写</span>
+						</div>
+					</div>
+			</li>
+			<?php } ?>
+        <?php endif ?>
+        <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+        <?php if ($_taxvat->isEnabled()): ?>
+            <li><?php echo $_taxvat->setTaxvat($this->getCustomer()->getTaxvat())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+        <?php if ($_gender->isEnabled()): ?>
+            <li><?php echo $_gender->setGender($this->getCustomer()->getGender())->toHtml() ?></li>
+        <?php endif ?>
+			
+			<li>
+		<label for="mobile" class="required"><em>*</em><?php echo $this->__('手机号码') ?></label>
+                <div class="input-box">
+				<input type="text" maxlength="11" name="mobile" id="mobile" value="<?php echo $this->htmlEscape($this->getCustomer()->getMobile()) ?>" title="<?php echo $this->__('mobile') ?>" class="input-text required-entry validate-digits" />
+				<div class="validation-advice" id="advice-required-entry-mobile" style="display:none;">请输入您的手机号码。</div>
+
+				</div>
+		</li>
+		
+		
+		
+			<!--<li>
+		<label for="mobile" class=""><em></em><?php //echo $this->__('MSN') ?></label>
+                <div class="input-box">
+				<input type="text" name="msn" id="msn" value="<?php //echo $this->htmlEscape($this->getCustomer()->getMsn()) ?>" title="<?php //echo $this->__('MSN') ?>" class="input-text  " />
+				
+				</div>
+		</li>-->
+		
+		<!--<li>
+		<label for="mobile" class=""><em></em><?php //echo $this->__('QQ') ?></label>
+                <div class="input-box">
+				<input type="text" name="qq" id="qq" value="<?php //echo $this->htmlEscape($this->getCustomer()->getQq()) ?>" title="<?php //echo $this->__('QQ') ?>" class="input-text" />
+				
+				</div>
+		</li>-->
+			
+					<script>
+						<!--   start   hiding
+						function   verifyuphone()
+						{
+						var   num   =   document.getElementById('office_phone').value;
+						　　   var   pattern   =   /^\d{1,80}$/;
+						　　   flag   =   pattern.test(num);
+						　　   if(flag)
+						　　   {
+						　		document.getElementById('office_phone').style.border   =  "1px solid #B6B6B6";
+						　　   }
+						　　   else
+						　　   {
+								document.getElementById('office_phone').style.border   =   "2px solid red";
+								alert("请输入正确电话号！");
+								document.getElementById('office_phone').value='';
+								
+						　　　   //alert( "请输入1-6位整数! ");
+						　　   }
+						}
+						//   stop   hiding   -->
+						</script> 
+			
+	
+		
+		<li>
+		<label for="office_phone" class=""><em></em><?php echo $this->__('办公室电话') ?></label>
+                <div class="input-box">
+				<input type="text" name="office_phone" id="office_phone"  value="<?php echo $this->htmlEscape($this->getCustomer()->getOfficePhone()) ?>" title="<?php echo $this->__('office phone') ?>" class="input-text" maxlength="30" />
+				
+				</div>
+		</li>
+		
+		<li class="fields">
+                <div class="field">
+                    <label for="zg1zg2" class=""><em></em><?php echo $this->__('您经常惠顾的希思黎哪两个专柜？') ?></label>
+                    <div class="input-box">
+					
+					<script>
+					 function getvalue(i){
+					document.getElementById('zg'+i).value=document.getElementById('zgs'+i).value					 
+					 }
+					
+					</script>
+					<?php
+					$zg1 = $this->getCustomer()->getZg1();
+					?>
+							    <select  style="width:100px;" id="zgs1" >
+								  <option <?php if ($zg1 == NULL) { ?>selected="selected"<?php } ?> >请选择</option>
+								<option <?php if ($zg1 == "上海第一八佰伴") { ?>selected=selected"<?php } ?> value="上海第一八佰伴">上海第一八佰伴</option>
+								<option <?php if ($zg1 == "上海东方商厦（旗舰店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（旗舰店）">上海东方商厦（旗舰店）</option>
+								<option <?php if ($zg1 == "上海虹桥友谊商城 ") { ?>selected=selected"<?php } ?> value="上海虹桥友谊商城 ">上海虹桥友谊商城 </option>
+								<option <?php if ($zg1 == "上海新世界百货") { ?>selected=selected"<?php } ?> value="上海新世界百货">上海新世界百货</option>
+								<option <?php if ($zg1 == "上海久光百货 ") { ?>selected=selected"<?php } ?> value="上海久光百货 ">上海久光百货 </option>
+								<option <?php if ($zg1 == "上海东方商厦（南东店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（南东店）">上海东方商厦（南东店）</option>
+								<option <?php if ($zg1 == "上海百盛 ") { ?>selected=selected"<?php } ?> value="上海百盛 ">上海百盛 </option>
+								<option <?php if ($zg1 == "上海东方商厦（淮海店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（淮海店）">上海东方商厦（淮海店）</option>
+								<option <?php if ($zg1 == "上海南方友谊店") { ?>selected=selected"<?php } ?> value="上海南方友谊店">上海南方友谊店</option>
+								<option <?php if ($zg1 == "北京久光百货 ") { ?>selected=selected"<?php } ?> value="北京久光百货 ">北京久光百货 </option>
+								<option <?php if ($zg1 == "北京赛特购物中心 ") { ?>selected=selected"<?php } ?> value="北京赛特购物中心 ">北京赛特购物中心 </option>
+								<option <?php if ($zg1 == "北京双安商厦 ") { ?>selected=selected"<?php } ?> value="北京双安商厦 ">北京双安商厦 </option>
+								<option <?php if ($zg1 == "北京盈科太平洋 ") { ?>selected=selected"<?php } ?> value="北京盈科太平洋 ">北京盈科太平洋 </option>
+								<option <?php if ($zg1 == "北京百盛购物中心 ") { ?>selected=selected"<?php } ?> value="北京百盛购物中心 ">北京百盛购物中心 </option>
+								<option <?php if ($zg1 == "北京燕莎友谊商城") { ?>selected=selected"<?php } ?> value="北京燕莎友谊商城">北京燕莎友谊商城</option>
+								<option <?php if ($zg1 == "北京新光天地百货 ") { ?>selected=selected"<?php } ?> value="北京新光天地百货 ">北京新光天地百货 </option>
+								<option <?php if ($zg1 == "北京翠微百货") { ?>selected=selected"<?php } ?> value="北京翠微百货">北京翠微百货</option>
+								<option <?php if ($zg1 == "北京王府井百货大楼 ") { ?>selected=selected"<?php } ?> value="北京王府井百货大楼 ">北京王府井百货大楼 </option>
+								<option <?php if ($zg1 == "北京中友百货 ") { ?>selected=selected"<?php } ?> value="北京中友百货 ">北京中友百货 </option>
+								<option <?php if ($zg1 == "北京连卡佛 ") { ?>selected=selected"<?php } ?> value="北京连卡佛 ">北京连卡佛 </option>
+								<option <?php if ($zg1 == "北京乐天银泰百货 ") { ?>selected=selected"<?php } ?> value="北京乐天银泰百货 ">北京乐天银泰百货 </option>
+								<option <?php if ($zg1 == "北京百盛太阳宫店") { ?>selected=selected"<?php } ?> value="北京百盛太阳宫店">北京百盛太阳宫店</option>
+								<option <?php if ($zg1 == "重庆远百百货江北旗舰店 ") { ?>selected=selected"<?php } ?> value="重庆远百百货江北旗舰店 ">重庆远百百货江北旗舰店 </option>
+								<option <?php if ($zg1 == "重庆太平洋百货（大都会店） ") { ?>selected=selected"<?php } ?> value="重庆太平洋百货（大都会店） ">重庆太平洋百货（大都会店） </option>
+								<option <?php if ($zg1 == "天津友谊商厦 ") { ?>selected=selected"<?php } ?> value="天津友谊商厦 ">天津友谊商厦 </option>
+								<option <?php if ($zg1 == "天津海信广场 ") { ?>selected=selected"<?php } ?> value="天津海信广场 ">天津海信广场 </option>
+								<option <?php if ($zg1 == "广州友谊商店环市东店") { ?>selected=selected"<?php } ?> value="广州友谊商店环市东店">广州友谊商店环市东店</option>
+								<option <?php if ($zg1 == "广州友谊商店正佳店 ") { ?>selected=selected"<?php } ?> value="广州友谊商店正佳店 ">广州友谊商店正佳店 </option>
+								<option <?php if ($zg1 == "广州友谊国金店 ") { ?>selected=selected"<?php } ?> value="广州友谊国金店 ">广州友谊国金店 </option>
+								<option <?php if ($zg1 == "深圳芮欧时尚生活百货 ") { ?>selected=selected"<?php } ?> value="深圳芮欧时尚生活百货 ">深圳芮欧时尚生活百货 </option>
+								<option <?php if ($zg1 == "深圳茂业百货") { ?>selected=selected"<?php } ?> value="深圳茂业百货">深圳茂业百货</option>
+								<option <?php if ($zg1 == "贵阳星力购物广场 ") { ?>selected=selected"<?php } ?> value="贵阳星力购物广场 ">贵阳星力购物广场 </option>
+								<option <?php if ($zg1 == "杭州大厦购物城 ") { ?>selected=selected"<?php } ?> value="杭州大厦购物城 ">杭州大厦购物城 </option>
+								<option <?php if ($zg1 == "杭州尚泰百货 ") { ?>selected=selected"<?php } ?> value="杭州尚泰百货 ">杭州尚泰百货 </option>
+								<option <?php if ($zg1 == "宁波银泰一店") { ?>selected=selected"<?php } ?> value="宁波银泰一店">宁波银泰一店</option>
+								<option <?php if ($zg1 == "温州时代广场购物中心 ") { ?>selected=selected"<?php } ?> value="温州时代广场购物中心 ">温州时代广场购物中心 </option>
+								<option <?php if ($zg1 == "温州开泰百货 ") { ?>selected=selected"<?php } ?> value="温州开泰百货 ">温州开泰百货 </option>
+								<option <?php if ($zg1 == "南京金鹰国际购物中心") { ?>selected=selected"<?php } ?> value="南京金鹰国际购物中心">南京金鹰国际购物中心</option>
+								<option <?php if ($zg1 == "苏州美罗商城") { ?>selected=selected"<?php } ?> value="苏州美罗商城">苏州美罗商城</option>
+								<option <?php if ($zg1 == "苏州久光百货 ") { ?>selected=selected"<?php } ?> value="苏州久光百货 ">苏州久光百货 </option>
+								<option <?php if ($zg1 == "无锡商业大厦 ") { ?>selected=selected"<?php } ?> value="无锡商业大厦 ">无锡商业大厦 </option>
+								<option <?php if ($zg1 == "无锡百盛 ") { ?>selected=selected"<?php } ?> value="无锡百盛 ">无锡百盛 </option>
+								<option <?php if ($zg1 == "常州购物中心 ") { ?>selected=selected"<?php } ?> value="常州购物中心 ">常州购物中心 </option>
+								<option <?php if ($zg1 == "大连迈凯乐商场店") { ?>selected=selected"<?php } ?> value="大连迈凯乐商场店">大连迈凯乐商场店</option>
+								<option <?php if ($zg1 == "大连友谊商城 ") { ?>selected=selected"<?php } ?> value="大连友谊商城 ">大连友谊商城 </option>
+								<option <?php if ($zg1 == "沈阳中兴商业大厦 ") { ?>selected=selected"<?php } ?> value="沈阳中兴商业大厦 ">沈阳中兴商业大厦 </option>
+								<option <?php if ($zg1 == "沈阳卓展购物中心 ") { ?>selected=selected"<?php } ?> value="沈阳卓展购物中心 ">沈阳卓展购物中心 </option>
+								<option <?php if ($zg1 == "成都春熙路太平洋百货") { ?>selected=selected"<?php } ?> value="成都春熙路太平洋百货">成都春熙路太平洋百货</option>
+								<option <?php if ($zg1 == "成都太平洋骡马市店") { ?>selected=selected"<?php } ?> value="成都太平洋骡马市店">成都太平洋骡马市店</option>
+								<option <?php if ($zg1 == "成都王府井百货 ") { ?>selected=selected"<?php } ?> value="成都王府井百货 ">成都王府井百货 </option>
+								<option <?php if ($zg1 == "成都仁和春天人东店 ") { ?>selected=selected"<?php } ?> value="成都仁和春天人东店 ">成都仁和春天人东店 </option>
+								<option <?php if ($zg1 == "成都仁和春天百货（光华店） ") { ?>selected=selected"<?php } ?> value="成都仁和春天百货（光华店） ">成都仁和春天百货（光华店） </option>
+								<option <?php if ($zg1 == "西安金鹰国际购物中心 ") { ?>selected=selected"<?php } ?> value="西安金鹰国际购物中心 ">西安金鹰国际购物中心 </option>
+								<option <?php if ($zg1 == "长沙平和堂商贸大厦 ") { ?>selected=selected"<?php } ?> value="长沙平和堂商贸大厦 ">长沙平和堂商贸大厦 </option>
+								<option <?php if ($zg1 == "武汉广场") { ?>selected=selected"<?php } ?> value="武汉广场">武汉广场</option>
+								<option <?php if ($zg1 == "郑州丹尼斯百货") { ?>selected=selected"<?php } ?> value="郑州丹尼斯百货">郑州丹尼斯百货</option>
+								<option <?php if ($zg1 == "哈儿滨松雷（南岗店）") { ?>selected=selected"<?php } ?> value="哈儿滨松雷（南岗店）">哈儿滨松雷（南岗店）</option>
+								<option <?php if ($zg1 == "哈尔滨卓展购中心(即将开幕) ") { ?>selected=selected"<?php } ?> value="哈尔滨卓展购中心(即将开幕) ">哈尔滨卓展购中心(即将开幕) </option>
+								<option <?php if ($zg1 == "昆明金格百货汇都店") { ?>selected=selected"<?php } ?> value="昆明金格百货汇都店">昆明金格百货汇都店</option>
+								<option <?php if ($zg1 == "昆明王府井百货 ") { ?>selected=selected"<?php } ?> value="昆明王府井百货 ">昆明王府井百货 </option>
+								<option <?php if ($zg1 == "青岛阳光百货 ") { ?>selected=selected"<?php } ?> value="青岛阳光百货 ">青岛阳光百货 </option>
+								<option <?php if ($zg1 == "青岛海信广场 ") { ?>selected=selected"<?php } ?> value="青岛海信广场 ">青岛海信广场 </option>
+								<option <?php if ($zg1 == "山东银座商城百货商场 ") { ?>selected=selected"<?php } ?> value="山东银座商城百货商场 ">山东银座商城百货商场 </option>
+								<option <?php if ($zg1 == "福州大洋百货 ") { ?>selected=selected"<?php } ?> value="福州大洋百货 ">福州大洋百货 </option>
+								<option <?php if ($zg1 == "烟台振华商厦 ") { ?>selected=selected"<?php } ?> value="烟台振华商厦 ">烟台振华商厦 </option>
+								<option <?php if ($zg1 == "太原百盛 ") { ?>selected=selected"<?php } ?> value="太原百盛 ">太原百盛 </option>
+								<option <?php if ($zg1 == "太原华宇购物中心 ") { ?>selected=selected"<?php } ?> value="太原华宇购物中心 ">太原华宇购物中心 </option>
+								<option <?php if ($zg1 == "新疆天山百货") { ?>selected=selected"<?php } ?> value="新疆天山百货">新疆天山百货</option>
+								<option <?php if ($zg1 == "乌鲁木齐丹璐时尚广场 ") { ?>selected=selected"<?php } ?> value="乌鲁木齐丹璐时尚广场 ">乌鲁木齐丹璐时尚广场 </option>
+								<option <?php if ($zg1 == "南宁友谊百货 ") { ?>selected=selected"<?php } ?> value="南宁友谊百货 ">南宁友谊百货 </option>
+								<option <?php if ($zg1 == "石家庄北国商城") { ?>selected=selected"<?php } ?> value="石家庄北国商城">石家庄北国商城</option>
+								<option <?php if ($zg1 == "合肥金鹰国际购物中心") { ?>selected=selected"<?php } ?> value="合肥金鹰国际购物中心">合肥金鹰国际购物中心</option>
+								<option <?php if ($zg1 == "长春卓展购物中心") { ?>selected=selected"<?php } ?> value="长春卓展购物中心">长春卓展购物中心</option>
+
+								</select>
+								
+				<input type="hidden" name="zg1" id="zg1" value="<?php echo $zg1; ?>"></input>
+					<?php
+					$zg2 = $this->getCustomer()->getZg2();
+					?>			
+								  <select style="width:100px;" id="zgs2" >
+								  <option <?php if ($zg2 == NULL) { ?>selected="selected"<?php } ?> >请选择</option>
+								  <option <?php if ($zg2 == "上海第一八佰伴") { ?>selected=selected"<?php } ?> value="上海第一八佰伴">上海第一八佰伴</option>
+									<option <?php if ($zg2 == "上海东方商厦（旗舰店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（旗舰店）">上海东方商厦（旗舰店）</option>
+									<option <?php if ($zg2 == "上海虹桥友谊商城 ") { ?>selected=selected"<?php } ?> value="上海虹桥友谊商城 ">上海虹桥友谊商城 </option>
+									<option <?php if ($zg2 == "上海新世界百货") { ?>selected=selected"<?php } ?> value="上海新世界百货">上海新世界百货</option>
+									<option <?php if ($zg2 == "上海久光百货 ") { ?>selected=selected"<?php } ?> value="上海久光百货 ">上海久光百货 </option>
+									<option <?php if ($zg2 == "上海东方商厦（南东店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（南东店）">上海东方商厦（南东店）</option>
+									<option <?php if ($zg2 == "上海百盛 ") { ?>selected=selected"<?php } ?> value="上海百盛 ">上海百盛 </option>
+									<option <?php if ($zg2 == "上海东方商厦（淮海店）") { ?>selected=selected"<?php } ?> value="上海东方商厦（淮海店）">上海东方商厦（淮海店）</option>
+									<option <?php if ($zg2 == "上海南方友谊店") { ?>selected=selected"<?php } ?> value="上海南方友谊店">上海南方友谊店</option>
+									<option <?php if ($zg2 == "北京久光百货 ") { ?>selected=selected"<?php } ?> value="北京久光百货 ">北京久光百货 </option>
+									<option <?php if ($zg2 == "北京赛特购物中心 ") { ?>selected=selected"<?php } ?> value="北京赛特购物中心 ">北京赛特购物中心 </option>
+									<option <?php if ($zg2 == "北京双安商厦 ") { ?>selected=selected"<?php } ?> value="北京双安商厦 ">北京双安商厦 </option>
+									<option <?php if ($zg2 == "北京盈科太平洋 ") { ?>selected=selected"<?php } ?> value="北京盈科太平洋 ">北京盈科太平洋 </option>
+									<option <?php if ($zg2 == "北京百盛购物中心 ") { ?>selected=selected"<?php } ?> value="北京百盛购物中心 ">北京百盛购物中心 </option>
+									<option <?php if ($zg2 == "北京燕莎友谊商城") { ?>selected=selected"<?php } ?> value="北京燕莎友谊商城">北京燕莎友谊商城</option>
+									<option <?php if ($zg2 == "北京新光天地百货 ") { ?>selected=selected"<?php } ?> value="北京新光天地百货 ">北京新光天地百货 </option>
+									<option <?php if ($zg2 == "北京翠微百货") { ?>selected=selected"<?php } ?> value="北京翠微百货">北京翠微百货</option>
+									<option <?php if ($zg2 == "北京王府井百货大楼 ") { ?>selected=selected"<?php } ?> value="北京王府井百货大楼 ">北京王府井百货大楼 </option>
+									<option <?php if ($zg2 == "北京中友百货 ") { ?>selected=selected"<?php } ?> value="北京中友百货 ">北京中友百货 </option>
+									<option <?php if ($zg2 == "北京连卡佛 ") { ?>selected=selected"<?php } ?> value="北京连卡佛 ">北京连卡佛 </option>
+									<option <?php if ($zg2 == "北京乐天银泰百货 ") { ?>selected=selected"<?php } ?> value="北京乐天银泰百货 ">北京乐天银泰百货 </option>
+									<option <?php if ($zg2 == "北京百盛太阳宫店") { ?>selected=selected"<?php } ?> value="北京百盛太阳宫店">北京百盛太阳宫店</option>
+									<option <?php if ($zg2 == "重庆远百百货江北旗舰店 ") { ?>selected=selected"<?php } ?> value="重庆远百百货江北旗舰店 ">重庆远百百货江北旗舰店 </option>
+									<option <?php if ($zg2 == "重庆太平洋百货（大都会店） ") { ?>selected=selected"<?php } ?> value="重庆太平洋百货（大都会店） ">重庆太平洋百货（大都会店） </option>
+									<option <?php if ($zg2 == "天津友谊商厦 ") { ?>selected=selected"<?php } ?> value="天津友谊商厦 ">天津友谊商厦 </option>
+									<option <?php if ($zg2 == "天津海信广场 ") { ?>selected=selected"<?php } ?> value="天津海信广场 ">天津海信广场 </option>
+									<option <?php if ($zg2 == "广州友谊商店环市东店") { ?>selected=selected"<?php } ?> value="广州友谊商店环市东店">广州友谊商店环市东店</option>
+									<option <?php if ($zg2 == "广州友谊商店正佳店 ") { ?>selected=selected"<?php } ?> value="广州友谊商店正佳店 ">广州友谊商店正佳店 </option>
+									<option <?php if ($zg2 == "广州友谊国金店 ") { ?>selected=selected"<?php } ?> value="广州友谊国金店 ">广州友谊国金店 </option>
+									<option <?php if ($zg2 == "深圳芮欧时尚生活百货 ") { ?>selected=selected"<?php } ?> value="深圳芮欧时尚生活百货 ">深圳芮欧时尚生活百货 </option>
+									<option <?php if ($zg2 == "深圳茂业百货") { ?>selected=selected"<?php } ?> value="深圳茂业百货">深圳茂业百货</option>
+									<option <?php if ($zg2 == "贵阳星力购物广场 ") { ?>selected=selected"<?php } ?> value="贵阳星力购物广场 ">贵阳星力购物广场 </option>
+									<option <?php if ($zg2 == "杭州大厦购物城 ") { ?>selected=selected"<?php } ?> value="杭州大厦购物城 ">杭州大厦购物城 </option>
+									<option <?php if ($zg2 == "杭州尚泰百货 ") { ?>selected=selected"<?php } ?> value="杭州尚泰百货 ">杭州尚泰百货 </option>
+									<option <?php if ($zg2 == "宁波银泰一店") { ?>selected=selected"<?php } ?> value="宁波银泰一店">宁波银泰一店</option>
+									<option <?php if ($zg2 == "温州时代广场购物中心 ") { ?>selected=selected"<?php } ?> value="温州时代广场购物中心 ">温州时代广场购物中心 </option>
+									<option <?php if ($zg2 == "温州开泰百货 ") { ?>selected=selected"<?php } ?> value="温州开泰百货 ">温州开泰百货 </option>
+									<option <?php if ($zg2 == "南京金鹰国际购物中心") { ?>selected=selected"<?php } ?> value="南京金鹰国际购物中心">南京金鹰国际购物中心</option>
+									<option <?php if ($zg2 == "苏州美罗商城") { ?>selected=selected"<?php } ?> value="苏州美罗商城">苏州美罗商城</option>
+									<option <?php if ($zg2 == "苏州久光百货 ") { ?>selected=selected"<?php } ?> value="苏州久光百货 ">苏州久光百货 </option>
+									<option <?php if ($zg2 == "无锡商业大厦 ") { ?>selected=selected"<?php } ?> value="无锡商业大厦 ">无锡商业大厦 </option>
+									<option <?php if ($zg2 == "无锡百盛 ") { ?>selected=selected"<?php } ?> value="无锡百盛 ">无锡百盛 </option>
+									<option <?php if ($zg2 == "常州购物中心 ") { ?>selected=selected"<?php } ?> value="常州购物中心 ">常州购物中心 </option>
+									<option <?php if ($zg2 == "大连迈凯乐商场店") { ?>selected=selected"<?php } ?> value="大连迈凯乐商场店">大连迈凯乐商场店</option>
+									<option <?php if ($zg2 == "大连友谊商城 ") { ?>selected=selected"<?php } ?> value="大连友谊商城 ">大连友谊商城 </option>
+									<option <?php if ($zg2 == "沈阳中兴商业大厦 ") { ?>selected=selected"<?php } ?> value="沈阳中兴商业大厦 ">沈阳中兴商业大厦 </option>
+									<option <?php if ($zg2 == "沈阳卓展购物中心 ") { ?>selected=selected"<?php } ?> value="沈阳卓展购物中心 ">沈阳卓展购物中心 </option>
+									<option <?php if ($zg2 == "成都春熙路太平洋百货") { ?>selected=selected"<?php } ?> value="成都春熙路太平洋百货">成都春熙路太平洋百货</option>
+									<option <?php if ($zg2 == "成都太平洋骡马市店") { ?>selected=selected"<?php } ?> value="成都太平洋骡马市店">成都太平洋骡马市店</option>
+									<option <?php if ($zg2 == "成都王府井百货 ") { ?>selected=selected"<?php } ?> value="成都王府井百货 ">成都王府井百货 </option>
+									<option <?php if ($zg2 == "成都仁和春天人东店 ") { ?>selected=selected"<?php } ?> value="成都仁和春天人东店 ">成都仁和春天人东店 </option>
+									<option <?php if ($zg2 == "成都仁和春天百货（光华店） ") { ?>selected=selected"<?php } ?> value="成都仁和春天百货（光华店） ">成都仁和春天百货（光华店） </option>
+									<option <?php if ($zg2 == "西安金鹰国际购物中心 ") { ?>selected=selected"<?php } ?> value="西安金鹰国际购物中心 ">西安金鹰国际购物中心 </option>
+									<option <?php if ($zg2 == "长沙平和堂商贸大厦 ") { ?>selected=selected"<?php } ?> value="长沙平和堂商贸大厦 ">长沙平和堂商贸大厦 </option>
+									<option <?php if ($zg2 == "武汉广场") { ?>selected=selected"<?php } ?> value="武汉广场">武汉广场</option>
+									<option <?php if ($zg2 == "郑州丹尼斯百货") { ?>selected=selected"<?php } ?> value="郑州丹尼斯百货">郑州丹尼斯百货</option>
+									<option <?php if ($zg2 == "哈儿滨松雷（南岗店）") { ?>selected=selected"<?php } ?> value="哈儿滨松雷（南岗店）">哈儿滨松雷（南岗店）</option>
+									<option <?php if ($zg2 == "哈尔滨卓展购中心(即将开幕) ") { ?>selected=selected"<?php } ?> value="哈尔滨卓展购中心(即将开幕) ">哈尔滨卓展购中心(即将开幕) </option>
+									<option <?php if ($zg2 == "昆明金格百货汇都店") { ?>selected=selected"<?php } ?> value="昆明金格百货汇都店">昆明金格百货汇都店</option>
+									<option <?php if ($zg2 == "昆明王府井百货 ") { ?>selected=selected"<?php } ?> value="昆明王府井百货 ">昆明王府井百货 </option>
+									<option <?php if ($zg2 == "青岛阳光百货 ") { ?>selected=selected"<?php } ?> value="青岛阳光百货 ">青岛阳光百货 </option>
+									<option <?php if ($zg2 == "青岛海信广场 ") { ?>selected=selected"<?php } ?> value="青岛海信广场 ">青岛海信广场 </option>
+									<option <?php if ($zg2 == "山东银座商城百货商场 ") { ?>selected=selected"<?php } ?> value="山东银座商城百货商场 ">山东银座商城百货商场 </option>
+									<option <?php if ($zg2 == "福州大洋百货 ") { ?>selected=selected"<?php } ?> value="福州大洋百货 ">福州大洋百货 </option>
+									<option <?php if ($zg2 == "烟台振华商厦 ") { ?>selected=selected"<?php } ?> value="烟台振华商厦 ">烟台振华商厦 </option>
+									<option <?php if ($zg2 == "太原百盛 ") { ?>selected=selected"<?php } ?> value="太原百盛 ">太原百盛 </option>
+									<option <?php if ($zg2 == "太原华宇购物中心 ") { ?>selected=selected"<?php } ?> value="太原华宇购物中心 ">太原华宇购物中心 </option>
+									<option <?php if ($zg2 == "新疆天山百货") { ?>selected=selected"<?php } ?> value="新疆天山百货">新疆天山百货</option>
+									<option <?php if ($zg2 == "乌鲁木齐丹璐时尚广场 ") { ?>selected=selected"<?php } ?> value="乌鲁木齐丹璐时尚广场 ">乌鲁木齐丹璐时尚广场 </option>
+									<option <?php if ($zg2 == "南宁友谊百货 ") { ?>selected=selected"<?php } ?> value="南宁友谊百货 ">南宁友谊百货 </option>
+									<option <?php if ($zg2 == "石家庄北国商城") { ?>selected=selected"<?php } ?> value="石家庄北国商城">石家庄北国商城</option>
+									<option <?php if ($zg2 == "合肥金鹰国际购物中心") { ?>selected=selected"<?php } ?> value="合肥金鹰国际购物中心">合肥金鹰国际购物中心</option>
+									<option <?php if ($zg2 == "长春卓展购物中心") { ?>selected=selected"<?php } ?> value="长春卓展购物中心">长春卓展购物中心</option>	  
+								</select>
+								
+                             	<input type="hidden" name="zg2" id="zg2" value="<?php echo $zg2; ?>"></input>
+								<input type="text" disabled="disabled"  id="errmsg-edit" style="color:red; border:none; background:none;"></input>
+								<script>
+								function compayzg(){
+										if(document.getElementById('zg2').value==document.getElementById('zg1').value){
+											//alert("两个专柜不得一样！");
+											document.getElementById('errmsg-edit').value="两个专柜不得一样。";
+											return false;
+										}else{
+										document.getElementById('errmsg-edit').value="";
+										return true;
+										}
+								}
+								
+								</script>
+
+                    </div>
+                </div>
+             
+            </li>
+			
+		 <li class="fields">
+			<div class="field">
+				  <label for="zgs3" class=""><em></em><?php echo $this->__('您最想改善的肌肤问题') ?></label>
+                    <div class="input-box">
+                   			<?php
+					$zg3 = $this->getCustomer()->getZg3();
+					?>
+							    <select id="zgs3" onclick="getvalue(3)" style="width:100px;">
+								  <option <?php if ($zg3 == NULL) { ?>selected="selected"<?php } ?> >请选择</option>
+								  <option <?php if ($zg3 == "敏感皮肤") { ?>selected="selected"<?php } ?> value ="敏感皮肤">敏感皮肤</option>
+								  <option <?php if ($zg3 == "暗肤色") { ?>selected="selected"<?php } ?> value ="暗肤色">暗肤色</option>
+								  <option <?php if ($zg3 == "油性皮肤") { ?>selected="selected"<?php } ?> value="油性皮肤">油性皮肤</option>
+								  <option <?php if ($zg3 == "眼膜") { ?>selected="selected"<?php } ?> value="眼膜">眼膜</option>
+								  <option <?php if ($zg3 == "瞬间修复") { ?>selected="selected"<?php } ?> value="瞬间修复">瞬间修复</option>
+								  <option <?php if ($zg3 == "脱水皮肤") { ?>selected="selected"<?php } ?> value="脱水皮肤">脱水皮肤</option>
+								</select>
+								<input type="hidden" name="zg3" id="zg3" value="<?php echo $zg3; ?>"></input>
+                    </div>
+			</div>
+		 
+		 </li>
+		 
+  
+	
+		 
+		 
+       
+			 <li class="control">
+                <input type="checkbox" <?php if($this->getSubscriptionObject()->isSubscribed()==1): ?> checked="checked" <?php endif; ?> name="is_subscribed" /><label for="change_password"><?php echo $this->__('订阅电子杂志') ?></label>
+            </li>
+			<!--
+			<?php
+			if ($customersub=Mage::getModel('customer/customer')->load($this->getCustomer()->getId())){
+				echo $this->getSubscriptionObject()->isSubscribed();
+				echo 'y';
+			}else{
+				echo $this->getSubscriptionObject()->isSubscribed();
+				echo 'n';
+			}
+			?>
+			-->
+
+		
+            <li class="control newmargin">
+                <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo $this->__('Change Password') ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> class="checkbox" /><label for="change_password"><?php echo $this->__('Change Password') ?></label>
+            </li>
+        </ul>
+    </div>
+    <div class="fieldset" style="display:none;">
+       <div class="passedit-tit">
+        <span>密码修改</span></div>
+        <ul class="form-list">
+            <li>
+                <label for="current_password" class="required"><em>*</em><?php echo $this->__('Current Password') ?></label>
+                <div class="input-box">
+                    <input type="password" title="<?php echo $this->__('Current Password') ?>" class="input-text" name="current_password" id="current_password" />
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="password" class="required"><em>*</em><?php echo $this->__('New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('New Password') ?>" class="input-text validate-password" name="password" id="password" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirm New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('Confirm New Password') ?>" class="input-text validate-cpassword" name="confirmation" id="confirmation" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+	
+    <div class="buttons-set">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+        <!--<p class="back-link"><a href="<?php //echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php //echo $this->__('Back') ?></a></p>-->
+        <button type="submit" title="<?php echo $this->__('确认') ?>" class="button" id="EditSubmit"><span><span><?php echo $this->__('确认') ?></span></span></button>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    function setPasswordForm(arg){
+        if(arg){
+            $('current_password').up(3).show();
+            $('current_password').addClassName('required-entry');
+            $('password').addClassName('required-entry');
+            $('confirmation').addClassName('required-entry');
+
+        }else{
+            $('current_password').up(3).hide();
+            $('current_password').removeClassName('required-entry');
+            $('password').removeClassName('required-entry');
+            $('confirmation').removeClassName('required-entry');
+        }
+    }
+    <?php if($this->getCustomer()->getChangePassword()): ?>
+        setPasswordForm(true);
+    <?php endif; ?>
+	
+	  jQuery('#fullname').change(function(){         
+        var fullname = jQuery.trim($(this).value);
+        var firstname = fullname.substring(0,1);
+        var lastname = fullname.substring(1);
+        jQuery('#firstname').val(firstname);
+        jQuery('#lastname').val(lastname); 
+		
+        });   
+	
+//]]>
+</script>
+
+<?php
+/*
+$cid = '100000185';
+$order = Mage::getModel('sales/order')->loadByIncrementId($cid);
+echo '总金额: '.$order->getBaseGrandTotal().'<br>';
+echo '支付方式: '.$order->getPayment()->getMethodInstance()->getCode().'<br>';
+echo '配送费: '.$order->getBaseShippingAmount().'<br>';
+$products = $order->getAllItems();
+echo '商品数量: '.count($products);
+*/
+
+?>
+
+

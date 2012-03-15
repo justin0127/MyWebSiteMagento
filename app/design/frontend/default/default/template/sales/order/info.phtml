@@ -1,0 +1,254 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php  $_order = $this->getOrder() ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+ 	
+   	<?php
+        $BillingAddress = $_order->getBillingAddress();
+        $ship_city = $BillingAddress->getCity();
+	$ship_region = $BillingAddress->getRegion();
+	$ship_street = implode(" ", $BillingAddress->getStreet());
+	$ship_postcode = $BillingAddress->getPostcode();
+	$ship_full_address = $ship_region.$ship_city.$ship_street;
+        ?>
+<div class="page-title title-buttons displayN">
+    <h1><?php echo $this->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
+    <?php if($this->helper('rss/order')->isStatusNotificationAllow()): ?>
+        <a href="<?php echo $this->helper('rss/order')->getStatusHistoryRssUrl($_order) ?>" class="link-rss"><?php echo $this->__('Subscribe to Order Status') ?></a>
+        <span class="separator">|</span>
+    <?php endif; ?>
+    <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
+        <a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-reorder"><?php echo $this->__('Reorder') ?></a>
+        <span class="separator">|</span>
+    <?php endif ?>
+    <a href="<?php echo $this->getPrintUrl($_order) ?>" class="link-print" onclick="this.target='_blank';"><?php echo $this->__('Print Order') ?></a>
+	
+	
+</div>
+
+<!--<dl class="order-info">
+    <dt><?php echo $this->__('About This Order:') ?></dt>
+    <dd>
+        <?php /*$_links = $this->getLinks(); ?>
+        <ul id="order-info-tabs">
+        <?php foreach ($_links as $_link): ?>
+            <?php if($_link->getUrl()): ?>
+                <li><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></li>
+            <?php else: ?>
+                <li class="current"><?php echo $_link->getLabel() ?></li>
+            <?php endif; ?>
+        <?php endforeach; */?>
+        </ul>
+        <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
+    </dd>
+</dl>-->
+
+<dl class="order-info">
+	<ul>
+		<li class="info-tit">订单号</li>
+		<li><?php echo $_order->getIncrementId (); ?></li>
+		<li class="info-tit">订单状态</li>
+		<li>
+		<?php //echo $this->__($_order->getStatus()) ?>
+		<?php $paymentmethod=$_order->getPayment()->getMethodInstance()->getCode();?>
+                    <?php //echo $paymentmethod ?>
+					<?php if($_order->getStatus()=='pending'){ ?>
+						<?php if ($paymentmethod == 'cashondelivery') { ?>
+						<?php echo '等待受理' ?>
+						<?php } ?>
+						<?php if ($paymentmethod == 'alipay_payment') { ?>
+						<?php echo '等待支付' ?>
+						<?php } ?>
+						<?php if ($paymentmethod == 'chinapay_payment') { ?>
+						<?php echo '支付失败' ?>
+						<?php } ?>
+					<?php }else{ ?>
+						<?php echo $this->__($_order->getStatus()); ?>
+					<?php } ?>
+		</li>
+		
+	</ul>
+	
+</dl>
+
+<!--<p class="order-date"><?php //echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>-->
+<?php if (!$_order->getIsVirtual()): ?>
+<!-- <div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php //echo $this->__('Shipping Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <address><?php //echo $_order->getShippingAddress()->format('html') ?></address>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+
+    </div>
+</div> -->
+<?php endif; ?>
+
+<div class="col2-set order-info-box">
+<div id="print_email" class="order-print">
+	<ul>
+	<li>
+	<span>
+	<a href="<?php echo $this->getPrintUrl($_order) ?>"  onclick="this.target='_blank';"><?php echo $this->__('Print Order') ?></a>
+	</span>
+	</li>
+	<?//php var_dump($_order->getStatus());
+	//exit; ?>
+	
+	<li>
+				<!-- reorder -->
+                <?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
+				<span>
+				<a href="<?php echo $this->getReorderUrl($_order) ?>" class="link-reorder"><?php echo $this->__('Reorder') ?></a>
+				</span>
+                <?php endif ?>
+	</li>
+	
+	
+	<?php if($_order->getStatus()=='pending'){ ?>
+	<li>
+			<?php $paymentmethod=$_order->getPayment()->getMethodInstance()->getCode();?>
+                <?php if($_order->getStatus()=='pending'):?>
+                  <?php if($paymentmethod=='alipay_payment'):?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('alipay/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php elseif($paymentmethod=='tenpay_payment'): ?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('tenpay/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php elseif($paymentmethod=='chinabank_payment'): ?>
+                    <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="<?php echo $this->getUrl('chinabank/payment/pay').'?orderid='.$_order->getRealOrderId(); ?>"><?php echo $this->__('支付') ?></a>
+                  <?php endif; ?> 
+                <?php elseif($_order->getStatus()=='wait_buyer_pay'): ?>
+                  <span class="separator">|</span><a onclick="this.target='_blank'" style="margin-left:5px;" href="https://www.alipay.com/user/login.htm"><?php echo $this->__('Pay') ?></a>
+                <?php endif; ?>
+	
+	</li>
+	<?php } ?>
+	
+	</ul>
+</div>
+
+ <div class="box-title">
+                <h2><?php echo $this->__('收货信息') //echo $this->__('Billing Address') ?></h2>
+ </div>
+ <div class="MyNewOrder">
+  <div class="date">订购日期: <?php echo $this->formatDate($_order->getCreatedAtStoreDate(), 'long'); ?></div>
+ <div style="width:100%; float:left;"><span style="float:left;">付款方式：</span><span style="float:left;"><?php echo $this->getPaymentInfoHtml() ?></span></div>
+        <div class="name">收货人姓名: <?php echo $BillingAddress->getName(); ?></div>
+        <div class="telephone">收货人手机: <?php echo $BillingAddress->getTelephone(); ?></div>
+        <div class="address">收货地址: <?php echo $ship_full_address; ?></div>
+        <div class="address">邮政编码: <?php echo $ship_postcode; ?></div>
+   	
+   	<!--<br />
+   	<br />
+  
+        <div>订单ID(显示): <?php //echo $_order->getIncrementId (); ?></div>
+        <div>订单ID(内置): <?php //echo $_order->getId (); ?></div>
+        <div>订单状态: <?php //echo $_order->getStatus(); ?></div>-->
+        
+ </div>
+ 
+</div>
+
+
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('支付及配送方式') //echo $this->__('Billing Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <!--<address><?php //echo $_order->getBillingAddress()->format('html') ?></address>-->
+				 <?php echo '支付方式 : '.$_order->getPayment()->getMethodInstance()->getTitle().'<br>'; ?><?php //echo $this->getPaymentInfoHtml() ?>
+				 <?php echo '运费 : ￥0.00'.'<br>'; ?>
+				 <?php //echo '送货日期:' ?> <?php echo $_order->getShippingTime(); ?>
+            </div>
+        </div>
+    </div>
+	
+    <!-- 发票信息块 -->
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('发票信息'); ?></h2>
+            </div>
+            <div class="box-content">
+            <?php
+            $OrderFapiao = $_order->getFapiao_title();
+            //echo $OrderFapiao;
+            $po = strrpos($OrderFapiao, '^^^');
+            //echo $po;
+            if($po) {
+		    $taitou = substr($OrderFapiao, 0 ,$po);
+		    //echo $taitou;
+		    $con = substr($OrderFapiao, $po+3);
+		    //echo $con;
+            }else{
+                    $taitou = NULL;
+		    $con = NULL;
+            }
+            ?>
+				 <?php echo '发票类型 : 普通发票'.'<br>'; ?>
+				 <?php if($taitou!=null && $con!=null){ ?>
+				 <?php echo '发票抬头 : '.$taitou.'<br>'; ?>
+				 <?php echo '发票内容 : '.$con; ?>
+				 <?php }else{ ?>
+				 <?php echo '无'; ?>
+				 <?php } ?>
+				 
+            </div>
+        </div>
+    </div>
+<!--<div class="col-2">
+        <div class="box box-payment">
+            <div class="box-title">
+                <h2><?php echo $this->__('Payment Method') ?></h2>
+            </div>
+            <div class="box-content">
+                <?php echo $this->getPaymentInfoHtml() ?>
+            </div>
+        </div>
+<br /><br />
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('Shipping Method') ?><?php /* | <a href="#"><?php echo $this->__('Track Order') ?></a>*/ ?></h2>
+            </div>
+            <div class="box-content">
+                <?php if ($_order->getShippingDescription()): ?>
+                    <?php echo $_order->getShippingDescription() ?>
+                <?php else: ?>
+                    <p><?php echo $this->helper('sales')->__('No shipping information available'); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>-->
+</div>

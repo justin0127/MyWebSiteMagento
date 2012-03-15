@@ -1,0 +1,23 @@
+<div class="form-list">
+
+	<img src="<?php echo $this->getSkinUrl('images/yin-lian.gif') ?>" />
+<br/>
+
+</div>
+<fieldset class="form-divst">
+	<?php $_code=$this->getMethodCode() ?>
+	<ul id="payment_form_<?php echo $_code ?>" style="display:none">
+		<div style="clear:both;">
+		支持国内几乎所有银行卡的在线支付
+		<!--<img src="<?php echo $this->getSkinUrl('images/icon-china.gif') ?>" />-->
+		<SCRIPT LANGUAGE="JavaScript">
+		function popUp() {
+		props=window.open('http://www.sisley.com.cn/allbank.html', 'poppage', 'toolbars=0, scrollbars=0, location=0, statusbars=0, menubars=0, resizable=0, width=500, height=500, left = 433, top = 134');
+		}
+		// End -->
+		</script>
+
+		<A HREF="javascript:popUp()"><?php echo $this->__('查看所有银行.') ?></A>
+		</div>
+	</ul>
+</fieldset>

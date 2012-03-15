@@ -1,0 +1,69 @@
+Reminder Variables,Reminder Variables
+Customer E-mail,Customer E-mail
+Customer Name,Customer Name
+Message,Message
+Sent Reminders,Sent Reminders
+ID,ID
+Sent On,Sent On
+Visited On,Visited On
+Remote IP,Remote IP
+Custromer Name,Customer Name
+Are you sure?,Are you sure?
+Store View,Store View
+Produsts,Products
+Save and Send Out,Save and Send Out
+Reviews Reminder,Reviews Reminder
+Order,Order
+View Order,View Order
+Order Was Placed On,Order Was Completed On
+Reminder Will Be Sent On,Reminder Will Be Sent On
+Status,Status
+Pending,Pending
+Not Sent,Not Sent
+Action,Action
+View,View
+Send and Delete,Send and Save to History
+Reminders Queue,Reminders Queue
+Add Reminder,Add Reminder
+Reviews Reminders,Reviews Reminders
+History,History
+Reminder has been deleted,Reminder has been deleted
+Review Reminders,Review Reminders
+Item does not exist,Item does not exist
+Please select reminder(s),Please select reminder(s)
+Total of %d record(s) were successfully deleted,Total of %d record(s) were successfully deleted
+Review Reminder,Review Reminder
+Send E-mails,Send E-mails
+Delay period (days),Delay period (days)
+Email Template,Email Template
+Email Sender,Email Sender
+Reviews Sidebar Pro,Reviews Sidebar Pro
+Show Random,Show Random
+Reviews in block,Reviews in block
+Words Count,Words Count
+Display Rating,Display Rating
+Minimal Rating,Minimal Rating Allowed
+Use Category,Use Category
+Hide already viewed,Hide already viewed
+"If set to ""No"", alert emails will be generated, but won't be sent automatically, while manual sending will be allowed","If set to ""No"", alert emails will be generated, but won't be sent automatically, while manual sending will be allowed"
+The system will send alerts after the above mentioned amount of days upon order placement,The system will send alerts after the above mentioned amount of days upon order placement
+"If set to ""Yes"" the system shows random reviews. Otherwise shows most recent","If set to ""Yes"", the system displays random reviews. Otherwise displays most recent ones."
+The system shows above mentioned count of reviews in the block,The system displays the above mentioned number of reviews in the block.
+If set to zero the system shows full review text. If not - cuts up to above metioned words count,"If set to zero, the system displays full review text. If not - cuts up to the above mentioned number of words."
+System will show rating stars,"If set to ""Yes"", the system will display rating stars."
+"If set to ""Yes"", the system will display only summary rating.","If set to ""Yes"", the system will display only summary rating."
+Display Only Summary Rating,Display Only Summary Rating
+For example 4.8 or 3.5. Set 0 to show all reviews,For example 4.8 or 3.5. Set to zero to display all ratings.
+Show reviews from the current category only,"If set to ""Yes"", the system shows reviews from the current category only."
+Show only unique reviews per user session. Recommended if you have a lot of reviews.,"If set to ""Yes"", the system shows only unique reviews during a user session. Recommended if you have a lot of reviews."
+Recent Reviews,Recent Reviews
+Review by %s,Review by %s
+"If set to ""Yes"", the system shows reviews for the current product only.","If set to ""Yes"", the system shows reviews for the current product only."
+"<a href=""%s"">Reviews Reminder</a> for the order has been successfully scheduled.","<a href=""%s"">Reviews Reminder</a> for the order has been successfully scheduled."
+"Generate Reminders","Generate Reminders"
+"%d reminder(s) for previous orders have been created","%d reminder(s) for previous orders have been created"
+"Store","Store"
+"New Products Only","New Products Only"
+"Remind about not purchased before products only","Remind about not purchased before products only"
+
+

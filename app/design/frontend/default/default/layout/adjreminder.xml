@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+<!--
+Default layout, loads most of the pages
+-->
+    <default>
+        <reference name="right">
+            <block type="adjreminder/review" name="right.adjreminder" after="cart_sidebar"
+                template="adjreminder/review.phtml">
+            </block>
+        </reference>
+    </default>
+<!--
+Customer account home dashboard layout
+-->
+    <customer_account_index>
+        <reference name="right">
+            <action method="unsetChild"><name>right.adjreminder</name></action>
+        </reference>
+    </customer_account_index>
+</layout>

@@ -1,0 +1,184 @@
+.cms-page-view .help-center-nav .block-title {
+    background:none repeat scroll 0 0 transparent!important;
+	color:#575757;
+	text-indent: 1em;
+	
+	}
+	
+	
+	
+.cms-page-view 	.col-left{background:none;}
+.cms-page-view 	.col-left .block-banner{display:none;}
+
+
+.help-center-nav .block-content {
+border:none;
+background:none;
+padding-left:20px;
+}
+
+.help-center-nav .block-content dl{background:none;}
+
+
+.help-center-nav .block-content dl dt {
+    padding: 0px 10px 3px 15px;
+	background:url("../images/help_center_sqr.gif") no-repeat scroll left 8px transparent;
+	font-weight:normal;
+	}
+	
+	
+	
+.col2-left-layout .col-main.news {
+    border: 1px solid #DADADA;
+    margin-right: 25px;
+    padding: 12px;
+    width: 685px;
+}
+.about .nav-container-left ul#nav-left li.active {background:url("../images/light-ar-emp.jpg") no-repeat scroll left 6px transparent;}
+.about .nav-container-left ul#nav-left li.active ul li{background:url("../images/light-ar-emp.jpg") no-repeat scroll left 6px transparent!important;padding-left:12px;}
+.category-about-sisley .about .nav-container-left ul#nav-left li.active ul.level0 li.level1{background:url("../images/light-ar-emp.jpg") no-repeat scroll left 6px transparent !important;}
+
+.about ul#nav-left li ul li.level1{}
+.about ul#nav-left li ul li.level1 a{    color: #5B5B5B;line-height: 22px;}
+.about ul#nav-left li ul li.level1 a:hover{font-weight:normal;text-decoration:underline;}
+.about ul#nav-left li ul li.level1 ul{display: block;}
+.about ul#nav-left li ul li.level1 ul li.level2{background:none repeat scroll 0 0 transparent !important;}
+.about ul#nav-left li ul li.level1 ul li.level2 a{}
+.about ul#nav-left li ul li.level1 ul li.level2.active a{font-weight: bold;}
+.about ul#nav-left li ul li.level1 ul li.level2.active a:hover{font-weight: bold;}
+.about ul#nav-left li ul li.level1 ul li.level2 a:hover{font-weight:normal;text-decoration:underline;}
+
+
+.about .nav-container-left .title{display:none;}
+.about .nav-container-left{padding-right:0;}
+.about .nav-container-left ul#nav-left li.nav-2 {
+    background: none repeat scroll 0 0 transparent;
+    display: block;
+    padding-left: 0;
+}
+
+
+.about .nav-container-left ul#nav-left li.nav-3 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-4 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-5 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-6 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-7 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-8 {    display: none;}
+.about .nav-container-left ul#nav-left li.nav-9 {    display: none;}
+
+.about .LeftQuest{display:none;}
+.about.col-left img{display:none;}
+
+
+
+
+
+.col2-left-layout .col-main.about img{margin-right:20px;float:right;}
+.col-left.about {width:200px;}
+.col2-left-layout .col-main.about {width:735px;}
+.category-image{float:right;}
+
+
+.cms-counter-china .counter-china form{float: left;margin-right: 100px;padding-top: 100px;}
+.cms-counter-china .address{float:left; width:700px;padding-bottom: 30px;}
+
+
+
+
+/*catalog search*/
+.catalogsearch-result-index .col-left .block .block-title strong{border-bottom:1px solid #D9D9D9;}
+.catalogsearch-result-index .block .block-title strong span {font-size: 14px;padding-top:4px;}
+.catalogsearch-result-index .col-left .block-layered-nav{padding: 6px;background:url("../images/all-cat-bg.png") repeat-x scroll 0 100% transparent;width: 166px;}
+.catalogsearch-result-index .col-left .block-title{background:none; text-indent:1em;}
+.catalogsearch-result-index .col-left .block-content{border:none; background:none;}
+.catalogsearch-result-index .col-left .block-content dd{background:none;}
+.catalogsearch-result-index .col-left .block-content dt{background:url("../images/light-ar-emp.jpg") no-repeat scroll 9px 12px transparent;}
+
+
+
+ 
+
+.footer .store-switcher {display:none;}
+
+.block-account .block-content {
+    background: none repeat scroll 0 0 transparent;}
+	
+.right-list{    background: url("../images/diagnostic_beaute_female_ri.gif") no-repeat scroll 0 0 #F0F0F0;
+    float: right;
+    padding-top: 36px;
+    width: 238px;padding-bottom: 20px;}	
+	
+.right-list li a:hover{text-decoration:underline;}	
+.right-list li{     background: url("../images/light-ar-emp.jpg") no-repeat scroll left center transparent;
+    list-style: none outside none;
+    margin-left: 15px;
+    padding-left: 15px;}	
+.right-list li.active{background: url("../images/dark-ar-emp.jpg") no-repeat scroll left center transparent; font-weight:bold;}	
+.list-left{width:658px;float:left;padding-left: 20px;}	
+	
+	
+	
+.cms-home .col1-layout .col-main {    background: url("../images/home_co_main_bg.gif") no-repeat scroll 0 0 transparent; 
+   }
+	
+.cms-home .col1-layout .col-main	.left-banner{float:left;margin-top:6px;margin-left:6px;margin-bottom:6px;}
+.cms-home .col1-layout .col-main	.right-banner{ float: right;
+    width: 310px;}
+.cms-home .col1-layout .col-main	.right-banner img{margin-bottom: 6px;margin-top:6px;
+    margin-left: 10px;}
+	
+.left-contain .womenpage ul{}
+.womenpage ul li{}
+.womenpage ul li span{}
+
+.cms-page-view .content-right .col1{    background: url("../images/diagnostic_beaute_bg.gif") no-repeat scroll 0 0 transparent;
+    height: 135px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 40px;
+    text-align: justify;}
+.cms-diagnostic-beaute-male.cms-page-view .content-right .col1{    background: url("../images/men_diagnostic_beaute_bg.gif") no-repeat scroll 0 0 transparent; color:white;
+}
+.cms-page-view .content-left {    float: left;
+    padding-left: 20px;
+    width: 688px;}
+.cms-page-view .content-right {width:238px; float:right;margin-right:10px;color:#5B5A5A;}
+.cms-page-view .content-right .col2{    background: url("../images/diagnostic_beaute_search.gif") no-repeat scroll 0 0 transparent;
+    padding: 40px 18px 18px 58px;}
+.cms-diagnostic-beaute-male.cms-page-view .content-right .col2{    background: url("../images/diagnostic_men_search.gif") no-repeat scroll 0 0 transparent;}
+
+	
+.cms-page-view 	.left-contain {
+    background: url("../images/inputleft.jpg") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 378px;
+    width: 200px;
+}
+
+
+.cms-page-view 	#right-contain {    height: 380px;}
+
+.cms-page-view .left-contain .womenpage,.cms-page-view .left-contain .menpage{padding-top:100px;}
+.cms-page-view .left-contain .womenpage li{    background: none repeat scroll 0 0 #A131A0;}
+.cms-page-view .left-contain .menpage li{    background: none repeat scroll 0 0 #434343;}
+.cms-page-view .left-contain .womenpage li,.cms-page-view .left-contain .menpage li{
+    color: #FFFFFF;
+    margin-bottom: 5px;
+    opacity: 0.8;
+    padding: 2px;}
+
+
+
+	
+	
+.cms-page-view .left-contain .womenpage li span,.cms-page-view .left-contain .menpage li span{     margin-left: 4px;
+    margin-right: 4px;}	
+	
+.cms-diagnostic-beaute-male.cms-page-view 	.left-contain {
+    background: url("../images/inputleft_men.png") no-repeat scroll 0 0 transparent;
+	width: 182px;
+}
+
+
+.cms-diagnostic-beaute-male .contain-input-tit span {color:#5b5b5b;}
+.cms-diagnostic-beaute-male .right-input dl dt span {color:#5b5b5b;}

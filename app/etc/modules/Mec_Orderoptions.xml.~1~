@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mec_Orderoptions>
+            <active>false</active>
+            <codePool>local</codePool>
+        </Mec_Orderoptions>
+    </modules>
+</config>
+

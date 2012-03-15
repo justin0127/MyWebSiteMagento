@@ -1,0 +1,86 @@
+<?php if (!$methods = $this->getMethods()) : ?>
+<p><?php echo $this->helper('checkout')->__('Sorry, no quotes are available for this order at this time.') ?></p>
+<?php else : ?>
+<dl class="sp-methods" style="float:left;">
+<?php foreach ($this->getMethods() as $_method): $_code = $_method->getCode() ?>
+    <dt>
+    <?php if( sizeof($this->getMethods()) > 1 ): ?>
+        <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> class="radio" />
+    <?php else: ?>
+        <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" class="radio" /></span>
+    <?php endif; ?>
+        <label for="p_method_<?php echo $_code ?>"><?php echo $this->getMethodTitle($_method) ?> <?php echo $this->getMethodLabelAfterHtml($_method) ?></label>
+    </dt>
+    <?php if ($html = $this->getPaymentMethodFormHtml($_method)): ?>
+    <dd>
+        <?php echo $html; ?>
+    </dd>
+    <?php endif; ?>
+<?php endforeach; ?>
+</dl>
+<script type="text/javascript">
+//<![CDATA[
+<?php echo $this->getChildChildHtml('scripts'); ?>
+payment.init();
+//]]>
+
+</script>
+<?php endif; ?>
+
+<dl class="sp-methods">
+           <div><strong>您需要开具发票吗？</strong></div>
+           <input type='hidden' name='fapiao' id="fabiao"/> 
+           <ul>
+	       <li><input type="radio" id='yesfabiao' value="yesfabiao" name="fabiao" onclick="jQuery('#fapiaotitle').removeAttr('disabled'); jQuery('#fapiaocat').removeAttr('disabled'); jQuery('#abc').css('display','block'); "/>
+		     <label for="yesfabiao">是</label>
+	       </li>
+	       <li><input type="radio" id='nofabiao' value="nofabiao" name="fabiao"  checked onclick="jQuery('#fapiaotitle').attr('disabled','disabled'); jQuery('#fapiaocat').attr('disabled','disabled'); jQuery('#abc').css('display','none'); "/>
+		     <label for="nofabiao">否</label>
+	       </li>      
+           </ul>
+           
+           <div class="clearer"></div>
+           <div id="abc" style="display:none;">
+           <label for="fapiaotitle">发票抬头：</label><br /><input type="text"  onchange='Setfapiao()' id='fapiaotitle' name="fapiaotitle" class="input-text" style="width:250px;" disabled /><br />
+           <label for="fapiaocat">发票内容：</label><br />
+	   <select name="fapiaocat" class="input-text" id="fapiaocat" disabled>
+	     <option value="化妆品">  化妆品  </option>
+	     <option value="礼品">  礼品  </option>
+	   </select>
+		 </div>
+	   
+    </dl>
+<div class="clearer"></div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+    function Setfapiao(){
+    updateFP();
+    }
+
+    function updateDT(){
+           if (!$('deliveryTime').value){$('deliveryTime').value = 'all';}
+    }
+    
+    function updateFP(){
+           if ($('yesfabiao').checked){
+           
+                 var fapiaotitle = $('fapiaotitle').value;
+                 if ( !fapiaotitle || fapiaotitle == ''){
+                     alert('请填写发票抬头');
+                     return false;
+                 }
+                 
+                 var fapiaocat = $('fapiaocat').value;
+                 if (!fapiaocat || fapiaocat == ''){
+                     alert('请填写发票内容');
+                     return false;
+                 }
+                $('fabiao').value = $('fapiaotitle').value + '^^^' + $('fapiaocat').value;
+           }
+           return true;
+    }    
+//]]>
+</script>
+

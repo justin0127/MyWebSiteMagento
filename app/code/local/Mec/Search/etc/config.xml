@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category   Mec
+ * @package    Mec_Search
+ * @author     ModuleCreator
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <modules>
+        <Mec_Search>
+            <version>0.1.0</version>
+        </Mec_Search>
+    </modules>
+    <frontend>
+        <routers>
+            <search>
+                <use>standard</use>
+                <args>
+                    <module>Mec_Search</module>
+                    <frontName>search</frontName>
+                </args>
+            </search>
+        </routers>
+        <layout>
+            <updates>
+                <search>
+                    <file>search.xml</file>
+                </search>
+            </updates>
+        </layout>
+    </frontend>
+    <!--
+    <admin>
+        <routers>
+			<search>
+				<use>admin</use>
+				<args>
+					<module>Mec_Search</module>
+					<frontName>search</frontName>
+				</args>
+			</search>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<search module="search">
+				<title>Search</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="search">
+						<title>Manage Items</title>
+						<sort_order>0</sort_order>
+						<action>search/adminhtml_search</action>
+					</items>
+				</children>
+			</search>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Mec_Search>
+							<title>Search Module</title>
+							<sort_order>10</sort_order>
+						</Mec_Search>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<search>
+					<file>search.xml</file>
+				</search>
+			</updates>
+		</layout>
+    </adminhtml>
+    -->
+    <global>
+        <models>
+            <search>
+                <class>Mec_Search_Model</class>
+                <resourceModel>search_mysql4</resourceModel>
+            </search>
+            <search_mysql4>
+                <class>Mec_Search_Model_Mysql4</class>
+                <entities>
+                    <search>
+                        <table>search</table>
+                    </search>
+                </entities>
+            </search_mysql4>
+        </models>
+        <resources>
+            <search_setup>
+                <setup>
+                    <module>Mec_Search</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </search_setup>
+            <search_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </search_write>
+            <search_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </search_read>
+        </resources>
+        <blocks>
+            <search>
+                <class>Mec_Search_Block</class>
+            </search>
+        </blocks>
+        <helpers>
+            <search>
+                <class>Mec_Search_Helper</class>
+            </search>
+        </helpers>
+    </global>
+</config>

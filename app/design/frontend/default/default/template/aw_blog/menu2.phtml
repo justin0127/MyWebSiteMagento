@@ -1,0 +1,66 @@
+<div class="box base-mini blog blog2">
+
+<?php if($this->getCategories()->count() && Mage::getStoreConfig('blog/menu/category')): ?>
+<?php $cats = $this->getCategories(); ?>
+<?php foreach ($cats as $cat): ?>
+                <?php
+                if($cat['cat_id'] == '2') {
+                $cname = $cat['title'];
+                ?>
+                <div class="head">
+                <strong><span><?php echo $cname; ?></span></strong>
+                <span><a href="<?php echo $cat['address']; ?>" >更多</a></span>
+                </div>
+                <div class="content">
+                <?php
+                $posts = $this->getPosts();
+                $num = sizeof($posts);
+                $k = 0;
+                foreach ($posts as $post) {
+                $postCats = $post->getCats();
+                $k++;
+                foreach($postCats as $title=>$url): 
+                //if ((key($post['cats']) == $cname)&&($k <= 5)) {
+                if (($title == $cname)&&($k <= 5)) {
+                if ($k == 1) {
+                ?>
+                <div class="level-1">
+                <?php
+                $id = $post['post_id'];
+                $postAll = Mage::getModel('blog/post')
+					->setStoreId(Mage::app()->getStore()->getId())
+                    ->load($post['post_id'], 'post_id');
+                $content = $postAll->getPostContent();
+                $short_content = $post->getPostContent();
+                //var_dump($content);
+                preg_match('/<img(.*)>/',$content,$imgArr);
+                if ($imgArr) {
+                $img = $imgArr['0'];
+                $po1 = strrpos($img,"../");
+                $img = substr($img,$po1);
+                $po2 = strpos($img,'" border');
+                $img = substr($img,3,$po2-3);
+                }
+                ?>
+                <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).$img ?>">
+                <h3><?php echo $post->getTitle();?></h3>
+                <span><?php echo $short_content ?></span>
+                </div>
+                <?php }else { ?>
+                <div class="level-2">
+                <ul>
+                <li><a href="<?php echo $post->getAddress(); ?>" ><?php echo $post->getTitle();?></a></li>
+		<?php
+		}
+		}
+		endforeach;
+		}
+		}
+		?>
+<?php endforeach; ?>
+    	        </ul>
+	        </div>
+<?php endif;?>
+	</div>
+</div>
+

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<layout>
+    <!--
+    Customer account home dashboard layout
+    -->
+    <customer_account_index>
+            <reference name="customer_account_dashboard">
+                    <action method="setTemplate">
+                            <template>rewardpoints/my_dashboard.phtml</template>
+                    </action>
+                    <block type="core/template" name="customer_account_points" as="points" template="rewardpoints/dashboard_points.phtml"/>
+            </reference>
+    </customer_account_index>
+    
+    <checkout_cart_index>
+		<reference name="checkout.cart.coupon">
+			<action method="setTemplate">
+				<template>rewardpoints/reward_coupon.phtml</template>
+			</action>
+			<block type="checkout/cart_coupon" name="checkout_cart_coupon_reward" as="coupon_original" template="checkout/cart/coupon.phtml"/>
+			<!--<block type="core/template" name="customer_account_points" as="reward_points" template="rewardpoints/reward_coupon.phtml"/>-->
+		</reference>
+    </checkout_cart_index>
+
+    <catalog_product_view>
+        <reference name="product.info.addtocart">
+            <action method="setTemplate">
+                    <template>rewardpoints/addtocart.phtml</template>
+            </action>
+            <block type="catalog/product_view" name="original_addtocart" as="original_addtocart" template="catalog/product/view/addtocart.phtml"/>
+
+        </reference>
+    </catalog_product_view>
+
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="customer" ifconfig="rewardpoints/default/referral_show"><name>referral</name><path>rewardpoints/index/referral/</path><label>Referred Friends</label></action>
+            <action method="addLink" translate="label" module="customer"><name>rewardpoints</name><path>rewardpoints/index/points/</path><label>Reward points</label></action>
+        </reference>
+    </customer_account>
+
+
+    <rewardpoints_index_points>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="rewardpoints/points" name="rewardpoints" template="rewardpoints/points.phtml" />
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </rewardpoints_index_points>
+
+
+    <rewardpoints_index_referral>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="rewardpoints/referral" name="referral" template="rewardpoints/referral.phtml" />
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </rewardpoints_index_referral>
+
+
+
+	
+</layout>

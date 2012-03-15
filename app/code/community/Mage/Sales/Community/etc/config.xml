@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Admin
+ * @package    Status
+ * @copyright  Copyright (c) 2009 Digital Addiction CC. (http://www.digitaladdiction.co.za)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ */ Thanks goes to Spheric, Atlasit, Ajayksh, Erenaud for all brainstorming in the following thread:
+ */ http://www.magentocommerce.com/boards/viewthread/9976/P45/
+ */ I compiled this using Spherics instructions, and I can only take credit for creating the actual status's below:
+ */ 
+ */ Additional Status's Included:
+ */ 
+ */ Pending - Credit Card Reserved
+ */ Pending - Stock has been ordered
+ */ Pending - Proof of Payment Received
+ */ 
+ */ Processing - Payment has Cleared
+ */ Processing - Credit Card has been Settled
+ */ Processing - Stock has been received and scanned
+ */ Processing - Stock has been invoiced, packaged and awaiting courier
+ */ Processing - Stock has been invoiced, packaged and ready to be posted
+ */ Processing - Stock is ready and awaiting collection
+ */ 
+ */ Complete - Courier has collected
+ */ Complete - Stock has been posted
+ */ Complete - Stock has been collected
+ */ 
+ */ Cancelled - As per Customer Request
+ */ Cancelled - Customer not Responding
+ */ Cancelled - Stock Item Discontinued
+ */ Cancelled - Suspected Fraud
+ */ 
+ */ Back Order
+ */ 
+-->
+
+<config>
+    <modules>
+        <Mage_Sales_Community>
+            <version>0.1.2</version>
+        </Mage_Sales_Community>
+    </modules>
+    <global>
+        <sales>
+            <order>
+                <statuses>
+                    <!--Pending Status Descriptions-->
+					<pending translate="label"><label>Pending</label></pending>
+					<online_pending translate="label"><label>Online Pending</label></online_pending>
+                    			<!--<pending_paypal translate="label"><label>Pending PayPal</label></pending_paypal>
+					<pending_cc_reserved translate="label"><label>Pending - Credit Card Reserved</label></pending_cc_reserved>
+					<pending_stock_order translate="label"><label>Pending - Stock has been ordered</label></pending_stock_order>
+					<pending_pop_received translate="label"><label>Pending - Received Proof of Payment</label></pending_pop_received>-->
+                    <!--Processing Status Descriptions-->                    
+					<processing translate="label"><label>Processing</label></processing>
+					<online_unpaid translate="label"><label>Online Unpaid</label></online_unpaid>
+					<shipping translate="label"><label>Shipping</label></shipping> 
+					<success translate="label"><label>Success</label></success>
+					<reject translate="label"><label>Reject</label></reject>
+					<return translate="label"><label>Return</label></return>
+                    <!--Complete Status Descriptions-->                    
+					<complete translate="label"><label>Complete</label></complete>
+					<!--<complete_courier translate="label"><label>Complete - Courier has collected</label></complete_courier>
+					<complete_post translate="label"><label>Complete - Stock has been posted</label></complete_post>
+					<complete_collect translate="label"><label>Complete - Stock has been collected</label></complete_collect>-->
+                    <!--Cancelled Status Descriptions-->					
+                  		        <canceled translate="label"><label>Canceled</label></canceled>
+					<!--<canceled_request translate="label"><label>Canceled - As per Customer Request</label></canceled_request>
+					<canceled_non_responsive translate="label"><label>Canceled - Customer not Responding</label></canceled_non_responsive>
+					<canceled_discontinued translate="label"><label>Canceled - Stock Item Discontinued</label></canceled_discontinued>
+					<canceled_fraud translate="label"><label>Canceled - Suspected Fraud</label></canceled_fraud>-->
+                    <!--On Hold Status Descriptions-->					
+                   		        <holded translate="label"><label>On Hold</label></holded>					
+					<back_order translate="label"><label>Back Order</label></back_order>					
+            			        <!-- /* Additional custom statuses will go here */ -->
+								<!-- Format of a status description is <name_of_status translate="label"><label>Name of Status</label?</name_of_status> -->
+                </statuses>
+                <states>
+                    <new translate="label">
+                        <label>New</label>
+                        <statuses>
+		                    <pending/>
+		                    <online_pending/>
+							<!--<pending_cc_reserved/>
+							<pending_stock_order/>
+							<pending_pop_received/>-->
+                        </statuses>
+                        <visible_on_front/>
+                    </new>
+					<pending translate="label">
+                        <label>Pending</label>
+                        <statuses>
+		                    <pending/>
+		                    <online_pending/>
+                            <online_unpaid/>
+							<!--<pending_cc_reserved/>
+							<pending_stock_order/>
+							<pending_pop_received/>-->
+                        </statuses>
+                        <visible_on_front/>						
+                    </pending> 					
+					<pending_payment translate="label">
+                        <label>Pending Payment</label>
+                        <statuses>
+				            <pending/>
+		                    <online_pending/>
+                            <online_unpaid/>
+							<!--<pending_cc_reserved/>
+							<pending_stock_order/>
+							<pending_pop_received/>-->
+                        </statuses>
+                    </pending_payment>
+                    <processing translate="label">
+                        <label>Processing</label>
+                        <statuses>
+                            <processing/>
+                            <online_unpaid/>
+							<shipping/>
+							<success/>
+							<reject/>
+							<return/>
+                        </statuses>
+                        <visible_on_front/>
+                    </processing>
+                    <complete translate="label">
+                        <label>Complete</label>
+                        <statuses>
+							<complete/>
+							<!--<complete_courier/>
+							<complete_post/>
+							<complete_collect/>-->
+                        </statuses>
+                        <visible_on_front/>
+                    </complete>
+                    <canceled translate="label">
+                        <label>Canceled</label>
+                        <statuses>
+		                    <canceled/>
+							<!--<canceled_request/>
+							<canceled_non_responsive/>
+							<canceled_discontinued/>
+							<canceled_fraud/>-->
+                        </statuses>
+                        <visible_on_front/>
+                    </canceled>				
+                    <holded translate="label">
+                        <label>Back Order</label>
+                        <statuses>
+                            <holded/>
+							<back_order/>
+                        </statuses>
+                        <visible_on_front/>
+                    </holded>
+								<!-- /** Additional modified states will be here including any custom statuses */ -->		
+					<!-- Format will be
+					<name_of_state translate="label">
+						<label>Name of State</label>
+						<statuses>
+										Insert the name/s of the selectable status's you wish to include, which were made at the top, i.e. <name_of_status/>
+							<name_of_status/>
+						</statuses>
+						<visible_on_front/>
+					</name_of_state> -->
+                </states>
+            </order>
+        </sales>
+    </global>
+</config> 

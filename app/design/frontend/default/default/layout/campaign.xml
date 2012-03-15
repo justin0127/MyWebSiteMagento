@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <campaign_index_index>
+        <reference name="content">
+            <block type="campaign/campaign" name="campaign" template="campaign/campaign.phtml" />
+        </reference>
+    </campaign_index_index>
+</layout> 

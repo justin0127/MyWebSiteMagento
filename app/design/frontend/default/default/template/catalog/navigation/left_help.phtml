@@ -1,0 +1,39 @@
+<div class="help-center-nav block-layered-nav">
+<?php
+//echo $this->getLayout()->createBlock('cms/block')->setBlockId('help_nav')->toHtml();
+$baseurl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+function isCurrentUrl($param) {
+$pageURL = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+$IsHere = strpos($pageURL,$param);
+return $IsHere;
+}
+echo isCurrentUrl();
+?>
+
+<div class="block-title"><strong><a href="<?php echo $baseurl; ?>sis_helpcenter.htm">帮助中心</a></strong></div>
+<div class="block-content">
+<?php
+$paramArr = array(
+		'sis_myaccount.htm' => '我的账户',
+		'sis_superior.htm' => '希思黎至臻坊',
+		'sis_reward-point-rule.htm' => '积分兑换规则',
+		'sis_meiyanhui.htm' => '希思黎美颜会',
+		'sis_meirongfang.htm' => '希思黎美容坊',
+		'sis_weborder.htm' => '网上订购',
+		'sis_service.htm' => '售后服务',
+		'sis_general.htm' => '综合信息',
+		//'sis_explor.htm' => '网站导览',
+		//'sis_about.htm' => '关于希思黎',
+		//'sis_brand.htm' => '品牌故事',
+		//'contacts' => '联系我们'
+	    );
+	    foreach ($paramArr as $key => $value) {
+?>
+
+<dl> <dt><a href="<?php echo $baseurl.$key; ?>"><?php if(isCurrentUrl($key)) { ?><b><?php echo $value; ?></b><?php }else{ echo $value; } ?></a></dt> </dl> 
+<?php } ?>
+<dl><dt><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>sis_explor.htm" target="_blank" >网站导览</a></dt></dl>
+<dl><dt><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>about-sisley.html" target="_blank" >关于希思黎</a></dt></dl>
+<dl><dt><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>about-sisley/brand-history.html" target="_blank" >品牌故事</a></dt></dl>
+<dl><dt><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>contactus" target="_blank" >联系我们</a></dt></dl>
+</div>

@@ -1,0 +1,180 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="block block-account">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('My Account'); ?></span></strong>
+    </div>
+    <div class="block-content">
+        <ul class="accountNavat">
+            <?php $_links = $this->getLinks(); ?>
+            <?php $_index = 1; ?>
+            <?php $_count = count($_links); ?>
+			
+			<?php $_links = $this->getLinks(); ?>
+            <?php $_index = 1; ?>
+            <?php $_count = count($_links); ?>
+            <?php
+            //var_dump($_links);
+            $links = array();
+            foreach ($_links as $_link) {
+              $links[$_link->getLabel()] = $_link;
+              /*
+              if($_link->getLabel() == '我的订单'){
+              $links['0'] = $_link;
+              }
+              if($_link->getLabel() == '收藏夹'){
+              $links['1'] = $_link;
+              }
+              if($_link->getLabel() == '将本站推荐给好友'){
+              $links['2'] = $_link;
+              }
+              if($_link->getLabel() == '积分'){
+              $links['3'] = $_link;
+              }
+              if($_link->getLabel() == '基本信息'){
+              $links['4'] = $_link;
+              }
+              if($_link->getLabel() == '地址簿'){
+              $links['5'] = $_link;
+              }
+              */
+            }
+            ?>
+            <?php
+            $_Links['0'] = $links['我的订单'];
+            $_Links['1'] = $links['我的收藏'];
+            $_Links['2'] = $links['我邀请的好友'];
+            $_Links['3'] = $links['我的积分'];
+            $_Links['4'] = $links['个人信息'];
+            $_Links['5'] = $links['收货地址'];
+	    $_Links['6'] = $links['Forget Password']		
+            
+            //var_dump($links);
+            ?>
+            <?php $i = '0'; ?>
+			
+			
+            <?php foreach ($_Links as $key => $_link){ ?>
+            <?php $_last = ($_index++ >= $_count); ?>
+			<?php if($_link->getLabel() != '我的可下载商品') { ?>
+				<?php if($_link->getLabel() == '我的订单') { ?>
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="current<?php echo ($_last ? ' class="last"' : '') ?>"><strong><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></strong></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my orders ?>
+
+				<?php if($_link->getLabel() == '我的收藏') { ?>
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="current<?php echo ($_last ? ' class="last"' : '') ?>"><strong><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></strong></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my wishlist ?>
+				
+				<?php if($_link->getLabel() == '我邀请的好友') { ?>
+				<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong>分享有礼</strong></li>
+
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="<?php echo ($_last ? ' class="last"' : '') ?>"><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my friends ?>
+				
+						<?php if($_link->getLabel() == '我的积分') { ?>
+						
+					
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="current<?php echo ($_last ? ' class="last"' : '') ?>"><strong><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></strong></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my pointer ?>
+				
+				
+						<?php if($_link->getLabel() == '个人信息') { ?>
+							<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong>个人资料</strong></li>
+						
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="<?php echo ($_last ? ' class="last"' : '') ?>"><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my information ?>
+				
+				
+				
+						<?php if($_link->getLabel() == '收获地址') { ?>
+							
+						
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="<?php echo ($_last ? ' class="last"' : '') ?>"><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my adress ?>
+				
+				
+				
+					<?php if($_link->getLabel() == 'Forget Password') { ?>
+							
+						
+					<!-- for each item -->
+					<?php if ($this->isActive($_link)){ ?>
+						<li class="current<?php echo ($_last ? ' last' : '') ?>"><strong><?php echo $_link->getLabel() ?></strong></li>
+					<?php }else{ ?>
+						<li class="<?php echo ($_last ? ' class="last"' : '') ?>"><a href="<?php echo $_link->getUrl() ?>"><?php echo $_link->getLabel() ?></a></li>
+					<?php } ?>
+					<!-- end for each item -->
+				<?php }   //end my information ?>
+				
+			<?php } ?>
+			<?php $i++; ?>
+            <?php } ?>
+			
+			
+		
+			<li class="current"><a href="http://232.magentoecommerce.cn/sisley2/sisley-community.html"><strong>我的至臻坊社区</strong></a></li>
+			
+			
+        </ul>
+    </div>
+</div>

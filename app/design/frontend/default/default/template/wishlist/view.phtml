@@ -1,0 +1,393 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Wishlist_Block_Customer_Wishlist */
+?>
+
+<div class="my-wishlist">
+    <div class="page-title title-buttons">
+        <?php if ($this->helper('wishlist')->isRssAllow() && $this->hasWishlistItems()): ?>
+            <a href="<?php echo $this->helper('wishlist')->getRssUrl(); ?>" class="link-rss"><?php echo $this->__('RSS Feed') ?></a>
+        <?php endif; ?>
+        <h1><?php echo $this->__('My Wishlist') ?></h1>
+    </div>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php if ($this->hasWishlistItems()): ?>
+    <form action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
+        <fieldset>
+            <?php echo $this->getBlockHtml('formkey')?>
+            <table class="data-table" id="wishlist-table">
+            <col width="1" />
+            <col />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+                <thead>
+                    <tr>
+                        <th class="a-center"><?php echo $this->__('产品图片') ?></th>
+                        <th class="a-center"><?php echo $this->__('产品名称') ?></th>
+                        <!--<th class="a-center"><span class="nobr"><?php echo $this->__('Added On') ?></span></th>-->
+                        <th class="a-center"><span class="nobr"><?php echo $this->__('单价') ?></span></th>
+                        <th class="a-center"><span class="nobr"><?php echo $this->__('操作') ?></span></th>
+                        <!--<th>&nbsp;</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+				  <?php $i = 1; ?>
+                <?php foreach ($this->getWishlistItems() as $item): ?>
+				       <?php
+        if ($_GET['page']) {
+		$Limit = $_GET['page']*10;
+		}else{
+		$Limit = 10;
+        }
+        $Min = $Limit-9;
+        //echo $Limit;
+        //echo $Min;
+        if(($Min <= $i)&&( $i <= $Limit)) {
+        ?>
+                    <tr>
+                        <td>
+                            <a class="product-image" href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->htmlEscape($item->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($item, 'small_image')->resize(115, 120); ?>" width="115" height="120" alt="<?php echo $this->htmlEscape($item->getName()) ?>" /></a>
+                            <!--<h2 class="product-name"><a href="<?php echo $this->getProductUrl($item) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></h2>-->
+                            <?php //echo $this->getPriceHtml($item) ?>
+                        </td>
+                        <td>
+                            <textarea name="description[<?php echo $item->getWishlistItemId() ?>]" rows="3" cols="5" onfocus="focusComment(this)" onblur="focusComment(this)" title="<?php echo $this->__('Comment') ?>"><?php echo $this->hasDescription($item) ? $this->getEscapedDescription($item) : $this->helper('wishlist')->defaultCommentString() ?></textarea>
+                        <h2 class="product-name"><a href="<?php echo $this->getProductUrl($item) ?>"><?php echo $this->htmlEscape($item->getName()) ?></a></h2>
+                        </td>
+                        <td>
+                            <!--<span class="nobr"><?php echo $this->getFormatedDate($item->getAddedAt()) ?></span>-->
+                            <span class="nobr"><?php //echo $this->getPriceHtml($item) ?></span>
+				<!-- for product in whishlist -->
+				<?php
+				//show wishlist product info
+				$productModel = Mage::getModel('catalog/product');
+				$ProductSku = $item->getSku();
+				$_product = $productModel->loadByAttribute('sku',$ProductSku);
+				$ProductId = $_product->getId();
+				
+				$attributeSetModel = Mage::getModel("eav/entity_attribute_set");
+				$attributeSetModel->load($_product->getAttributeSetId());
+                		$attributeSetName  = $attributeSetModel->getAttributeSetName();
+				
+				if ($_product->getTypeId() == 'simple') {
+				?>
+			
+					<?php //if ($_product->getCapacity()) { ?>
+						<!--<div class="Cross-Sale-Simp-Capacity"><?php //echo $_product->getCapacity().'-' ?></div>-->
+					<?php //} ?>
+						<?php echo $this->getPriceHtml($item, true) ?>
+						
+				<?php
+				}
+				
+				if ($_product->getTypeId() == 'configurable') {
+					//for 彩妆系列
+					if ($attributeSetName == '彩妆系列') {
+					$PriceValueArr = array();
+						$_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product);
+						foreach($_attributes as $_attribute) {
+							//echo $_attribute->getAttributeId().'<br>';
+							if($_attribute->getAttributeId() == '80') {
+								$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+								$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+								$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+								$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'color'); //call
+								$allPoints = $attribute->getSource()->getAllOptions(true, true);
+								$link = mysql_connect('localhost', $username, $password);
+								if (!$link) {
+									die('Not connected : ' . mysql_error());
+								}//end if
+								$db_selected = mysql_select_db($dbname, $link);
+								if (!$db_selected) {
+									die ('Can\'t use foo : ' . mysql_error());
+								}else{
+									$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='80'",
+									mysql_real_escape_string($ProductId));
+									$result = mysql_query($query); 
+									if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+									}//end if 
+									while ($row = mysql_fetch_assoc($result)) {
+										$ProAttId = $row['product_super_attribute_id'];
+									}
+									$product_super_attribute_id = $ProAttId;
+					
+									foreach ($allPoints as $point) {
+										$pointlabel=$point['label'];
+										$pointid=$point['value']; 
+										if($pointlabel != NULL) {
+											$value_index = $point['value'];
+								
+											$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+											mysql_real_escape_string($product_super_attribute_id),
+											mysql_real_escape_string($value_index));
+											$result = mysql_query($query); 
+											if (!$result) {
+												$message = 'Invalid query: ' . mysql_error() . "\n";
+												$message .= 'Whole query: ' . $query;
+												die($message);
+											}//end if 
+											while ($row = mysql_fetch_assoc($result)) {
+												$PriceValueArr[] = $row['pricing_value'];
+											}
+										}
+									}
+								}
+								mysql_close($link);
+							}
+						}
+						$PriceValue = max($PriceValueArr);
+						$PriceValue = number_format($PriceValue, 2, '.', '');
+						//echo $PriceValue;
+					?>
+					<?php echo '￥'.$PriceValue; ?>
+					<?php	
+					}
+			
+					//for 香水系列
+					if ($attributeSetName == '香水系列') {
+					$_PriceValueArr = array();
+						$_attributes = $_product->getTypeInstance(true)->getConfigurableAttributes($_product);
+						foreach($_attributes as $_attribute) {
+							//echo $_attribute->getAttributeId();
+							if($_attribute->getAttributeId() == '145') {
+								$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+								$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+								$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+								$attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', 'rongliang'); //call
+								$allPoints = $attribute->getSource()->getAllOptions(true, true);
+								$link = mysql_connect('localhost', $username, $password);
+								if (!$link) {
+									die('Not connected : ' . mysql_error());
+								}//end if
+								$db_selected = mysql_select_db($dbname, $link);
+								if (!$db_selected) {
+									die ('Can\'t use foo : ' . mysql_error());
+								}else{
+									$query = sprintf("SELECT product_super_attribute_id FROM catalog_product_super_attribute WHERE product_id='%s' AND attribute_id='145'",
+									mysql_real_escape_string($ProductId));
+									$result = mysql_query($query); 
+									if (!$result) {
+										$message = 'Invalid query: ' . mysql_error() . "\n";
+										$message .= 'Whole query: ' . $query;
+										die($message);
+									}//end if 
+									while ($row = mysql_fetch_assoc($result)) {
+										$ProAttId = $row['product_super_attribute_id'];
+									}
+									$product_super_attribute_id = $ProAttId;
+					
+									foreach ($allPoints as $point) {
+										$pointlabel=$point['label'];
+										$pointid=$point['value']; 
+										if($pointlabel != NULL) {
+											$value_index = $point['value'];
+								
+											$query = sprintf("SELECT pricing_value FROM catalog_product_super_attribute_pricing WHERE product_super_attribute_id='%s' AND value_index='%s'",
+											mysql_real_escape_string($product_super_attribute_id),
+											mysql_real_escape_string($value_index));
+											$result = mysql_query($query); 
+											if (!$result) {
+												$message = 'Invalid query: ' . mysql_error() . "\n";
+												$message .= 'Whole query: ' . $query;
+												die($message);
+											}//end if 
+											while ($row = mysql_fetch_assoc($result)) {
+												$_PriceValueArr[$pointlabel] = $row['pricing_value'];
+											}
+										}
+									}
+								}
+								mysql_close($link);
+							}
+						}
+						$_PriceValue = min($_PriceValueArr);
+						$_PriceValue = number_format($_PriceValue, 2, '.', '');
+						foreach ($_PriceValueArr as $key => $value) {
+							if ($value == $_PriceValue) {
+								$showlabel = $key;
+							}
+						}
+						//echo $_PriceValue;
+					?>
+					<?php echo '￥'.$_PriceValue; ?>
+					<?php
+					}
+				}
+				?>
+				
+                        </td>
+                        <td class="a-center">
+						 <a href="<?php echo $this->getItemRemoveUrl($item) ?>" title="<?php echo $this->__('Remove Item') ?>" onclick="return confirmRemoveWishlistItem();" class="btn-remove2"><?php echo $this->__('删除')?></a>
+                        <?php if($item->isSaleable()): ?>
+                            <button type="button" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocation('<?php echo $this->getItemAddToCartUrl($item) ?>')" class="button btn-cart"><span><span><?php echo $this->__('立即购买') ?></span></span></button>
+                        <?php else: ?>
+                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                        <?php endif; ?>
+                       
+                        </td>
+                        <!--<td>
+                            <a href="<?php echo $this->getItemRemoveUrl($item) ?>" title="<?php echo $this->__('Remove Item') ?>" onclick="return confirmRemoveWishlistItem();" class="btn-remove2"><?php echo $this->__('Remove item')?></a>
+                        </td>-->
+                    </tr>
+					<?php } ?>
+					 <?php $i++; ?>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('wishlist-table')</script>
+            <div class="buttons-set">
+                <button type="submit" onclick="this.name='save_and_share'" title="<?php echo $this->__('Share Wishlist') ?>" class="button btn-share"><span><span><?php echo $this->__('Share Wishlist') ?></span></span></button>
+                <?php if($this->isSaleable()):?>
+                    <button type="button" title="<?php echo $this->__('Add All to Cart') ?>" onclick="setLocation('<?php echo $this->getUrl('*/*/allcart') ?>')" class="button btn-add"><span><span><?php echo $this->__('Add All to Cart') ?></span></span></button>
+                <?php endif;?>
+                <button type="submit" onclick="this.name='do'" title="<?php echo $this->__('Update Wishlist') ?>" class="button btn-update"><span><span><?php echo $this->__('Update Wishlist') ?></span></span></button>
+            </div>
+        </fieldset>
+    </form>
+<form action="" method="get" id="search_form">
+
+		<script type="text/javascript">
+        var Form = new VarienForm('search_form');
+            Form.submit = function(){
+                            this.form.submit();
+            }.bind(Form);
+            
+            function setHidden(date){
+            $('date').value = date;
+            //alert(type);
+            }    
+	    
+	    function Choose(time) {
+	    $('time').value = time;
+	    }
+	    
+	    function go(num) {
+	    $('page').value = num;
+	    //alert($('page').value);
+	    }
+        </script>
+
+<div class="order-toolbar">
+<?php //echo count($_orders); ?>
+<input type="hidden" name="page" value="<?php echo $_GET['page'] ?>" id="page"/>
+<?php
+$BaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+$CurrentUrl = $this->helper('core/url')->getCurrentUrl();
+//echo $CurrentUrl;
+$size = count($this->getWishlistItems());  //get the size of orders;
+$PageSize = 10;   //set items pepage;
+$TotalPage = ceil($size/$PageSize);   //pages total
+
+
+
+?>
+<!-- home button -->
+<?php if(($_GET['page'] != 1) && ($_GET['page'] != NULL)){ ?>
+<span id="1" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('首页') ?></span>
+<?php }else{ ?>
+<span class="history-home">首页</span>
+<?php } ?>
+
+<!-- Previous -->
+<?php
+if (($_GET['page'] != 1) && ($_GET['page'] != NULL)) {
+$PageNum1 = $_GET['page']-1;
+}else{
+$PageNum1 = 1;
+}
+if(($_GET['page'] != 1) && ($_GET['page'] != NULL)){
+?>
+<span id="<?php echo $PageNum1 ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 上一页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 上一页</span>
+<?php } ?>
+
+<!-- Next -->
+<?php
+if ($_GET['page']) {
+$PageNum2 = $_GET['page']+1;
+}else{
+$PageNum2 = 2;
+}
+if($_GET['page'] != $TotalPage){
+?>
+<span id="<?php echo $PageNum2 ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 下一页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 下一页</span>
+<?php } ?>
+
+<!-- Last -->
+<?php
+if($_GET['page'] != $TotalPage){
+?>
+<span id="<?php echo $TotalPage ?>" style="cursor: pointer;" onclick='go(this.id);Form.submit()'><?php echo $this->__('| 尾页') ?></span>
+<?php
+}else{
+?>
+<span class="next-page">| 尾页</span>
+<?php } ?>
+
+<!-- Total Page -->
+<span class="total-page">共<?php echo $TotalPage; ?>页</span>
+
+
+<!-- important -->
+<!--<br />
+magento calls pager limit when gets order history. i have disabled the limit in "code/core/mage/page/block/html/pager.php", if there is something wrong with the other pages, plese change it back in line 41.-->
+
+</div>
+</form>	
+	
+    <?php else: ?>
+        <p><?php echo $this->__('You have no items in your wishlist.') ?></p>
+    <?php endif ?>
+    <script type="text/javascript">
+    //<![CDATA[
+    function confirmRemoveWishlistItem() {
+        return confirm('<?php echo $this->__('Are you sure you want to remove this product from your wishlist?') ?>');
+    }
+
+    function focusComment(obj) {
+        if( obj.value == '<?php echo $this->__('Please enter your comments...') ?>' ) {
+            obj.value = '';
+        } else if( obj.value == '' ) {
+            obj.value = '<?php echo $this->__('Please enter your comments...') ?>';
+        }
+    }
+    //]]>
+    </script>
+</div>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+</div>

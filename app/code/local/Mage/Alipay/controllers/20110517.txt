@@ -1,0 +1,255 @@
+2011-05-17 10:11:13
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000212',
+    'trade_no' => '2011051720115937',
+    'buyer_email' => 'firefoxh@hotmail.com',
+    'gmt_create' => '2011-05-17 18:11:23',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000212',
+    'body' => '100000212',
+    'notify_time' => '2011-05-17 18:11:35',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:11:35',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002062675374',
+    'notify_id' => 'ebb55e7af9c66c4166b852014e571a5203',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '8c7b33fc5eee6aa8b30bbbb91881ea8a',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:11:19
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:13:45
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000213',
+    'trade_no' => '2011051784250913',
+    'buyer_email' => 'xiefei.wing@gmail.com',
+    'gmt_create' => '2011-05-17 18:13:11',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000213',
+    'body' => '100000213',
+    'notify_time' => '2011-05-17 18:14:08',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:14:08',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002540663130',
+    'notify_id' => '833b3852f8a8637805028eb4f2494e8301',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'b6810336bac5d48024a0a02d845ed8d2',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:13:54
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:16:26
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:16:29
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:16:39
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:17:42
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:20:16
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000214',
+    'trade_no' => '2011051784313913',
+    'buyer_email' => 'xiefei.wing@gmail.com',
+    'gmt_create' => '2011-05-17 18:19:44',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000214',
+    'body' => '100000214',
+    'notify_time' => '2011-05-17 18:20:38',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:20:38',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002540663130',
+    'notify_id' => '3ff1b947799d11e2dc88c9a07932b9a201',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '45687545285bd285882207b165e17898',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:20:24
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:23:37
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000214',
+    'trade_no' => '2011051784313913',
+    'buyer_email' => 'xiefei.wing@gmail.com',
+    'gmt_create' => '2011-05-17 18:19:44',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000214',
+    'body' => '100000214',
+    'notify_time' => '2011-05-17 18:24:00',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:20:38',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002540663130',
+    'notify_id' => '3ff1b947799d11e2dc88c9a07932b9a201',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'db17e258f640d90940ec1e571ae1aae8',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:33:37
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000214',
+    'trade_no' => '2011051784313913',
+    'buyer_email' => 'xiefei.wing@gmail.com',
+    'gmt_create' => '2011-05-17 18:19:44',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000214',
+    'body' => '100000214',
+    'notify_time' => '2011-05-17 18:34:00',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:20:38',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002540663130',
+    'notify_id' => '3ff1b947799d11e2dc88c9a07932b9a201',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => 'c190d123acb78d3370837caef9d0342f',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+
+2011-05-17 10:43:39
+array (
+  'function_name' => 'notifyAction',
+  'pending_paypal' => 
+  array (
+    'discount' => '0.00',
+    'payment_type' => '1',
+    'subject' => '100000214',
+    'trade_no' => '2011051784313913',
+    'buyer_email' => 'xiefei.wing@gmail.com',
+    'gmt_create' => '2011-05-17 18:19:44',
+    'notify_type' => 'trade_status_sync',
+    'quantity' => '1',
+    'out_trade_no' => '100000214',
+    'body' => '100000214',
+    'notify_time' => '2011-05-17 18:44:00',
+    'seller_id' => '2088601094332275',
+    'trade_status' => 'TRADE_SUCCESS',
+    'is_total_fee_adjust' => 'N',
+    'total_fee' => '0.01',
+    'gmt_payment' => '2011-05-17 18:20:38',
+    'seller_email' => 'btsm.ec@bertelsmann.com.cn',
+    'price' => '0.01',
+    'buyer_id' => '2088002540663130',
+    'notify_id' => '3ff1b947799d11e2dc88c9a07932b9a201',
+    'use_coupon' => 'N',
+    'sign_type' => 'MD5',
+    'sign' => '69c9de2495ce05aa21f989ca3544296c',
+  ),
+  'msg' => 'Payment accepted by Alipay',
+)
+

@@ -1,0 +1,132 @@
+<script type="text/javascript">
+//<![CDATA[
+    var payment = new Payment('co-payment-form', '<?php echo $this->getUrl('checkout/onepage/savePayment') ?>');
+//]]>
+</script>
+<form action="" id="co-payment-form">
+    <fieldset>
+        <?php echo $this->getChildHtml('methods') ?>
+    <input type='hidden' name='deliveryTime' id="deliveryTime"/>
+     <input type='hidden' name='fapiao' id="fabiao"/>        
+    </fieldset>
+	<div class="pay-tip"> 
+	<br />
+	<br />
+	<?php echo $this->__('友情提示：') ?><br />
+	<p></p>
+	<?php echo $this->__('支付后请提留6~7秒，请勿直接关闭您的浏览器，以避免掉单。') ?><br /> 
+	<p></p>
+	<?php echo $this->__('我们将不会记录您的支付信息。') ?>
+	
+	</div>
+</form>
+
+
+<div class="tool-tip" id="payment-tool-tip" style="display:none;">
+    <div class="btn-close"><a href="#" id="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>"><?php echo $this->__('Close') ?></a></div>
+    <div class="tool-tip-content"><img src="<?php echo $this->getSkinUrl('images/cvv.gif') ?>" alt="<?php echo $this->__('Card Verification Number Visual Reference') ?>" title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+</div>
+
+<div class="fabiao">
+           <div><strong>您需要开具发票吗？</strong></div>
+           <ul>
+	       <li><input type="radio" id='yesfabiao' value="yesfabiao" name="fabiao" onclick="jQuery('#fapiaotitle').removeAttr('disabled'); jQuery('#fapiaocat').removeAttr('disabled'); jQuery('#abc').css('display','block'); "/>
+		     <label for="yesfabiao">是</label>
+	       </li>
+	       <li><input type="radio" id='nofabiao' value="nofabiao" name="fabiao"  checked onclick="jQuery('#fapiaotitle').attr('disabled','disabled'); jQuery('#fapiaocat').attr('disabled','disabled');jQuery('#abc').css('display','none');  "/>
+		     <label for="nofabiao">否</label>
+	       </li>      
+           </ul>
+           	<script>
+						<!--   start   hiding
+						function   verifyTitle()
+						{
+						var   num   =   document.getElementById('fapiaotitle').value;
+						　　   var   pattern   = /^(\w|[\u4e00-\u9fa5])*[a-z]|[\u4e00-\u9fa5](\w|[\u4e00-\u9fa5])*$/i;
+						　　   flag   =   pattern.test(num);
+						　　   if(flag)
+						　　   {
+						　document.getElementById('fapiaotitle').style.border   =  "1px solid #B6B6B6";
+						　　   }
+						　　   else
+						　　   {
+								document.getElementById('fapiaotitle').style.border   =   "2px solid red";
+								alert("不允许输入纯数字");
+								document.getElementById('fapiaotitle').value='';
+						　　　   //alert( "请输入1-6位整数! ");
+						　　   }
+						}
+						//   stop   hiding   -->
+						</script> 
+		   
+		   
+           <div class="clearer"></div>
+      <div id="abc" style="display:none;">
+           <label for="fapiaotitle">发票抬头(限30字)：</label><br /><input onChange= "verifyTitle()"type="text" maxlength="30" id='fapiaotitle' name="fapiaotitle" class="input-text" style="width:250px;" disabled /><br />
+           <label for="fapiaocat">发票内容：</label><br />
+	   <select name="fapiaocat" class="input-text" id="fapiaocat" disabled>
+	     <option value="化妆品">化妆品</option>
+	   
+	   </select>   
+
+	</div>	   
+    </div>
+<div class="clearer"></div>
+
+
+<div class="buttons-set" id="payment-buttons-container">
+    <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <p class="back-link"><a href="#" onclick="checkout.back(); return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+    <button type="button" class="button" onclick="updateDT(); if (!updateFP()) return false; payment.save()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+    <span class="please-wait" id="payment-please-wait" style="display:none;">
+        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
+    </span>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    function toggleToolTip(event){
+        if($('payment-tool-tip')){
+            $('payment-tool-tip').setStyle({
+                top: (Event.pointerY(event)-560)+'px'//,
+                //left: (Event.pointerX(event)+100)+'px'
+            })
+            $('payment-tool-tip').toggle();
+        }
+        Event.stop(event);
+    }
+    if($('payment-tool-tip-close')){
+        Event.observe($('payment-tool-tip-close'), 'click', toggleToolTip);
+    }
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+    payment.currentMethod = "<?php echo $this->getChild('methods')->getSelectedMethodCode() ?>";
+    function updateDT(){
+           if (!$('deliveryTime').value){$('deliveryTime').value = 'all';}
+    }
+    
+    function updateFP(){
+           if ($('yesfabiao').checked){
+           
+                 var fapiaotitle = $('fapiaotitle').value;
+                 if ( !fapiaotitle || fapiaotitle == ''){
+                     alert('请填写发票抬头');
+                     return false;
+                 }
+                 
+                 var fapiaocat = $('fapiaocat').value;
+                 if (!fapiaocat || fapiaocat == ''){
+                     alert('请填写发票内容');
+                     return false;
+                 }
+                 
+                $('fabiao').value = $('fapiaotitle').value + '^^^' + $('fapiaocat').value;
+
+           }
+           return true;
+    }    
+    
+    
+//]]>
+</script>

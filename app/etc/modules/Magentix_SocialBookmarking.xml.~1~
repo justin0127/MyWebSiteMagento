@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Magentix_SocialBookmarking>
+            <active>false</active>
+            <codePool>local</codePool>
+        </Magentix_SocialBookmarking>
+    </modules>
+</config> 

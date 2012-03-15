@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <socialbookmarking_adminhtml_bookmarks_index>
+		<reference name="head">
+			<action method="addCss"><name>bookmarks.css</name></action>
+		</reference>
+        <reference name="content">
+            <block type="socialbookmarking/adminhtml_bookmarks" name="bookmarks" />
+        </reference>
+    </socialbookmarking_adminhtml_bookmarks_index>
+	
+	<socialbookmarking_adminhtml_bookmarks_edit>
+		<reference name="head">
+			<action method="addCss"><name>bookmarks.css</name></action>
+		</reference>
+	</socialbookmarking_adminhtml_bookmarks_edit>
+</layout>

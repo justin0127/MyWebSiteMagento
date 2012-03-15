@@ -1,0 +1,215 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php $this->getCustomer()->setChangePassword(1) ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getUrl('customer/account/editPost') ?>" method="post" id="form-validate">
+    <div class="fieldset" style="display:block;">
+        <?php echo $this->getBlockHtml('formkey')?>
+        <!--<h2 class="legend"><?php echo $this->__('Account Information') ?></h2>-->
+        <ul class="form-list">
+            <li class="fields" style="display:none;">
+                <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getCustomer())->toHtml() ?>
+					<!-- Need Js to SubString Xingming -->
+					
+				<div class="customer-name-suffix">
+				<!--<label for="fullname" class="required"><em>*</em><?php echo $this->__('姓名') ?></label>-->
+				<div class="input-box">
+				<input type="hidden" name="fullname" id="fullname" value="<?php echo $this->htmlEscape($this->getCustomer()->getFirstname().$this->getCustomer()->getLastname()) ?>" title="" class="input-text" />
+				</div>
+				</div>
+			
+				
+            </li>
+			
+			<li class="fields" style="display:none;">
+			<label for="alias" class="required"><em></em><?php echo $this->__('昵称') ?></label>
+                <div class="input-box">
+                    <input type="hidden" name="alias" id="alias" value="<?php echo $this->htmlEscape($this->getCustomer()->getAlias()) ?>" title="<?php echo $this->__('昵称') ?>" maxlength="20" class="input-text" />
+                </div>
+			</li>
+			
+            <li style="display:none;">
+                <label for="email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                <div class="input-box">
+                    <input type="text" name="email" id="email" value="<?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text " />
+                </div>
+            </li>
+			<li style="display:none;">
+				<label for="menage" class="required"><em></em><?php echo $this->__('年龄') ?></label>
+                <div class="input-box">
+				<input type="text" name="menage" id="menage" value="<?php echo $this->htmlEscape($this->getCustomer()->getMenage()) ?>" title="<?php echo $this->__('年龄') ?>" class="input-text "  />
+				
+				</div>
+
+			</li>
+	    <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob2') ?>
+            <li><?php echo $_dob->setDate($this->getCustomer()->getDob())->toHtml() ?></li>
+        <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+        <?php if ($_taxvat->isEnabled()): ?>
+            <li><?php echo $_taxvat->setTaxvat($this->getCustomer()->getTaxvat())->toHtml() ?></li>
+        <?php endif ?>
+        <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+        <?php if ($_gender->isEnabled()): ?>
+            <li><?php echo $_gender->setGender($this->getCustomer()->getGender())->toHtml() ?></li>
+        <?php endif ?>
+			
+				<script>
+						<!--   start   hiding
+						function   verifyMNumber()
+						{
+						var   num   =   document.getElementById('mobile').value;
+						　　   var   pattern   =   /^\d{1,11}$/;
+						　　   flag   =   pattern.test(num);
+						　　   if(flag)
+						　　   {
+						　		document.getElementById('mobile').style.border   =  "1px solid #B6B6B6";
+						　　   }
+						　　   else
+						　　   {
+								document.getElementById('mobile').style.border   =   "2px solid red";
+								alert("请输入正确格式的手机号！");
+								document.getElementById('mobile').value='';
+								
+						　　　   //alert( "请输入1-6位整数! ");
+						　　   }
+						}
+						//   stop   hiding   -->
+						</script> 
+			
+			
+			<li style="display:none;">
+		<label for="mobile" class="required"><em></em><?php echo $this->__('手机号码') ?></label>
+                <div class="input-box">
+				<input type="text" maxlength="11" name="mobile" id="mobile" value="<?php echo $this->htmlEscape($this->getCustomer()->getMobile()) ?>" title="<?php echo $this->__('mobile') ?>" onChange= "verifyMNumber()" class="input-text " />
+				
+				</div>
+		</li>
+		
+		
+		
+		
+			
+		
+		
+		
+            <li class="control" style="display:none;">
+                <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="<?php echo $this->__('Change Password') ?>"<?php if($this->getCustomer()->getChangePassword()==1): ?> checked="checked"<?php endif; ?> class="checkbox" /><label for="change_password"><?php echo $this->__('Change Password') ?></label>
+            </li>
+			
+
+        </ul>
+    </div>
+    <div class="fieldset" style="display:none;">
+		<div class="passedit-tit">
+        <span><?php echo $this->__('密码修改') ?></span></div>
+        <ul class="form-list">
+            <li>
+                <label for="current_password" class="required"><em>*</em><?php echo $this->__('Current Password') ?></label>
+                <div class="input-box">
+                    <input type="password" title="<?php echo $this->__('Current Password') ?>" class="input-text" name="current_password" id="current_password" />
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="password" class="required"><em>*</em><?php echo $this->__('New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('New Password') ?>" class="input-text validate-password" name="password" id="password" />
+                    </div>
+                </div>
+               
+            </li>
+			 <li class="fields">
+			  <div class="field">
+                    <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirm New Password') ?></label>
+                    <div class="input-box">
+                        <input type="password" title="<?php echo $this->__('Confirm New Password') ?>" class="input-text validate-cpassword" name="confirmation" id="confirmation" />
+                    </div>
+                </div>
+			 </li>
+			
+			
+			
+        </ul>
+		
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/md5.js') ?>"></script>
+
+<script type="text/javascript">
+
+ jQuery("#current_password").change(
+ function(){
+ var currentHash="<?php echo $this->getCustomer()->getPasswordHash(); ?>";
+ var currenHashLength=currentHash.length;
+ var realCH=currentHash.substring(currenHashLength-2,currenHashLength);
+ 
+
+ var aString=jQuery("#current_password").val();
+ var md5string=jQuery.md5(realCH+aString)+":"+realCH;
+ //var subnew=md5string.substring(0,2);
+ //alert(md5string);
+ if(currentHash!=md5string){
+ alert("您输入的原始密码有误，请重新输入！")
+ jQuery("#current_password").val("");
+ jQuery("#current_password").focus();
+ }
+ 
+ }
+ 
+ )
+</script>
+		
+    </div>
+    <div class="buttons-set PassEditBtn">
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+        <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+        <button type="submit" title="<?php echo $this->__('Save') ?>" class="button"><span><span><?php echo $this->__('确认') ?></span></span></button>
+    </div>
+	<?php //var_dump($this->getCustomer()); ?>
+	
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    function setPasswordForm(arg){
+        if(arg){
+            $('current_password').up(3).show();
+            $('current_password').addClassName('required-entry');
+            $('password').addClassName('required-entry');
+            $('confirmation').addClassName('required-entry');
+
+        }else{
+            $('current_password').up(3).hide();
+            $('current_password').removeClassName('required-entry');
+            $('password').removeClassName('required-entry');
+            $('confirmation').removeClassName('required-entry');
+        }
+    }
+    <?php if($this->getCustomer()->getChangePassword()): ?>
+        setPasswordForm(true);
+    <?php endif; ?>
+//]]>
+</script>

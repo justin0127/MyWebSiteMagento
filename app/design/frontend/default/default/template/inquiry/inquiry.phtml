@@ -1,0 +1,187 @@
+<style>
+.validation-advice{display:block;}
+</style>
+<div class="breadcrumbs">
+    <ul>
+                            <li class="home">
+                            <a href="<?php echo $this->getUrl(''); ?>" title="转到希思黎网上商城首页">希思黎网上商城首页</a>
+                                        <span><img src="<?php echo $this->getSkinUrl('images/petite_fleche.gif'); ?>"> </span>
+                        </li>
+                            <li class="category13">
+                            <strong>Sisley E-commerce 用户购物满意度调查</strong>
+                                    </li>
+            </ul>
+</div>
+<?php
+
+
+
+	$customer = $this->getRequest()->getParam("email");
+	$id = $this->getRequest()->getParam("id");
+if(!$id || !$customer){
+Mage::app()->getFrontController()
+           ->getResponse()
+           ->setRedirect('http://www.sisley.com.cn');
+}
+	
+	
+if(Mage::getSingleton('customer/session')->IsLoggedIn() || 1){
+	//$customer=Mage::getSingleton('customer/session')->getCustomer()->getEmail();
+	$customername=Mage::getSingleton('customer/session')->getCustomer()->getName();
+
+?>
+<h1 style="font-weight: bold;text-align: center;">Sisley E-commerce 用户购物满意度调查</h1>
+<form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post">
+			<div class="question-all">
+
+   <!--h1>希思黎官方网上商城隆重开幕</h1>
+   <h1>注册抽奖问卷调研</h1-->
+   <!--img src="image/sisleytitle.png" style="margin-left:38px"><br-->
+   <div class="dear">亲爱的希思黎尊贵会员：</div>
+   <div class="dear-conta">
+  
+   您好！<br>
+   感谢您购买希思黎产品，为了能够更好的服务于您，希望您能抽出宝贵的几分钟完成此份调查问卷，感谢您的参与。 <br>
+   <!--img src="image/libao.png"><br-->
+	
+   </div>
+   
+
+            
+   <div class="question-question">
+   		<div class="question1">
+         <div class="question1-tit">
+          <b>1、请问当您在Sisley网站搜索产品时，是否能够非常便捷地找到相关产品？</b>
+         </div>
+         <div class="question1-radion">
+             <input type="radio" name="fname" value="A" id="fname" class="radio1 validate-one-required" ><span>是</span>
+             <input type="radio" name="fname" value="B" id="fname" class="radio1  validate-one-required" ><span>否</span>
+         </div>
+        </div>
+   		<div class="question2">
+         <div class="question2-tit">
+          <b>2、您对sisley网站购物流程有什么建议或意见？</b>
+         </div>
+         <div class="question2-radion">
+			建议或意见：			
+			<textarea type="text" maxlength='200'  id="lname"  name="lname" class="radio2 input-text required-entry validate-200chars"  style="width:520px;height:32px;" ></textarea>
+			<div style="margin-left:80px;">最多输入200个字符</div>
+			<div class="validation-advice" id="advice-required-entry-lname" style="display:none;">请输入建议或意见信息。</div>
+         </div>
+        </div>        
+   		<div class="question3">
+         <div class="question3-tit">
+          <b>3、您是否关注Sisley网站的最新活动？</b>
+         </div>
+         <div class="question3-radion">
+             <input type="radio" name="company" value="A" onclick="PQ3()" class="radio3 validate-one-required" ><span>是</span>
+             <input type="radio" name="company" value="B" onclick="PQ3()" class="radio3 validate-one-required" ><span>否</span>
+         </div>
+        </div>    
+   		<div class="question4">
+         <div class="question4-tit">
+          <b>4、您选择在sisley网上商城订购产品的原因是？</b>
+         </div>
+         <div class="question4-radion" style="float:left;">
+             <input type="radio" name="address" value="A" onclick="$('address').removeClassName('required-entry')"  class="radio4 validate-one-required" ><span>比较方便</span>
+             <input type="radio" name="address" value="B" onclick="$('address').removeClassName('required-entry')"  class="radio4 validate-one-required" ><span>优惠活动</span>
+             <input type="radio" name="address" value="C" onclick="$('address').removeClassName('required-entry')"  class="radio4 validate-one-required" ><span>习惯网购</span>
+             <input type="radio" name="address" value="D" onclick="$('address').removeClassName('required-entry')"  class="radio4 validate-one-required" ><span>所在地区没有门店</span>
+			 <br /> <br />
+			 <input id="question4E" type="radio" name="address" value="E" onclick="$('address').addClassName('required-entry')" class="radio4 " ><span>其他原因：</span>
+				<textarea maxlength='200' type="text"  id="address2"  name="address2" class="radio4 input-text validate-200chars"  style="width:520px;height:32px;" ></textarea>
+				<div style="margin-left:80px;">最多输入200个字符</div>
+				<div class="validation-advice" id="advice-required-entry-address" style="display:none;">请输入建议或意见信息。</div>
+
+         </div>
+			 <div style="clear:both;"></div>
+        </div> 
+        <div class="question5">
+        <div class="question5-tit">
+          <b>5、您目前最关注的肌肤护肤需求是？（可多选）</b>
+         </div>
+          <div class="question5-check">
+        	<input type="checkbox" name="city[]" value="A" onclick="PQ5" class="validate-one-required"><span>保湿</span>
+            <input type="checkbox" name="city[]" value="B" onclick="PQ5" class="validate-one-required"><span>滋养</span>
+            <input type="checkbox" name="city[]" value="C" onclick="PQ5" class="validate-one-required"><span>淡斑 </span>
+            <input type="checkbox" name="city[]" value="D" onclick="PQ5" class="validate-one-required"><span>美白</span>
+            <input type="checkbox" name="city[]" value="E" onclick="PQ5" class="validate-one-required"><span>亮肌</span>
+            <input type="checkbox" name="city[]" value="F" onclick="PQ5" class="validate-one-required"><span>紧肤</span>
+            <input type="checkbox" name="city[]" value="G" onclick="PQ5" class="validate-one-required"><span>抗皱</span>    
+			<input type="checkbox" name="city[]" value="H" onclick="PQ5" class="validate-one-required"><span>控油</span>         
+ 			<input type="checkbox" name="city[]" value="I" onclick="PQ5" class="validate-one-required"><span>防敏</span>   
+           </div>
+       </div>
+		<div class="question6">
+         <div class="question6-tit">
+          <b>6、您对我们提供的物流和配送服务还满意吗？您有什么建议或意见？</b>
+         </div>
+         <div class="question6-radion" >
+             <input type="radio" name="state_id" value="A" onclick="PQ6()" class="radio6 validate-one-required" ><span>满意</span>
+             <input type="radio" name="state_id" value="B" onclick="PQ6()" class="radio6 validate-one-required" ><span>一般</span>
+             <input type="radio" name="state_id" value="C" onclick="PQ6()" class="radio6 validate-one-required" ><span>不满意</span>
+             <input type="radio" name="state_id" value="D" onclick="PQ6()" class="radio6 validate-one-required" ><span>非常不满意</span>
+         </div>
+		 <div ><br />
+				建议或意见：
+				<textarea maxlength='200' type="text"  id="zip"  name="zip" class="radio2 input-text validate-200chars"  style="width:520px;height:32px;" ></textarea>
+				<div style="margin-left:80px;">最多输入200个字符</div>
+             </div>
+        </div> 
+		<div class="question7">
+         <div class="question7-tit">
+          <b>7、请问您对我们的外包装、包装礼盒和赠品体验装是否满意？ 您有什么建议或意见？</b><br>
+         </div>
+         <div class="question7-radion">
+             <input type="radio" name="phone" value="A" onclick="PQ7()" class="radio7 validate-one-required" ><span>非常满意</span>
+             <input type="radio" name="phone" value="B" onclick="PQ7()" class="radio7 validate-one-required" ><span>比较满意</span>
+             <input type="radio" name="phone" value="C" onclick="PQ7()" class="radio7 validate-one-required" ><span>不满意</span>
+             <input type="radio" name="phone" value="D" onclick="PQ7()" class="radio7 validate-one-required" ><span>非常不满意</span>
+         </div>
+		 <div><br />
+				建议或意见：
+				<textarea maxlength='200' type="text"  id="email"  name="email" class="radio2 input-text validate-200chars"  style="width:520px;height:32px;" ></textarea>
+				<div style="margin-left:80px;">最多输入200个字符</div>
+         </div>
+        </div> 
+
+
+
+		
+		<div class="dear-conta">
+		<br>
+		<?php
+		
+	?>
+					
+					<input type="hidden" name="website" size="45" class="input-text" value="<?php echo $id ?>" /> 
+					<input type="hidden" name="bdesc" size="45" class="input-text" value="<?php echo $customer ?>" /> 
+
+		<button type="submit" value="提  交" s="3" id="btnsubmit" class="wenjuanquest" title="提  交" style="width:68px;height:22px;float:none;display:block;padding:0;margin:0;cursor:pointer;color:#fff;">提  交</button>
+		
+		<br>温馨提示：<br>
+		本活动最终解释权归希思黎（上海）化妆品商贸有限公司<br>
+		<img src="<?php echo $this->getSkinUrl('images/sisleylog.png'); ?>"><br>
+		希思黎官方网站暨网上商城<br>
+<a href="http://www.sisley.com.cn">www.sisley.com.cn</a><br>
+400-820-8139<br>
+		</div>
+		
+
+</div></form>
+	 
+	<!-- 问卷结束 -->
+
+<script type="text/javascript">
+//< ![CDATA[
+var customForm = new VarienForm('dealerInquiry',true);
+
+//]]>
+</script>
+
+<?php
+}else{
+	echo "请先登录后填写表单<br />";
+
+}
+?>

@@ -1,0 +1,1083 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>">
+<head>
+<?php echo $this->getChildHtml('head') ?>
+
+</head>
+<body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>>
+<?php echo $this->getChildHtml('after_body_start') ?>
+<div class="wrapper">
+    <?php echo $this->getChildHtml('global_notices') ?>
+    <div class="page">
+        <?php echo $this->getChildHtml('header') ?>
+        <div class="main-container col2-right-layout">
+            <div class="main">
+                <?php echo $this->getChildHtml('breadcrumbs') ?>
+                <div class="col-main">
+                    <?php echo $this->getChildHtml('global_messages') ?>
+                    <?php //echo $this->getChildHtml('content') ?>
+
+					<!-- slider -->
+					<?php //echo $this->getSkinUrl('js/glider.js') ?>
+					<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/glider.js') ?>"></script>
+					<div class="home-slider">
+					<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('home-slider')->toHtml(); ?>
+
+
+					</div>
+
+
+					<script type="text/javascript">// <![CDATA[
+						var my_glider = new Glider('slider', {duration:0.5, autoGlide: true, frequency: 4, initialSection: 'section1'});
+					// ]]></script>
+
+					<!-- slider end-->
+
+                    <!-- LIMITED BUY -->
+                    <div class="limited-buy">
+                          <div class="title"><h2>限时抢购</h2></div>
+
+                          <?php
+                          $LimitedCategory = Mage::getModel('catalog/category')->loadByAttribute('name', '限时秒杀');
+                          $L_catId = $LimitedCategory->getId();
+                          /*$AllCategories = Mage::getModel('catalog/category')->getTreeModel()->load()->getCollection();
+                          foreach ($AllCategories as $Category) {
+                            if ($Category->getName()  == '限时秒杀') {
+                            $L_catId = $Category->getId();
+                            }
+                          }*/
+
+                    $special_product = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load($L_catId),true)
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(8)
+			->setCurPage(1)
+			->load();
+		    Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($special_product);
+                    Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($special_product);
+		    ?>
+                        <?php if($special_product->count()): ?>
+<SCRIPT type="text/javascript">
+<!--
+var target=[]
+var time_id=[]
+function show_date_time_0(){
+    setTimeout("show_date_time_0()", 1000);
+for (var i=0,j=target.length;i<j;i++){
+    today=new Date();
+    timeold=target[i]-today.getTime();
+    sectimeold=timeold/1000;
+    secondsold=Math.floor(sectimeold);
+    msPerDay=24*60*60*1000;
+    e_daysold=timeold/msPerDay;
+    daysold=Math.floor(e_daysold);
+    e_hrsold=(e_daysold-daysold)*24;
+    hrsold=Math.floor(e_hrsold);
+    e_minsold=(e_hrsold-hrsold)*60;
+    minsold=Math.floor((e_hrsold-hrsold)*60);
+    seconds=Math.floor((e_minsold-minsold)*60);
+    if (daysold<0) {
+        document.getElementById(time_id[i]).innerHTML="逾期,倒计时已经失效";
+      //  alert(i);
+        document.getElementById('countdown-product-' + i ).style.display = "none";
+    }
+    else {
+        if (daysold<10) {daysold="0"+daysold}
+        if (daysold<100) {daysold="0"+daysold}
+        if (hrsold<10) {hrsold="0"+hrsold}
+        if (minsold<10) {minsold="0"+minsold}
+        if (seconds<10) {seconds="0"+seconds}
+        if (daysold<3) {
+            document.getElementById(time_id[i]).innerHTML="<font color=red><span class='day'>"+daysold+"</span>"+"天"+"<span class='hou'>"+hrsold+"</span>"+"小时"+"<span class='min'>"+minsold+"</span>"+"分"+"<span class='sec'>"+seconds+"</span>秒</font>";
+        }
+        else {
+            document.getElementById(time_id[i]).innerHTML="<span class='day'>"+daysold+"</span>"+"天"+"<span class='hou'>"+hrsold+"</span>"+"小时"+"<span class='min'>"+minsold+"</span>"+"分"+"<span class='sec'>"+seconds+"</span>"+"秒";
+        }
+    }
+}
+}
+setTimeout("show_date_time_0()", 100);
+//-->
+</SCRIPT>
+
+    <?php $i=0; foreach ($special_product as $_product): ?>
+       <?php if ($i++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+<?php
+$Arr = $_product->getCategoryIds();
+
+	//var_dump ($_product->getCategoryIds());
+
+
+$to_time = $_product['special_to_date'];
+//var_dump($to_time);
+$to_yea = substr($to_time,0,4);  //2010
+$to_mon = substr($to_time,5,2);  //12
+//var_dump(sprintf ("%02.0f", $to_mon-1));
+$to_day = substr($to_time,8,2);  //15
+$to_hou = substr($to_time,11,2);  //00
+$to_min = substr($to_time,14,2);  //00
+$to_sec = substr($to_time,17,2);  //00
+if ($to_mon == '01') {
+$to_yea = $to_yea-1;
+$to_mon = '12';
+$to_date = $to_yea.','.$to_mon.','.$to_day.','.$to_hou.','.$to_min.','.$to_sec;
+}else{
+$to_mon = sprintf ("%02.0f",$to_mon-1);
+$to_date = $to_yea.','.$to_mon.','.$to_day.','.$to_hou.','.$to_min.','.$to_sec;
+}
+//var_dump($to_date);
+$to = str_replace("-","",$to_time);
+$to = str_replace(":","",$to);
+$to = str_replace(" ","",$to);
+//var_dump($to);
+$showtime = date("Y-m-d H:i:s");
+$now = str_replace("-","",$showtime);
+$now = str_replace(":","",$now);
+$now = str_replace(" ","",$now);
+//var_dump($now);
+if ($to > $now) {
+?>
+            <li  id="countdown-product-<?php echo $i-1;  ?>" class="item<?php if(($i-1)%4 == 0): ?> first<?php elseif($i%4 == 0): ?> last<?php endif; ?>">
+            		                 <div class="products-col-1">
+<div id="TimeCounter_<?php echo $i ?>"></div>
+<SCRIPT>
+//target[target.length]=new Date(年,月-1,日,时,分,秒).getTime()
+target[target.length]=new Date(<?php echo $to_date ?>).getTime();
+//target[target.length]=new Date(2010,11,11,00,00,00).getTime();
+//设定倒计时显示地址(数组元素)
+time_id[time_id.length]="TimeCounter_"+<?php echo $i ?>
+</SCRIPT>
+		                 </div>
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+                <div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>
+            </li>
+<?php } ?>
+        <?php if ($i%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+                            <?php endif; ?>
+
+
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>countdown-deal-1.html">
+					更多限时抢购...</a>
+                    </div>
+                    <!-- END LIMITED BUY -->
+
+                    <!-- HOT CATEGORY -->
+                    <div class="hot-category">
+
+					 <ul class="home-block">
+                           <div class="title"><h2>热门分类</h2></div>
+                           <?php
+                           $obj = new Mage_Catalog_Block_Navigation();
+                           $store_cats = $obj->getStoreCategories();
+                           $current_cat = $obj->getCurrentCategory();
+                           ?>
+                           <?php $i=1;  foreach ($store_cats as $cat) { ?>
+                           <div class="category-list list-<?php echo $i++; ?>">
+                           <?php
+                           $catId = $cat['entity_id'];
+                           $catUrl = Mage::getModel('catalog/category')->load($catId)->getUrl();
+                           $allCategories = Mage::getModel('catalog/category');
+                           $CategoriesTree = $allCategories->getTreeModel()->load();
+                           $categoriesIds = $CategoriesTree->getCollection()->getAllIds();
+
+                           $categoryChild = array();
+                           $parentcat = Mage::getModel('catalog/category')->load($catId);
+                           if ($parentcat['hot_category'] == '21') {
+                           ?>
+                           <li class="level-0"><?php echo '<a href="'.$catUrl .'">'.$cat->getName()."</a>"; ?></li>
+                           <?php
+                             if ($categoriesIds) {
+                             $childArr = array();
+                             foreach ($categoriesIds as $categoryId){
+                               $category = Mage::getModel('catalog/category')->load($categoryId);
+                                 if ($category->parent_id == $catId) {
+                                 $categoryChild[] = $category;
+                                   if ($category['hot_category'] == '21') { //if item is hot category
+                                   $child_catId = $category['entity_id'];
+
+								   //var_dump($categoryId);
+
+                                   $child_catName = $category->getName();
+                                   $child_catUrl = Mage::getModel('catalog/category')->load($child_catId)->getUrl();
+                                   $_child['name'] = $child_catName;
+                                   $_child['url'] = $child_catUrl;
+                                   $childArr[] = $_child;
+                                   }
+                                   }
+                             }
+                             $max = sizeof($childArr);
+                             $k = 0 ;
+                             foreach ($childArr as $key => $value) {
+                             $k++;
+                           ?>
+                           <li class="level-1 <?php if ($k == 1) {echo 'first';} if ($k == $max) {echo 'last';} ?>"><?php echo '<a href="'.$value['url'] .'">'.$value['name']."</a>"; ?></li>
+                           <?php
+                           }
+                             }
+                           }
+                           ?>
+                           </div>
+                           <?php } ?>
+					</ul>
+
+                    </div>
+                    <!-- END HOT CATEGORY -->
+
+					<!--NEW ARRIVAl-->
+					<div class="new-arrival">
+					<div class="title"><h2>新品到货</h2></div>
+
+					<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-new.jpg') ?>">
+
+
+					<div class="home-cat-content">
+
+
+					<?php
+$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load(46),true)
+
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(4)
+			->setCurPage(1)
+			->load();
+
+
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+?>
+
+    <?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+       <?php if ($k++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+
+            <li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+				<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>
+            </li>
+
+        <?php if ($k%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>new-arrivals.html">
+					更多新品到货...</a>
+					</div>
+                    </div>
+					<!--NEW ARRIVAL END-->
+
+					<!--CATALOG CLOTHING-->
+					<div class="clothing">
+					<div class="title"><h2>服饰</h2></div>
+					<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-clo.jpg') ?>">
+
+					<div class="home-cat-content">
+
+
+
+					<?php
+$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load(4),true)
+
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(4)
+			->setCurPage(1)
+			->load();
+
+
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+?>
+
+    <?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+       <?php if ($k++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+
+            <li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+				
+				
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+            </li>
+
+        <?php if ($k%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>clothing.html">
+					更多...</a>
+					</div>
+                    </div>
+					<!--CATALOG CLOTHING END-->
+
+					<!--CATALOG ELECTRONIC-->
+					<div class="electronic">
+					<div class="title"><h2>电子产品</h2></div>
+
+					<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-ele.jpg') ?>">
+					<div class="home-cat-content">
+
+
+
+					<?php
+$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load(13),true)
+
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(8)
+			->setCurPage(1)
+			->load();
+
+
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+?>
+
+    <?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+       <?php if ($k++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+
+            <li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+           	$_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+           	$_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+           	$_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+           	$_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+           	?>
+           	<div class="price-box">
+           	<p class="price-from">
+           	<span class="price-label">价格区间:</span>
+                <span class="price">
+           	<?php
+		echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+		echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                	if ($Product->getId() == $_product->getId()) {
+                	 $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                	}
+                }
+           	?>
+           	<div class="price-box">
+           	<p class="minimal-price">
+           	<span class="price-label">起价：</span>
+           	<span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+           	<?php echo $_showPrice; ?>
+           	</span>
+           	</p>
+                </div>
+                <?php } ?>
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+            </li>
+
+        <?php if ($k%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>electronics.html">
+					更多...</a>
+					</div>
+                    </div>
+					<!--CATALOG ELECTRONIC END-->
+
+
+					<!--CATALOG JEWELLERY-->
+					<div class="electronic">
+					<div class="title"><h2>珠宝首饰</h2></div>
+					<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-jew.jpg') ?>">
+
+					<div class="home-cat-content">
+
+
+
+					<?php
+$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load(19),true)
+
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(4)
+			->setCurPage(1)
+			->load();
+
+
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+?>
+
+    <?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+       <?php if ($k++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+
+            <li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+            </li>
+
+        <?php if ($k%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>jewelry.html">
+					更多...</a>
+					</div>
+                    </div>
+					<!--CATALOG JEWELLERY END-->
+
+					<!--CATALOG foods-and-drinks-->
+					<div class="electronic">
+					<div class="title"><h2>食物饮料</h2></div>
+					<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-food.jpg') ?>">
+
+					<div class="home-cat-content">
+
+
+
+					<?php
+$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+			->addCategoryFilter(Mage::getModel('catalog/category')->load(25),true)
+
+			->addAttributeToFilter('visibility',4)
+			->addAttributeToSelect('*')
+			->addAttributeToSort('entity_id', 'desc')
+			->setPageSize(4)
+			->setCurPage(1)
+			->load();
+
+
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+?>
+
+    <?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+       <?php if ($k++%4==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+
+            <li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+			         <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+				 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+			         </a>
+                <h2 class="product-name">
+                <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+                </h2>
+                <?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+            </li>
+
+        <?php if ($k%4==0): ?>
+        </ul>
+        <?php endif ?>
+	                    <?php endforeach ?>
+					<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>foods-and-drinks.html">
+					更多...</a>
+					</div>
+                    </div>
+					<!--CATALOG foods-and-drinks END-->
+
+					<!--CATALOG medical-care-->
+					<div class="electronic">
+						<div class="title"><h2>医疗设施</h2></div>
+
+						<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/banner-med.jpg') ?>">
+						<div class="home-cat-content">
+
+
+
+
+						<?php
+	$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+				->addCategoryFilter(Mage::getModel('catalog/category')->load(31),true)
+
+				->addAttributeToFilter('visibility',4)
+				->addAttributeToSelect('*')
+				->addAttributeToSort('entity_id', 'desc')
+				->setPageSize(4)
+				->setCurPage(1)
+				->load();
+
+
+	Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+	Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+	?>
+
+		<?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+		   <?php if ($k++%4==0): ?>
+			<ul class="products-grid">
+			<?php endif ?>
+
+				<li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+						 <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+					 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+						 </a>
+					<h2 class="product-name">
+					<a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+					</h2>
+					<?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+				</li>
+
+			<?php if ($k%4==0): ?>
+			</ul>
+			<?php endif ?>
+							<?php endforeach ?>
+						<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>medical-care.html">
+						更多...</a>
+						</div>
+                    </div>
+					<!--CATALOG medical-care END-->
+
+					<!--CATALOG short in size-->
+					<div class="electronic">
+						<div class="title"><h2>断码专区</h2></div>
+						<div class="home-cat-content">
+						<img class="home-banner-cat" src="<?php echo $this->getSkinUrl('images/home-newarrival.gif') ?>">
+
+
+
+
+
+						<?php
+	$_productC_featured = Mage::getModel('catalog/product')->getCollection()
+				->addCategoryFilter(Mage::getModel('catalog/category')->load(45),true)
+
+				->addAttributeToFilter('visibility',4)
+				->addAttributeToSelect('*')
+				->addAttributeToSort('entity_id', 'desc')
+				->setPageSize(4)
+				->setCurPage(1)
+				->load();
+
+
+	Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productC_featured);
+	Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($_productC_featured);
+
+	?>
+
+		<?php $k=0; foreach ($_productC_featured as $_product): ?>
+
+		   <?php if ($k++%4==0): ?>
+			<ul class="products-grid">
+			<?php endif ?>
+
+				<li class="item<?php if(($k-1)%4 == 0): ?> first<?php elseif($k%4 == 0): ?> last<?php endif; ?>">
+
+						 <a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>">
+					 <img class="product-image" height="135" width="135" title="<?php echo $this->htmlEscape($_product->getName()) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135,135); ?>"/>
+						 </a>
+					<h2 class="product-name">
+					<a title="<?php echo $this->htmlEscape($_product->getName()) ?>" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>
+					</h2>
+					<?php
+                if ($_product->getTypeId() =='simple') {
+                echo $this->getLayout()->createBlock('catalog/product/view/price')->getPriceHtml($_product, true);
+                }
+                ?>
+                <?php
+                //type is bundle
+                if ($_product->getTypeId() =='bundle') {
+                list($_minimalPrice, $_maximalPrice) = $_product->getPriceModel()->getPrices($_product);
+            $_minimalPriceTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice);
+            $_minimalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_minimalPrice, true);//include tax
+            $_maximalPriceTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice);
+            $_maximalPriceInclTax = Mage::helper('tax')->getPrice($_product, $_maximalPrice, true);//include tax
+            ?>
+            <div class="price-box">
+            <p class="price-from">
+            <span class="price-label">价格区间:</span>
+                <span class="price">
+            <?php
+  echo sprintf ("%01.2f", $_minimalPriceTax);
+                ?>
+                </span>
+                </p>
+                <p class="price-to">
+                <span class="price-label">-</span>
+                <span class="price">
+                <?php
+  echo sprintf ("%01.2f", $_maximalPriceTax);
+                ?>
+                </span>
+                </p>
+                </div>
+                <?php } ?>
+                <?php
+                //var_dump($_product->getTypeId());
+                //type is grouped
+                if ($_product->getTypeId() =='grouped') {
+                $_productCollection=$this->getLoadedProductCollection();
+                foreach ($_productCollection as $Product) {
+                 if ($Product->getId() == $_product->getId()) {
+                  $_showPrice = sprintf ("%01.2f",$Product['minimal_price']);
+                 }
+                }
+            ?>
+            <div class="price-box">
+            <p class="minimal-price">
+            <span class="price-label">起价：</span>
+            <span id="product-minimal-price-<?php echo $_product->getId(); ?>" class="price">
+            <?php echo $_showPrice; ?>
+            </span>
+            </p>
+                </div>
+                <?php } ?>
+			<div class="home_cart"><a href="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" class="link-cart"><?php echo $this->__('Add to Cart') ?></a></div>	
+				</li>
+
+			<?php if ($k%4==0): ?>
+			</ul>
+			<?php endif ?>
+							<?php endforeach ?>
+						<a class="cat-more" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>duanma.html">
+						更多断码...</a>
+						</div>
+					</div>
+					<!--CATALOG medical-care END-->
+
+                </div>
+                <div class="col-right sidebar"><?php echo $this->getChildHtml('right') ?></div>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('footer') ?>
+        <?php echo $this->getChildHtml('before_body_end') ?>
+    </div>
+</div>
+<?php echo $this->getAbsoluteFooter() ?>
+</body>
+</html>
+

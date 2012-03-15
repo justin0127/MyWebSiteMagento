@@ -1,0 +1,32 @@
+#checkout-shipping-method-load {
+width:300px;
+float:left;
+}
+
+#co-payment-form {
+width:51%;
+float:left;
+}
+
+#checkout-step-shipping_method .shipping-time {
+border-left:1px solid #D5DDDB;
+float:right;
+margin:0 0 10px 10px;
+padding-left:20px;
+width:50%;
+}
+
+#checkout-step-shipping_method .shipping-time li {
+padding:4px 0;
+}
+
+
+#opc-payment .fabiao {
+padding-top: 12px;
+float:right;
+line-height:20px;
+margin:0 0 10px 10px;
+width: 45%;
+}
+
+

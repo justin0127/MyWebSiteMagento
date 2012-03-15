@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>">
+<head>
+<?php echo $this->getChildHtml('head') ?>
+
+</head>
+<body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>>
+<?php echo $this->getChildHtml('after_body_start') ?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/homeblockUI.js')?>"></script>
+<div class="wrapper">
+    <?php echo $this->getChildHtml('global_notices') ?>
+    <div class="page">
+	
+	
+
+			<?php if(Mage::getSingleton('customer/session')->isLoggedIn()==false){ ?>
+					<div class="successBottomall" id="hometest" style='display:none;'>
+						<div class="successBottom">
+										<span id="btn6">&nbsp;</span>
+										<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>campain20110729.htm" target="_blank"><img src="<?php echo $this->getSkinUrl('images/home_campaign0729.png') ?>"></a>
+										
+						</div>
+					</div>
+			
+					<!--<script type="text/javascript"> 
+
+					 
+						jQuery(document).ready(function() {
+								jQuery.blockUI({ message: jQuery('#hometest'), css: { top:  '65px', left: (jQuery(window).width() - 900) /2 + 'px', width: '900px',height: "485px"} }); 
+								jQuery('#btn6').click( jQuery.unblockUI );
+						}); 
+						
+						
+						
+					</script>-->
+				<?php } ?>
+						
+
+        <?php echo $this->getChildHtml('header') ?>
+        <div class="main-container col1-layout">
+            <div class="main">
+                <?php echo $this->getChildHtml('breadcrumbs') ?>
+                <div class="col-main">
+                    <?php echo $this->getChildHtml('global_messages') ?>
+					
+					
+                  
+					<div>
+					<div class="left-banner">
+					
+					
+					
+						<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('home-slider')->toHtml(); ?>
+			
+					</div>
+					
+					
+					<div class="right-banner">
+					<a href="http://www.sisley.com.cn/registration"><img src=" <?php echo $this->getSkinUrl('images/home_right3.jpg') ?>" alt="护肤之旅" /></a>
+					
+					
+					<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>diagnostic_beaute_female">
+					<img src="<?php echo $this->getSkinUrl('images/home_right2.jpg') ?>" alt="美容方案" /></a> 
+					<a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>17030X.html">
+					<img src="<?php echo $this->getSkinUrl('images/home_right1.jpg') ?>" alt="创新" /> </a>
+					</div>
+					</div>
+					 
+							
+					  <?php //echo $this->getChildHtml('content') ?>
+                </div>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('footer') ?>
+        <?php echo $this->getChildHtml('before_body_end') ?>
+    </div>
+</div>
+<?php echo $this->getAbsoluteFooter() ?>
+<!--会发生冲突先禁用
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.2.3.pack.js') ?>"></script>-->
+<script>
+jQuery.noConflict();
+</script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/slidetip.js') ?>"></script>
+
+<script language="javascript">
+        _gaq.push(['_trackPageview', '/index.html']); 
+</script>
+
+</body>
+</html>

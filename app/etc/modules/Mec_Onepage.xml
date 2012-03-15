@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mec_Onepage>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Mec_Onepage>
+    </modules>
+</config>
+

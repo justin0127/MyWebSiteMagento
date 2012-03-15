@@ -1,0 +1,11 @@
+#checkout-step-billing,
+#checkout-step-shipping,
+#checkout-step-shipping_method,
+#checkout-step-payment,
+#checkout-step-review{
+  visibility:visible;
+}
+
+#opc-shipping {
+  display:none;
+}

@@ -1,0 +1,381 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Customer
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Customer api V2
+ *
+ * @category   Mage
+ * @package    Mage_Customer
+ * @author     Magento Core Team <core@magentocommerce.com>
+ */
+class Mage_Customer_Model_Customer_Api_V2 extends Mage_Customer_Model_Customer_Api
+{
+    /**
+     * Prepare data to insert/update.
+     * Creating array for stdClass Object
+     *
+     * @param stdClass $data
+     * @return array
+     */
+    protected function _prepareData($data)
+    {
+        if (null !== ($_data = get_object_vars($data))) {
+            return $_data;
+        }
+        return array();
+    }
+
+    /**
+     * Create new customer
+     *
+     * @param array $customerData
+     * @return int
+     */
+    public function create($customerData)
+    {
+        $customerData = $this->_prepareData($customerData);
+        try {
+            $customer = Mage::getModel('customer/customer')
+                ->setData($customerData)
+                ->save();
+        } catch (Mage_Core_Exception $e) {
+            $this->_fault('data_invalid', $e->getMessage());
+        }
+        return $customer->getId();
+    }
+
+    /**
+     * Retrieve cutomers data
+     *
+     * @param  array $filters
+     * @return array
+     */
+    public function items($filters)
+    {
+        $collection = Mage::getModel('customer/customer')->getCollection()
+            ->addAttributeToSelect('*');
+
+        $preparedFilters = array();
+        if (isset($filters->filter)) {
+            foreach ($filters->filter as $_filter) {
+                $preparedFilters[$_filter->key] = $_filter->value;
+            }
+        }
+        if (isset($filters->complex_filter)) {
+            foreach ($filters->complex_filter as $_filter) {
+                $_value = $_filter->value;
+                $preparedFilters[$_filter->key] = array(
+                    $_value->key => $_value->value
+                );
+            }
+        }
+
+        if (!empty($preparedFilters)) {
+            try {
+                foreach ($preparedFilters as $field => $value) {
+                    if (isset($this->_mapAttributes[$field])) {
+                        $field = $this->_mapAttributes[$field];
+                    }
+                    $collection->addFieldToFilter($field, $value);
+                }
+            } catch (Mage_Core_Exception $e) {
+                $this->_fault('filters_invalid', $e->getMessage());
+            }
+        }
+
+        $result = array();
+        foreach ($collection as $customer) {
+            $data = $customer->toArray();
+            $row  = array();
+
+            foreach ($this->_mapAttributes as $attributeAlias => $attributeCode) {
+                $row[$attributeAlias] = (isset($data[$attributeCode]) ? $data[$attributeCode] : null);
+            }
+
+            foreach ($this->getAllowedAttributes($customer) as $attributeCode => $attribute) {
+                if (isset($data[$attributeCode])) {
+                    $row[$attributeCode] = $data[$attributeCode];
+                }
+            }
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Update customer data
+     *
+     * @param int $customerId
+     * @param array $customerData
+     * @return boolean
+     */
+     
+	public function SendEmail($customer) { 
+	/*** start edm ***/
+	$SoapClient = new SoapClient("http://app.focussend.com/webservice/FocusSendWebService.asmx?WSDL",array('trace' => 1));
+	$FocusUser   = new StdClass;
+	$FocusUser->Email="arvatoservices@bertelsmann.com.cn";
+	$FocusUser->Password=sha1("EDM$%^456");
+
+	$FocusEmail=new StdClass;
+
+	//邮件内容谨慎修改
+
+	$FocusEmail->Body="<table width='635px' cellspacing='0' cellpadding='0' border='0'>
+<tr>
+<td colspan='6'>
+<font size='2'>如不能正常显示，请<a href='#'>点击此处</a>。</font>
+</td>
+</tr>
+<tr>
+<td colspan='6'>
+<img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/logo_email.gif' alt='sisley_logo'/>
+</td>
+</tr>
+<tr>
+<td colspan='6'>
+<table  style='text-align: center;' cellspacing='0' cellpadding='0' border='0' width='635px'>
+<tr style='background:#AAAAAA; color:white; ' height='1px'>
+<td style='width:105px; border-right:1px solid white;'><a href='http://232.magentoecommerce.cn/sisley2/news.html' >希思黎最新动态</a></td>
+<td style='width:105px; border-right:1px solid white;'><a href='http://232.magentoecommerce.cn/sisley2/about-sisley.html'>关于希思黎</a></td>
+<td style='width:105px; border-right:1px solid white;'><a href='http://232.magentoecommerce.cn/sisley2/skin.html'>护肤系列</a></td>
+<td style='width:105px; border-right:1px solid white;'><a href='http://232.magentoecommerce.cn/sisley2/color.html'>彩妆系列</a></td>
+<td style='width:105px; border-right:1px solid white;'><a href='http://232.magentoecommerce.cn/sisley2/perfume.html'>香水系列</a></td>
+<td style='width:105px;'><a href='http://232.magentoecommerce.cn/sisley2/man.html'>男士系列</a></td>
+</tr></table>
+</td>
+</tr>
+<tr>
+<td colspan='6'>
+<table width='100%'>
+<tr>
+<td valign='top' width='400px'>
+<br />
+<font size='2'>亲爱的".$CustomerName = $customer->getFirstname().$customer->getLastname()."，</font><br /><br />
+<font size='2'>希思黎满怀诚挚谢意，欢迎您成为希思黎会员.贵为希思黎会员，您将获悉最及时的产品信息，优先尊享新品试用，亲临专业典雅的美容课堂与绚烂奢华的美颜会。<br />更多详情，请查看<a href='http://232.magentoecommerce.cn/sisley/sis_superior.htm'>希思黎会
+员规则</a>及<a href='http://232.magentoecommerce.cn/sisley/sis_superior.htm'>会员特享礼遇</a><br /><br />
+为了让您更好的享受希思黎会员服务，我们为您提供了希思黎会员<br />
+E卡。<br /></font>
+<div style='position: relative;'>
+<img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/Ecard.png'/>
+<div style='color:#A5A5A5;position: absolute; font-size:14px;font-weight: bold; left: 30px; position: absolute; top: 130px;'>".$customer->getRank()."</div>
+<div style='position: absolute; font-size:11px; top:170px; left:30px; font-weight: bold;'>姓名&nbsp;".$customer->getFirstname().$customer->getLastname()."</div>
+<div style='position: absolute; font-size:11px; top:190px; left:30px; font-weight: bold;'>卡号&nbsp;".$customer->getECard()."</div>
+</div>
+</td>
+<td>
+<img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/email-bg.png' />
+</td>
+</tr>
+<tr>
+<td colspan='6'>
+<table width='635px' ><tr style='background:#E0E0E0;' ><td colspan='9'><font  size='2'>希思黎最受欢迎产品:</font></td></tr>
+<tr>
+<td width='20px'>
+</td>
+<td >
+<table><tr><td align='center' width='110px'>
+  <a href='http://232.magentoecommerce.cn/sisley2/114100.html'><img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/全能乳液.jpg' alt='全能乳液'  style='border:1px solid #e1e1e1; margin-left=32px; margin-right:32px;width:100px;height:100px;'/></a>
+ </td></tr>
+<tr><td align='center' width='110px'>
+<a href='http://232.magentoecommerce.cn/sisley2/114100.html'><font size='2'>全能乳液</font></a><br />
+<a href='http://232.magentoecommerce.cn/sisley2/114100.html'><font size='2'>125ml - ￥1,480.00</font></a>
+</td></tr></table>
+</td>
+<td width='25px'>
+</td>
+<td>
+<table><tr><td align='center' width='110px'>
+<a href='http://232.magentoecommerce.cn/sisley2/154000.html'><img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/致臻夜间修复精华露.jpg' alt='致臻夜间修复精华露'  style='border:1px solid #e1e1e1;margin-left=32px; margin-right:32px;width:100px;height:100px;' /></a>
+ </td></tr>
+ <tr><td align='center' width='110px'>
+<a href='http://232.magentoecommerce.cn/sisley2/154000.html'><font size='2'>致臻夜间修复精华露</font></a><br />
+<a href='http://232.magentoecommerce.cn/sisley2/154000.html'><font size='2'>50ml - ￥5,000.00</font></a>
+</td></tr>
+</table>
+<td width='25px'>
+</td>
+<td>
+<table cellspacing='0' cellpadding='0' border='0'><tr><td align='center' width='130'>
+<a href='http://www.sisley.com.cn/126600.html'><img src='http://www.sisley.com.cn/skin/frontend/default/default/images/email-img/126600.jpg' alt='赋活水润保湿霜' width='100' height='100' border='0'/></a>
+</td></tr>
+<tr><td align='center' width='130' >
+<a href='http://www.sisley.com.cn/126600.html'><font size='2'>赋活水润保湿霜</font></a><br />
+<a href='http://www.sisley.com.cn/126600.html'><font size='2'>40ml - ￥1,500.00</font></a>
+</td></tr>
+</table>
+</td>
+<td width='25px'>
+</td>
+<td>
+<table><tr><td align='center' width='110px'>
+<a href='http://232.magentoecommerce.cn/sisley2/150000.html'><img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/抗皱活肤驻颜霜.jpg' alt='抗皱活肤驻颜霜'  style='border:1px solid #e1e1e1; margin-left=32px; margin-right:32px;width:100px;height:100px;'/></a>
+ </td></tr>
+<tr><td align='center' width='110px'>
+<a href='http://232.magentoecommerce.cn/sisley2/150000.html'><font size='2'>抗皱活肤驻颜霜</font></a><br />
+<a href='http://232.magentoecommerce.cn/sisley2/150000.html'><font size='2'>50ml - ￥2,850.00</font></a>
+</td></tr>
+</table>
+</td>
+<td>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td height='20px'>
+</td>
+</tr>
+<tr>
+<td colspan='6' align='center'>
+<img src='http://232.magentoecommerce.cn/sisley2/skin/frontend/default/default/images/email-bg.jpg' alt='促销商品通栏Banner'/>
+</td>
+</tr>
+<tr>
+<td colspan='6' height='20px'>
+<font size='2'>促销商品链接</font>
+</td>
+</tr>
+<tr>
+<td colspan='6' style='background:#e0e0e0'>
+<font size='2'>
+在希思黎官网您可以尊享：100%正品保证<br />
+希思黎官方网站暨网上商城会员热线：4008-208-139(9:00-21:00国定节假日除外)<br />
+了解更多信息，请访问帮助中心。请保管您的邮箱，以免他人盗用，如有任何疑问，请查看希思黎会员条款。<br />
+欢迎您在此到希思黎官方网站暨网上商城，祝您购物愉快！<br />
+请注意：此邮件发送地址仅用于发送邮件，请勿直接回复。如须与我们联系，您可以发送邮件至cs@sisley.com.cn<br />
+</font>
+</td>
+</tr>
+</table>";
+
+	$FocusEmail->IsBodyHtml=true;
+
+	$FocusTask=new StdClass;
+	$FocusTask->TaskName="batch send php";
+	$FocusTask->Subject="first subject";
+	$FocusTask->SenderName="abc";
+	$FocusTask->SenderEmail="abc@focussend.com";
+	$FocusTask->ReplyName="reply";
+	$FocusTask->ReplyEmail="zcz_wn@163.com";
+	$FocusTask->SendDate=date("Y-m-d\TH-m-s");
+	//$FocusTask->SendDate="2010-06-04T00:00:00";    
+
+	$subject="感谢您购买【希思黎官方网站暨网上商城】商品";
+
+	//$FocusReceiver=new StdClass;
+	$FocusReceiver->Email=$customer->getEmail();
+
+	//send one email
+	$result= $SoapClient->SendOne(array("user"=>$FocusUser,"email"=>$FocusEmail,"subject"=>$subject,"receiver"=>$FocusReceiver));
+	/*** end edm ***/
+	}
+     
+    public function update($customerId, $customerData)
+    {
+  
+ $msg =   var_export($customerData,"true");
+ $logFile = date('Y-m-d').'v2.txt';
+ $msg = date('Y-m-d H:i:s').' '.$customerId.' >>> '.$msg."\r\n";
+ file_put_contents($logFile,$msg,FILE_APPEND );
+  	
+    	$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+	$username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+	$password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+	
+	$a = strval($customerId);
+	
+	//Mage::log('posinfo');
+	//Mage::log($a);
+	
+    	$_customerId = '0'.$a;
+    	
+    	
+	//$posstr = substr($_customerId, 5);
+	$posid = intval($_customerId);
+	
+	//Mage::log('posid');
+	//Mage::log($posid);
+	
+	$link = mysql_connect('localhost', $username, $password);
+				if (!$link) {
+					die('Not connected : ' . mysql_error());
+				}//end if
+				$db_selected = mysql_select_db($dbname, $link);
+				if (!$db_selected) {
+					die ('Can\'t use foo : ' . mysql_error());
+				}else{
+				$query = sprintf("SELECT entity_id FROM customer_entity_varchar WHERE value ='%s' AND attribute_id='180'",
+						mysql_real_escape_string($posid));
+						$result = mysql_query($query); 
+						if (!$result) {
+							$message = 'Invalid query: ' . mysql_error() . "\n";
+							$message .= 'Whole query: ' . $query;
+							die($message);
+						}//end if 
+						while ($row = mysql_fetch_assoc($result)) {
+							$customerId = $row['entity_id'];
+						}
+				}
+				
+				
+				
+				mysql_close($link);
+				
+				Mage::log('@#$%^');
+				Mage::log($customerId);
+        $customer = Mage::getModel('customer/customer')->load($customerId);
+        
+	//Mage::log($customer);
+
+        if (!$customer->getId()) {
+            $this->_fault('not_exists');
+        }
+
+	//from no rank to ...
+	$CurrentRank = $customer->getRank();
+
+        foreach ($this->getAllowedAttributes($customer) as $attributeCode=>$attribute) {
+            if (isset($customerData->$attributeCode)) {
+                $customer->setData($attributeCode, $customerData->$attributeCode);
+            }
+        }
+
+        $customer->save();
+        
+        //new rank
+        $NewRank = $customer->getRank();
+        
+        if ($CurrentRank == NULL && $NewRank != NULL) {
+        	$this->SendEmail($customer);
+        }
+        
+        return true;
+    }
+}

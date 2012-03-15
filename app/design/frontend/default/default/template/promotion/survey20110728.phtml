@@ -1,0 +1,334 @@
+
+	
+	
+	<?php
+        if (!$_GET){
+	?>
+	
+	<?php
+	}else{
+        
+	$text = $_GET['id'];
+	//var_dump($_GET['id']);
+	$key="sisley"; 
+	//$id = DeCode($text,$key);
+	$id = $text;
+	//var_dump($id);
+	
+	$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname');
+    $username = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/username');
+    $password = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/password');
+	
+	Mage::app();
+	$link = mysql_connect('localhost', $username, $password);
+	mysql_query("SET NAMES 'utf8'");
+       	if (!$link) {
+         die('Not connected : ' . mysql_error());
+       	}//end if
+       	$db_selected = mysql_select_db($dbname, $link);
+       	if (!$db_selected) {
+         die ('Can\'t use foo : ' . mysql_error());
+       	}else{
+       	       $increment_id = $id;
+       	       $query = sprintf("SELECT *  FROM sisley_survey WHERE campaign_id='注册抽奖问卷调研' and increment_id ='%s'",
+               mysql_real_escape_string($increment_id));
+               //echo $query;
+               $result = mysql_query($query); 
+			   
+               if (!$result) {
+               $message  = 'Invalid query: ' . mysql_error() . "\n";
+               $message .= 'Whole query: ' . $query;
+               die($message);
+               }//end if 
+               while ($row = mysql_fetch_array($result)) {
+               $value = $row['increment_id'];
+
+               }
+        $question = $value;
+       	}
+       	if($question){
+       	echo '您已参加过此次注册抽奖问卷调研活动，感谢您的参与!';
+       	mysql_close($link);
+       	}else{
+	?>
+	<!-- 开始拿input value JS 代码 -->
+	
+	
+	<?php if(!$_POST) { ?>
+	<form action='' method="post"  id="questionform">
+	<input type="hidden" name="orderid" value="<?php echo $id; ?>">
+	<input type="hidden" name="question1" value="" id="question1"/>
+	<input type="hidden" name="question2" value="" id="question2"/>
+	<input type="hidden" name="question3" value="" id="question3"/>
+	<input type="hidden" name="question4" value="" id="question4"/>
+	<input type="hidden" name="question5" value="" id="question5"/>
+	<input type="hidden" name="question6" value="" id="question6"/>
+	<input type="hidden" name="question7" value="" id="question7"/>
+	<input type="hidden" name="question8" value="" id="question8"/>
+	<input type="hidden" name="question9" value="" id="question9"/>
+	
+	
+	<!-- 问卷开始 -->
+	<div class="question-all">
+
+   <h1>希思黎官方网上商城</h1>
+   <h1>注册抽奖问卷调研</h1>
+   <div class="dear">亲爱的希思黎尊贵会员：</div>
+   <div class="dear-conta">
+  
+   &nbsp;&nbsp;您好！<br/>
+   &nbsp;&nbsp;感谢您关注希思黎产品，希望您能抽出宝贵的几分钟完成此份调查问卷，特此感谢您的参与。<br/>
+   &nbsp;&nbsp;完整回答问卷并提交成功后， 将有机会获得丰厚开幕注册礼！
+  
+   </div>
+   
+   <div class="question-question">
+   		<div class="question1">
+         <div class="question1-tit">
+          <b>问题1：请问希思黎官方网站曁网上商城的网址是？</b>
+         </div>
+         <div class="question1-radion">
+         <ul>
+             <li>
+             <input type="radio" name="sisley_url" value="N" onclick="PQ1()" class="urlradio" id="question1"/><span>www.sisley.com</span>
+             </li>
+             <li>
+             <input type="radio" name="sisley_url" value="Y" onclick="PQ1()" class="urlradio" id="question1" class='q1-ok' /><span>www.sisley.com.cn</span>
+             </li>
+             <li>
+             <input type="radio" name="sisley_url" value="N" onclick="PQ1()" class="urlradio" id="question1"/><span>www.E-sisley.com</span>
+             </li>
+         </ul>
+         </div>
+        </div>
+        
+        
+        <div class="question3">
+        <div class="question3-tit">
+          <b>问题2：请问您是从哪里了解到希思黎网上商城的(可多选)？</b>
+
+         </div>
+          <div class="question3-check">
+        	<ul>
+             <li><input type="checkbox" name="where[]" value="报刊杂志" onclick="PQ2"/><span>报刊杂志</span></li>
+             <li><input type="checkbox" name="where[]" value="朋友推荐" onclick="PQ2"/><span>朋友推荐</span></li>
+             <li><input type="checkbox" name="where[]" value="门店专柜" onclick="PQ2"/><span>门店专柜</span></li>
+             <li><input type="checkbox" name="where[]" value="论坛微博" onclick="PQ2"/><span>论坛微博</span></li>
+             <li><input type="checkbox" name="where[]" value="搜索网站" onclick="PQ2"/><span>搜索网站</span></li>
+             <li><input type="checkbox" name="where[]" value="EDM(电子宣传单页)" onclick="PQ2"/><span>EDM(电子宣传单页)</span></li>
+             <li><input type="checkbox" name="where[]" value="希思黎产品/活动单页" onclick="PQ2"/><span>希思黎产品/活动单页</span></li>          
+            </ul>
+           </div>
+       </div>
+
+	   <script type="text/javascript"> 
+		function getQ3(){
+		var aa;
+		 jQuery("input[name='where[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='where[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='where[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='where[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question3').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>            
+
+   	 <div class="question8">
+      <div class="question8-tit">
+       <b>问题3：请问您目前最主要的肌肤需求是(可多选)？</b>
+      </div>
+       <div class="question8-check">
+       	<ul>
+         <li><input type="checkbox" name="need[]" value="保湿"/><span>保湿</span></li>
+         <li><input type="checkbox" name="need[]" value="滋养"/><span>滋养</span></li>
+         <li><input type="checkbox" name="need[]" value="防敏"/><span>防敏</span></li>
+         <li><input type="checkbox" name="need[]" value="美白"/><span>美白</span></li>
+         <li><input type="checkbox" name="need[]" value="提亮"/><span>提亮</span></li>
+         <li><input type="checkbox" name="need[]" value="紧肤"/><span>紧肤</span></li>
+         <li><input type="checkbox" name="need[]" value="抗皱"/><span>抗皱</span></li>
+         <li><input type="checkbox" name="need[]" value="控油"/><span>控油</span></li>
+         <li><input type="checkbox" name="need[]" value="密集疗程"/><span>密集疗程</span></li>
+         <li><input type="checkbox" name="need[]" value="全方位"/><span>全方位</span></li>
+        </ul>
+       
+       </div>
+      
+     </div>
+	 
+	   <script type="text/javascript"> 
+		function getQ8(){
+		var aa;
+		 jQuery("input[name='need[]'][checked]").each(function(){
+                                aa+=jQuery(this).val()+",";
+                    })
+		
+		alert(aa);
+		jQuery(document).ready(function(){
+		jQuery("#bt_checkbox").click(function(){
+                    var aa="";
+                   jQuery("input[@name='need[]'][@checked]").each(function(){
+                                aa+=$(this).val()+",";
+                    })
+                   		alert(aa);
+        })
+})}
+
+
+jQuery(document).ready(function(){
+		jQuery("input[name='need[]']").each(
+		function(){                   
+                   jQuery(this).click( function(){             
+                   var aa='';
+		           jQuery("input[name='need[]']").each(function(){
+		                       if (jQuery(this).attr('checked')){
+		                           aa+=jQuery(this).val()+",";		                           
+		                           }
+                    })
+		            jQuery('#question8').val(aa);
+                   });
+        }		
+		);
+})
+
+</script>   
+	 
+<div class="wenjuanBdiv"> <button  type="submit" value="提交" s='3' id='btnsubmit' onclick="checkq1();" class="wenjuanquest" >提交</button></div>
+<br/>
+<br/>
+</div>
+</form>
+
+<script>
+
+function delaysubmit(){
+
+    var timeleft = jQuery('#btnsubmit').attr('s');
+    jQuery('#btnsubmit').attr("disabled",true); 
+    if (timeleft > 0){           
+            jQuery('#btnsubmit').attr('s', timeleft-1) ;
+            jQuery('#Spantext').text('正在提交 ...');
+            setTimeout("delaysubmit()", 1000); 
+        }else{
+              jQuery('#questionform').submit();   
+              
+        }
+}
+
+
+function checkq1(){
+    var url =    jQuery('.urlradio:checked').val();
+    if (url == 'Y'){
+        
+        var where = jQuery('input[name=where[]]:checked').val();
+        var need =  jQuery('input[name=need[]]:checked').val();
+		
+		if(!where)
+			alert("您尚未回答第二题。");
+		
+		if(!need)
+			alert("您尚未回答第三题。");
+		
+        if (where && need)    {
+			Form.submit(); 
+			delaysubmit();
+			}
+        
+        }
+    else{
+		alert("您的第一题的选择有误，请重新选择。");
+	}
+}
+
+ var Form = new VarienForm('questionform');
+            Form.submit = function(){
+                            this.form.submit();
+                            
+            }.bind(Form);
+</script>
+
+<div class="sumbitBottom">再次感谢您的配合!</div>
+</div>
+	
+	
+	<!-- 问卷结束 -->
+	
+	
+	<?php } ?>
+	<?php
+	//var_dump($_POST);
+	if($_POST){
+
+	
+	$orderid = $_POST['orderid'];
+	$question1 = $_POST['question1'];
+	$question2 = $_POST['question2'];
+	$question3 = $_POST['question3'];
+	$question4 = $_POST['question4'];
+	$question5 = $_POST['question5'];
+	$question6 = $_POST['question6'];
+	$question7 = $_POST['question7'];
+	$question8 = $_POST['question8'];
+	$question9 = $_POST['question9'];
+	
+	
+	$con = mysql_connect("localhost",$username,$password);
+	//var_dump('@@@'.$username);
+	if (!$con)
+	  {
+	  die('Could not connect: ' . mysql_error());
+	  }
+	mysql_select_db($dbname, $con);
+	/*
+	mysql_query("INSERT INTO sisley_poll (question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('1', '2', '3', '4', '5', '6', '7', '8', '9')");
+	mysql_close($con);
+	*/
+	$q = "INSERT INTO sisley_survey (campaign_id,increment_id, survey_date,question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('注册抽奖问卷调研','$orderid', now(),'$question1', '$question2', '$question3', '$question4', '$question5', '$question6', '$question7', '$question8', '$question9')";
+	//echo $q;
+	mysql_query($q);
+	/*
+	var_dump("INSERT INTO sisley_poll (increment_id, question1, question2, question3, question4, question5, question6, question7, question8, question9) 
+	VALUES ('$orderid', '$question1', '$question2', '$question3', '$question4', '$question5', '$question6', '$question7', '$question8', '$question9')");
+	*/
+        ?>
+        <div>感谢您的参与!正在提交 . . .</div>
+		
+        <script language=javascript>
+		alert("您的问卷已提交成功，谢谢您的参与。");
+		setTimeout("location.href='http://www.sisley.com.cn'", 8);
+		</script>
+        <?php
+        mysql_close($link);
+	//header('Location:  index.php');
+	//exit();
+	}
+	}
+	}
+	
+	?>

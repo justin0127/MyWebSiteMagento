@@ -1,0 +1,11 @@
+<?php
+$order = Mage::getModel('sales/order');
+$order->loadByIncrementId('100000865');
+
+
+$products = $order->getItemsCollection();
+
+            foreach ($products as $product){
+            var_dump($product->getQtyOrdered());
+            }
+?>
